@@ -308,6 +308,63 @@ ul, ol {
   color: #fff;
 }
 
+/* ---------- Objetivos del año ---------- */
+.objetivos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 760px) {
+  .objetivos { grid-template-columns: 1fr 1fr; }
+}
+
+.objetivo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.objetivo-cabecera,
+.objetivo-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.objetivo-nombre { font-weight: 600; }
+
+.objetivo-porcentaje {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.objetivo-progreso {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.barra {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--fondo);
+}
+
+.barra-relleno {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--acento);
+}
+
+.objetivo.conseguido .barra-relleno { background: var(--exito); }
+
 /* Foco visible para quien usa el teclado */
 button:focus-visible,
 input:focus-visible {

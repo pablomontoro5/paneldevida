@@ -23,5 +23,14 @@ var DATOS = {
     { id: "ejercicio", icono: "🏃", nombre: "Hacer ejercicio", historialEjemplo: [1, 3, 4, 6] },
     { id: "agua", icono: "💧", nombre: "Beber 2 litros de agua", historialEjemplo: [1, 2, 3] },
     { id: "programar", icono: "💻", nombre: "Programar algo propio", historialEjemplo: [2, 3, 4, 5] }
+  ],
+
+  // Objetivos del año. "actual" es el progreso inicial y "paso" lo que suman o restan los botones.
+  // Con formato: "euros" las cantidades se muestran como dinero; si no, con su "unidad".
+  objetivos: [
+    { id: "libros", icono: "📚", nombre: "Leer 24 libros", actual: 9, meta: 24, paso: 1, unidad: "libros" },
+    { id: "asignaturas", icono: "🎓", nombre: "Aprobar 10 asignaturas", actual: 9, meta: 10, paso: 1, unidad: "asignaturas" },
+    { id: "ahorro", icono: "💶", nombre: "Ahorrar 1.500 €", actual: 1284, meta: 1500, paso: 50, formato: "euros" },
+    { id: "correr", icono: "🏃", nombre: "Correr 300 km", actual: 300, meta: 300, paso: 5, unidad: "km" }
   ]
 };

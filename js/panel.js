@@ -5,6 +5,7 @@
   var formatoFecha = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   var formatoDiaLargo = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" });
   var formatoInicialDia = new Intl.DateTimeFormat("es-ES", { weekday: "narrow" });
+  var formatoPorcentaje = new Intl.NumberFormat("es-ES", { style: "percent", maximumFractionDigits: 0 });
 
   // ---------- Utilidades ----------
 
@@ -274,6 +275,63 @@
     }
   }
 
+  // ---------- Objetivos del año ----------
+
+  // Una cantidad de un objetivo, en euros o como número normal.
+  // useGrouping "always" hace que 1284 salga como 1.284 (por defecto es-ES no agrupa números de 4 cifras).
+  function formatoCantidad(objetivo, valor) {
+    var decimales = Number.isInteger(valor) ? 0 : 2;
+    var opciones = { minimumFractionDigits: decimales, maximumFractionDigits: decimales, useGrouping: "always" };
+    if (objetivo.formato === "euros") {
+      opciones.style = "currency";
+      opciones.currency = "EUR";
+    }
+    return new Intl.NumberFormat("es-ES", opciones).format(valor);
+  }
+
+  function textoProgreso(objetivo, valor) {
+    var texto = formatoCantidad(objetivo, valor) + " de " + formatoCantidad(objetivo, objetivo.meta);
+    return objetivo.unidad ? texto + " " + objetivo.unidad : texto;
+  }
+
+  function pintarObjetivos() {
+    var lista = document.getElementById("objetivos");
+
+    document.getElementById("titulo-objetivos").textContent = "Objetivos " + new Date().getFullYear();
+    lista.replaceChildren();
+
+    DATOS.objetivos.forEach(function (objetivo) {
+      var valor = objetivo.actual;
+      var fraccion = valor / objetivo.meta;
+      var elemento = crear("li", "objetivo");
+      if (fraccion >= 1) elemento.classList.add("conseguido");
+
+      var cabecera = crear("div", "objetivo-cabecera");
+      cabecera.append(
+        crear("span", "objetivo-nombre", objetivo.icono + " " + objetivo.nombre),
+        crear("span", "objetivo-porcentaje", formatoPorcentaje.format(fraccion))
+      );
+
+      // La barra se queda llena aunque se pase de la meta.
+      var barra = crear("div", "barra");
+      barra.setAttribute("role", "progressbar");
+      barra.setAttribute("aria-label", objetivo.nombre);
+      barra.setAttribute("aria-valuemin", "0");
+      barra.setAttribute("aria-valuemax", String(objetivo.meta));
+      barra.setAttribute("aria-valuenow", String(valor));
+      barra.setAttribute("aria-valuetext", textoProgreso(objetivo, valor));
+      var relleno = crear("div", "barra-relleno");
+      relleno.style.width = Math.min(fraccion, 1) * 100 + "%";
+      barra.append(relleno);
+
+      var pie = crear("div", "objetivo-pie");
+      pie.append(crear("span", "objetivo-progreso", textoProgreso(objetivo, valor)));
+
+      elemento.append(cabecera, barra, pie);
+      lista.append(elemento);
+    });
+  }
+
   // ---------- Arranque ----------
 
   var diaPintado = claveFecha(new Date());
@@ -283,6 +341,7 @@
   pintarAgenda();
   pintarPrioridades();
   pintarHabitos();
+  pintarObjetivos();
 
   // Cada minuto se actualizan saludo y agenda; si cambia el día, todo.
   setInterval(function () {
@@ -293,6 +352,7 @@
       diaPintado = hoy;
       pintarPrioridades();
       pintarHabitos();
+      pintarObjetivos();
     }
   }, 60 * 1000);
 })();
