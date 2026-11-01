@@ -5,7 +5,8 @@
   var formatoFecha = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   var formatoDiaLargo = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" });
   var formatoInicialDia = new Intl.DateTimeFormat("es-ES", { weekday: "narrow" });
-  var formatoPorcentaje = new Intl.NumberFormat("es-ES", { style: "percent", maximumFractionDigits: 0 });
+  var formatoFechaCopia = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "long", year: "numeric" });
+  var formatoPorcentaje =new Intl.NumberFormat("es-ES", { style: "percent", maximumFractionDigits: 0 });
 
   // ---------- Utilidades ----------
 
@@ -425,8 +426,58 @@
     mostrarMensajeCopia("Copia descargada: " + enlace.download);
   }
 
+  // Lee el archivo elegido, comprueba que es una copia y, si se confirma, sustituye los datos.
+  function restaurarCopia(archivo) {
+    var lector = new FileReader();
+
+    lector.onload = function () {
+      var copia = null;
+      try {
+        copia = JSON.parse(lector.result);
+      } catch (error) {
+        // Un archivo que no es JSON se trata igual que una copia no válida.
+      }
+
+      if (!Almacen.esCopiaValida(copia)) {
+        mostrarMensajeCopia("Este archivo no es una copia del panel de vida. No se ha cambiado nada.", true);
+        return;
+      }
+
+      var fecha = formatoFechaCopia.format(new Date(copia.fecha));
+      if (!window.confirm("Esto sustituirá lo que tienes ahora por la copia del " + fecha + ". ¿Continuar?")) {
+        mostrarMensajeCopia("Restauración cancelada. No se ha cambiado nada.");
+        return;
+      }
+
+      try {
+        Almacen.importar(copia);
+      } catch (error) {
+        mostrarMensajeCopia("No se ha podido restaurar la copia. Tus datos siguen como estaban.", true);
+        return;
+      }
+      // Recargar es lo más sencillo para que todo (tema incluido) se pinte con los datos nuevos.
+      window.location.reload();
+    };
+
+    lector.onerror = function () {
+      mostrarMensajeCopia("No se ha podido leer el archivo.", true);
+    };
+
+    lector.readAsText(archivo);
+  }
+
   function iniciarCopia() {
+    var selector = document.getElementById("archivo-copia");
+
     document.getElementById("boton-descargar").addEventListener("click", descargarCopia);
+    document.getElementById("boton-restaurar").addEventListener("click", function () {
+      selector.click();
+    });
+    selector.addEventListener("change", function () {
+      if (selector.files.length > 0) restaurarCopia(selector.files[0]);
+      // Se vacía para que elegir otra vez el mismo archivo vuelva a funcionar.
+      selector.value = "";
+    });
   }
 
   // ---------- Arranque ----------
