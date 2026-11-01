@@ -294,14 +294,43 @@
     return objetivo.unidad ? texto + " " + objetivo.unidad : texto;
   }
 
-  function pintarObjetivos() {
+  // Se guardan por año, así el 1 de enero empiezan de nuevo sin perder los del año anterior.
+  function claveObjetivos() {
+    return "objetivos:" + new Date().getFullYear();
+  }
+
+  function cambiarObjetivo(objetivo, signo) {
+    var clave = claveObjetivos();
+    var progreso = Almacen.leer(clave, {});
+    var valor = progreso[objetivo.id] !== undefined ? progreso[objetivo.id] : objetivo.actual;
+    // Redondeo a 2 decimales para que pasos como 0,1 no acumulen errores de coma flotante.
+    progreso[objetivo.id] = Math.max(0, Math.round((valor + signo * objetivo.paso) * 100) / 100);
+    Almacen.guardar(clave, progreso);
+  }
+
+  function crearBotonObjetivo(objetivo, signo) {
+    var simbolo = signo > 0 ? "+" : "−";
+    var boton = crear("button", "boton-objetivo", simbolo);
+    boton.type = "button";
+    boton.dataset.objetivo = objetivo.id + (signo > 0 ? "+" : "-");
+    boton.setAttribute("aria-label",
+      (signo > 0 ? "Sumar " : "Restar ") + formatoCantidad(objetivo, objetivo.paso) + " a " + objetivo.nombre);
+    boton.addEventListener("click", function () {
+      cambiarObjetivo(objetivo, signo);
+      pintarObjetivos(boton.dataset.objetivo);
+    });
+    return boton;
+  }
+
+  function pintarObjetivos(botonConFoco) {
     var lista = document.getElementById("objetivos");
+    var progreso = Almacen.leer(claveObjetivos(), {});
 
     document.getElementById("titulo-objetivos").textContent = "Objetivos " + new Date().getFullYear();
     lista.replaceChildren();
 
     DATOS.objetivos.forEach(function (objetivo) {
-      var valor = objetivo.actual;
+      var valor = progreso[objetivo.id] !== undefined ? progreso[objetivo.id] : objetivo.actual;
       var fraccion = valor / objetivo.meta;
       var elemento = crear("li", "objetivo");
       if (fraccion >= 1) elemento.classList.add("conseguido");
@@ -325,11 +354,21 @@
       barra.append(relleno);
 
       var pie = crear("div", "objetivo-pie");
-      pie.append(crear("span", "objetivo-progreso", textoProgreso(objetivo, valor)));
+      var controles = crear("div", "objetivo-controles");
+      var botonRestar = crearBotonObjetivo(objetivo, -1);
+      botonRestar.disabled = valor <= 0;
+      controles.append(botonRestar, crearBotonObjetivo(objetivo, 1));
+      pie.append(crear("span", "objetivo-progreso", textoProgreso(objetivo, valor)), controles);
 
       elemento.append(cabecera, barra, pie);
       lista.append(elemento);
     });
+
+    // Al redibujar, el foco vuelve al botón pulsado (útil con teclado).
+    if (botonConFoco) {
+      var boton = lista.querySelector('[data-objetivo="' + botonConFoco + '"]');
+      if (boton && !boton.disabled) boton.focus();
+    }
   }
 
   // ---------- Arranque ----------

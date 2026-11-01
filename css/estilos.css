@@ -365,6 +365,31 @@ ul, ol {
 
 .objetivo.conseguido .barra-relleno { background: var(--exito); }
 
+.objetivo-controles {
+  display: flex;
+  gap: 6px;
+}
+
+.boton-objetivo {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boton-objetivo:hover:not(:disabled) { border-color: var(--acento); }
+
+.boton-objetivo:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 /* Foco visible para quien usa el teclado */
 button:focus-visible,
 input:focus-visible {
