@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel de vida</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <script src="js/datos.js" defer></script>
+  <script src="js/almacen.js" defer></script>
+  <script src="js/panel.js" defer></script>
+</head>
+<body>
+  <header class="cabecera">
+    <div>
+      <h1 id="saludo" class="saludo">Hola</h1>
+      <p id="fecha" class="fecha"></p>
+    </div>
+    <button id="boton-tema" class="boton-tema" type="button">Cambiar tema</button>
+  </header>
+
+  <main class="rejilla">
+    <section class="tarjeta" aria-labelledby="titulo-agenda">
+      <h2 id="titulo-agenda">Agenda de hoy</h2>
+      <ol id="agenda" class="agenda"></ol>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="titulo-prioridades">
+      <div class="tarjeta-cabecera">
+        <h2 id="titulo-prioridades">Prioridades</h2>
+        <span id="contador-prioridades" class="etiqueta"></span>
+      </div>
+      <ul id="prioridades" class="prioridades"></ul>
+    </section>
+
+    <section class="tarjeta tarjeta-ancha" aria-labelledby="titulo-habitos">
+      <h2 id="titulo-habitos">Hábitos</h2>
+      <ul id="habitos" class="habitos"></ul>
+    </section>
+  </main>
+</body>
+</html>

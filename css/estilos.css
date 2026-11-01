@@ -1,0 +1,316 @@
+/* ---------- Colores: modo claro por defecto ---------- */
+:root {
+  --fondo: #f4f3ef;
+  --tarjeta: #ffffff;
+  --texto: #1f2328;
+  --texto-suave: #5f6670;
+  --borde: #e2e0d8;
+  --acento: #2f6fdb;
+  --acento-suave: #e3ecfb;
+  --exito: #2e8b57;
+  --exito-suave: #e1f2e8;
+  --racha: #d9822b;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.06);
+  color-scheme: light;
+}
+
+/* Modo oscuro: sigue al sistema salvo que se haya elegido el claro a mano */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --fondo: #15171a;
+    --tarjeta: #1e2125;
+    --texto: #e8e6e1;
+    --texto-suave: #9aa1ab;
+    --borde: #30343a;
+    --acento: #6ea2ff;
+    --acento-suave: #1f2c45;
+    --exito: #5cc28a;
+    --exito-suave: #1d3328;
+    --racha: #f0a35a;
+    --sombra: none;
+    color-scheme: dark;
+  }
+}
+
+:root[data-tema="oscuro"] {
+  --fondo: #15171a;
+  --tarjeta: #1e2125;
+  --texto: #e8e6e1;
+  --texto-suave: #9aa1ab;
+  --borde: #30343a;
+  --acento: #6ea2ff;
+  --acento-suave: #1f2c45;
+  --exito: #5cc28a;
+  --exito-suave: #1d3328;
+  --racha: #f0a35a;
+  --sombra: none;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 16px 48px;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.45;
+}
+
+.cabecera,
+.rejilla {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Cabecera ---------- */
+.cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.saludo {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.fecha {
+  margin: 2px 0 0;
+  color: var(--texto-suave);
+}
+
+.boton-tema {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.boton-tema:hover { border-color: var(--acento); }
+
+/* ---------- Rejilla de tarjetas ---------- */
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .rejilla { grid-template-columns: 1fr 1fr; }
+  .tarjeta-ancha { grid-column: 1 / -1; }
+}
+
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--sombra);
+  min-width: 0;
+}
+
+.tarjeta-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--acento-suave);
+  color: var(--acento);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.vacio { color: var(--texto-suave); }
+
+/* ---------- Agenda ---------- */
+.evento {
+  display: grid;
+  grid-template-columns: 6.5em 1fr auto;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--borde);
+}
+
+.evento:first-child { border-top: none; padding-top: 0; }
+
+.evento-hora {
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+}
+
+.evento-cuerpo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.evento-titulo { font-weight: 600; }
+
+.evento-lugar {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.evento-pasado { opacity: 0.45; }
+
+.evento-actual .evento-hora,
+.evento-siguiente .evento-hora {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+/* ---------- Prioridades ---------- */
+.prioridad + .prioridad { margin-top: 8px; }
+
+.prioridad-etiqueta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.prioridad-etiqueta input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--exito);
+  cursor: pointer;
+}
+
+.prioridad-numero {
+  color: var(--texto-suave);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.prioridad.hecha .prioridad-etiqueta {
+  background: var(--exito-suave);
+  border-color: transparent;
+}
+
+.prioridad.hecha .prioridad-texto {
+  text-decoration: line-through;
+  color: var(--texto-suave);
+}
+
+/* ---------- Hábitos ---------- */
+.habitos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 760px) {
+  .habitos { grid-template-columns: 1fr 1fr; }
+}
+
+.habito {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.habito-info {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.habito-nombre { font-weight: 600; }
+
+.habito-racha {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.habito-racha strong { color: var(--racha); }
+
+.semana {
+  display: flex;
+  gap: 4px;
+}
+
+.dia {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--fondo);
+  color: var(--texto-suave);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.dia.cumplido {
+  background: var(--exito);
+  color: #fff;
+}
+
+.dia.hoy { outline: 2px solid var(--acento); outline-offset: 1px; }
+
+.boton-habito {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.boton-habito:hover { border-color: var(--exito); }
+
+.boton-habito[aria-pressed="true"] {
+  background: var(--exito);
+  border-color: var(--exito);
+  color: #fff;
+}
+
+/* Foco visible para quien usa el teclado */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
