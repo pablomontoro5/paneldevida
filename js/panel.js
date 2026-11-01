@@ -294,6 +294,16 @@
     return objetivo.unidad ? texto + " " + objetivo.unidad : texto;
   }
 
+  // Parte del año que ya ha pasado contando hoy, de 0 a 1 (el 1 de noviembre de 2026 son 305 de 365 días).
+  // Math.round evita que los cambios de hora de verano descuadren la cuenta de días.
+  function fraccionDelAnio(fecha) {
+    var inicio = new Date(fecha.getFullYear(), 0, 1);
+    var hoy = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+    var diasDelAnio = Math.round((new Date(fecha.getFullYear() + 1, 0, 1) - inicio) / 86400000);
+    var diaDelAnio = Math.round((hoy - inicio) / 86400000) + 1;
+    return diaDelAnio / diasDelAnio;
+  }
+
   // Se guardan por año, así el 1 de enero empiezan de nuevo sin perder los del año anterior.
   function claveObjetivos() {
     return "objetivos:" + new Date().getFullYear();
@@ -325,21 +335,36 @@
   function pintarObjetivos(botonConFoco) {
     var lista = document.getElementById("objetivos");
     var progreso = Almacen.leer(claveObjetivos(), {});
+    var ritmo = fraccionDelAnio(new Date());
 
     document.getElementById("titulo-objetivos").textContent = "Objetivos " + new Date().getFullYear();
+    document.getElementById("progreso-anio").textContent = "Llevas el " + formatoPorcentaje.format(ritmo) + " del año";
     lista.replaceChildren();
 
     DATOS.objetivos.forEach(function (objetivo) {
       var valor = progreso[objetivo.id] !== undefined ? progreso[objetivo.id] : objetivo.actual;
       var fraccion = valor / objetivo.meta;
       var elemento = crear("li", "objetivo");
-      if (fraccion >= 1) elemento.classList.add("conseguido");
+
+      // Comparado con lo que ya ha pasado del año: si llevas el 84 % del año, deberías ir por el 84 %.
+      var estado = crear("span", "etiqueta");
+      if (fraccion >= 1) {
+        elemento.classList.add("conseguido");
+        estado.classList.add("etiqueta-conseguido");
+        estado.textContent = "¡Conseguido!";
+      } else if (fraccion >= ritmo) {
+        estado.classList.add("etiqueta-al-dia");
+        estado.textContent = "Vas al día";
+      } else {
+        estado.classList.add("etiqueta-detras");
+        estado.textContent = "Vas por detrás";
+      }
+
+      var datosDerecha = crear("div", "objetivo-estado");
+      datosDerecha.append(estado, crear("span", "objetivo-porcentaje", formatoPorcentaje.format(fraccion)));
 
       var cabecera = crear("div", "objetivo-cabecera");
-      cabecera.append(
-        crear("span", "objetivo-nombre", objetivo.icono + " " + objetivo.nombre),
-        crear("span", "objetivo-porcentaje", formatoPorcentaje.format(fraccion))
-      );
+      cabecera.append(crear("span", "objetivo-nombre", objetivo.icono + " " + objetivo.nombre), datosDerecha);
 
       // La barra se queda llena aunque se pase de la meta.
       var barra = crear("div", "barra");
@@ -351,7 +376,10 @@
       barra.setAttribute("aria-valuetext", textoProgreso(objetivo, valor));
       var relleno = crear("div", "barra-relleno");
       relleno.style.width = Math.min(fraccion, 1) * 100 + "%";
-      barra.append(relleno);
+      var marca = crear("div", "barra-marca");
+      marca.style.left = ritmo * 100 + "%";
+      marca.title = "Donde deberías ir hoy: " + formatoPorcentaje.format(ritmo);
+      barra.append(relleno, marca);
 
       var pie = crear("div", "objetivo-pie");
       var controles = crear("div", "objetivo-controles");

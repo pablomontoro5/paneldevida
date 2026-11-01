@@ -9,7 +9,8 @@
   --acento-suave: #e3ecfb;
   --exito: #2e8b57;
   --exito-suave: #e1f2e8;
-  --racha: #d9822b;
+  --racha: #b8641a;
+  --aviso-suave: #fbeedd;
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.06);
   color-scheme: light;
 }
@@ -27,6 +28,7 @@
     --exito: #5cc28a;
     --exito-suave: #1d3328;
     --racha: #f0a35a;
+    --aviso-suave: #3a2a18;
     --sombra: none;
     color-scheme: dark;
   }
@@ -43,6 +45,7 @@
   --exito: #5cc28a;
   --exito-suave: #1d3328;
   --racha: #f0a35a;
+  --aviso-suave: #3a2a18;
   --sombra: none;
   color-scheme: dark;
 }
@@ -364,6 +367,38 @@ ul, ol {
 }
 
 .objetivo.conseguido .barra-relleno { background: var(--exito); }
+
+/* Línea que marca dónde deberías ir según lo que ha pasado del año */
+.barra-marca {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 18px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: var(--texto);
+}
+
+.objetivo-estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.etiqueta-al-dia {
+  background: var(--exito-suave);
+  color: var(--exito);
+}
+
+.etiqueta-detras {
+  background: var(--aviso-suave);
+  color: var(--racha);
+}
+
+.etiqueta-conseguido {
+  background: var(--exito);
+  color: #fff;
+}
 
 .objetivo-controles {
   display: flex;
