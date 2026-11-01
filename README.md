@@ -1,10 +1,10 @@
 # Panel de vida
 
-Un panel personal que abro cada mañana para ver de un vistazo cómo voy en todo: lo que tengo hoy, mis tres prioridades y mis hábitos.
+Un panel personal que abro cada mañana para ver de un vistazo cómo voy en todo: lo que tengo hoy, mis tres prioridades, mis hábitos y mis objetivos del año.
 
 Es una sola página hecha con **HTML, CSS y JavaScript normales**. No hay que instalar nada, ni compilar, ni arrancar un servidor: se abre con **doble clic en `index.html`**.
 
-> **Estado:** primera versión. Ya funcionan el saludo, la agenda, las prioridades y los hábitos. Los objetivos del año y la cuenta atrás de viajes están pendientes (ver [Hoja de ruta](#hoja-de-ruta)).
+> **Estado:** en desarrollo. Ya funcionan el saludo, la agenda, las prioridades, los hábitos y los objetivos del año. La cuenta atrás de viajes está pendiente (ver [Hoja de ruta](#hoja-de-ruta)).
 
 ---
 
@@ -19,6 +19,7 @@ Es una sola página hecha con **HTML, CSS y JavaScript normales**. No hay que in
 - [Reglas del proyecto](#reglas-del-proyecto)
 - [Flujo de trabajo con Git](#flujo-de-trabajo-con-git)
 - [Hoja de ruta](#hoja-de-ruta)
+- [Licencia](#licencia)
 
 ---
 
@@ -30,6 +31,7 @@ Es una sola página hecha con **HTML, CSS y JavaScript normales**. No hay que in
 | **Agenda de hoy** | Los eventos del día ordenados por hora. Los que ya han pasado salen atenuados y el que está en curso (**Ahora**) o el próximo (**Siguiente**) salen resaltados. |
 | **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. |
 | **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
+| **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
 
 El diseño es **adaptable**: dos columnas en el portátil y una en el móvil.
@@ -40,10 +42,12 @@ La página se actualiza sola cada minuto (saludo y agenda), y si pasa la mediano
 
 ## Cómo usarlo
 
-1. Descarga o clona el repositorio:
-   ```bash
-   git clone https://github.com/pablomontoro5/paneldevida.git
-   ```
+1. Descarga el proyecto, de una de estas dos formas:
+   - Sin Git: en GitHub, botón verde **Code → Download ZIP**, y descomprímelo.
+   - Con Git:
+     ```bash
+     git clone https://github.com/pablomontoro5/paneldevida.git
+     ```
 2. Haz **doble clic en `index.html`**. Se abre en tu navegador y ya está.
 
 Funciona en cualquier navegador moderno (Chrome, Edge, Firefox, Safari).
@@ -93,6 +97,21 @@ habitos: [
 - `historialEjemplo` son los días atrás en que se cumplió (`1` = ayer, `2` = anteayer…). **Solo se usa la primera vez** que se abre el panel, para que las rachas no empiecen a cero. Después manda lo que marques tú.
 - Se pueden añadir hábitos nuevos en cualquier momento; empiezan sin historial.
 
+### Objetivos del año
+
+```js
+objetivos: [
+  { id: "libros", icono: "📚", nombre: "Leer 24 libros", actual: 9, meta: 24, paso: 1, unidad: "libros" },
+  { id: "ahorro", icono: "💶", nombre: "Ahorrar 1.500 €", actual: 1284, meta: 1500, paso: 50, formato: "euros" },
+  // ...
+]
+```
+
+- `actual` es el progreso de partida; después manda lo que cambies con los botones.
+- `paso` es lo que suman o restan los botones − y +.
+- Con `formato: "euros"` las cantidades se muestran como dinero (`1.284 €`); si no, con su `unidad`.
+- Como en los hábitos, el `id` no conviene cambiarlo.
+
 ---
 
 ## Estructura del proyecto
@@ -103,7 +122,7 @@ paneldevida/
 ├── css/
 │   └── estilos.css   Todo el diseño: colores (claro y oscuro), rejilla adaptable
 ├── js/
-│   ├── datos.js      Datos de ejemplo (agenda, prioridades, hábitos)
+│   ├── datos.js      Datos de ejemplo (agenda, prioridades, hábitos, objetivos)
 │   ├── almacen.js    Guardar y leer en el navegador (localStorage)
 │   └── panel.js      Lógica: dibuja cada sección y responde a los clics
 ├── CLAUDE.md         Descripción y reglas del proyecto (para Claude Code)
@@ -125,6 +144,7 @@ Los scripts se cargan con `<script src="..." defer>` normales, en este orden: `d
 | `panelDeVida:tema` | El tema elegido a mano | `"oscuro"` |
 | `panelDeVida:prioridades:AAAA-MM-DD` | Las prioridades hechas ese día | `["p1", "p3"]` |
 | `panelDeVida:habitos` | Los días en que se cumplió cada hábito | `{ "leer": ["2026-10-31", "2026-11-01"] }` |
+| `panelDeVida:objetivos:AAAA` | El progreso de cada objetivo ese año | `{ "libros": 11, "ahorro": 1334 }` |
 
 Como las prioridades se guardan con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada.
 
@@ -134,6 +154,16 @@ La racha es el número de **días seguidos** en que se ha cumplido un hábito, c
 
 - Si **hoy ya está marcado**, se cuenta desde hoy.
 - Si **hoy todavía no**, se cuenta desde ayer. Así, por la mañana la racha no aparece a 0 solo porque aún no te ha dado tiempo.
+
+### Ritmo de los objetivos
+
+El panel calcula qué parte del año ha pasado (el 1 de noviembre, 305 de 365 días: el 84 %) y la compara con el progreso de cada objetivo:
+
+- Progreso ≥ 100 % → **¡Conseguido!**
+- Progreso ≥ parte del año que ha pasado → **Vas al día**
+- Si no → **Vas por detrás**
+
+El progreso se guarda con el año en la clave, así que el 1 de enero los objetivos empiezan de nuevo sin borrar los del año anterior.
 
 ### Fechas
 
@@ -209,9 +239,17 @@ Las reglas completas están en [`CLAUDE.md`](CLAUDE.md).
 - [x] Tres prioridades del día
 - [x] Hábitos con rachas
 - [x] Modo claro y oscuro, diseño adaptable
-- [ ] Objetivos del año con su progreso
+- [x] Objetivos del año con su progreso
 - [ ] Cuenta atrás de viajes
 - [ ] Editar prioridades, agenda y hábitos desde el propio panel
 - [ ] Usarlo en el iPhone como app desde la pantalla de inicio
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
+
+---
+
+## Licencia
+
+Este proyecto todavía **no tiene licencia**. El código se puede ver, pero no reutilizar ni redistribuir sin permiso del autor.
+
+Hecho por [pablomontoro5](https://github.com/pablomontoro5), estudiante de Ingeniería Informática.
