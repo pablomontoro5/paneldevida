@@ -408,6 +408,35 @@
     mensaje.classList.toggle("error", Boolean(esError));
   }
 
+  var DIAS_AVISO_COPIA = 7;
+
+  function pintarEstadoCopia() {
+    var estado = document.getElementById("estado-copia");
+    var ultima = Almacen.leer("ultimaCopia", null);
+
+    if (!ultima) {
+      estado.textContent = "⚠️ Todavía no has descargado ninguna copia.";
+      estado.classList.add("aviso");
+      return;
+    }
+
+    var fecha = new Date(ultima);
+    var hoy = new Date();
+    // Días de calendario entre la copia y hoy (Math.round por los cambios de hora).
+    var dias = Math.round(
+      (new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) -
+        new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate())) / 86400000
+    );
+
+    if (dias > DIAS_AVISO_COPIA) {
+      estado.textContent = "⚠️ Hace " + dias + " días de tu última copia (" + formatoFechaCopia.format(fecha) + ").";
+      estado.classList.add("aviso");
+    } else {
+      estado.textContent = "Última copia: " + formatoFechaCopia.format(fecha) + ".";
+      estado.classList.remove("aviso");
+    }
+  }
+
   // Crea el archivo en el propio navegador y lo descarga: no se envía nada a internet.
   function descargarCopia() {
     var copia = Almacen.exportar();
@@ -423,6 +452,7 @@
     setTimeout(function () { URL.revokeObjectURL(enlace.href); }, 1000);
 
     Almacen.guardar("ultimaCopia", copia.fecha);
+    pintarEstadoCopia();
     mostrarMensajeCopia("Copia descargada: " + enlace.download);
   }
 
@@ -469,6 +499,8 @@
   function iniciarCopia() {
     var selector = document.getElementById("archivo-copia");
 
+    pintarEstadoCopia();
+
     document.getElementById("boton-descargar").addEventListener("click", descargarCopia);
     document.getElementById("boton-restaurar").addEventListener("click", function () {
       selector.click();
@@ -502,6 +534,7 @@
       pintarPrioridades();
       pintarHabitos();
       pintarObjetivos();
+      pintarEstadoCopia();
     }
   }, 60 * 1000);
 })();

@@ -454,9 +454,18 @@ ul, ol {
 
 .boton:hover { border-color: var(--acento); }
 
+.estado-copia,
 .mensaje-copia {
   margin: 12px 0 0;
   font-size: 0.9rem;
+}
+
+.estado-copia { color: var(--texto-suave); }
+
+/* Más de 7 días sin copia, o ninguna todavía */
+.estado-copia.aviso {
+  color: var(--racha);
+  font-weight: 600;
 }
 
 .mensaje-copia:empty { display: none; }
