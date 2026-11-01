@@ -5,7 +5,8 @@
   var formatoFecha = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   var formatoDiaLargo = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" });
   var formatoInicialDia = new Intl.DateTimeFormat("es-ES", { weekday: "narrow" });
-  var formatoPorcentaje = new Intl.NumberFormat("es-ES", { style: "percent", maximumFractionDigits: 0 });
+  var formatoFechaCopia = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "long", year: "numeric" });
+  var formatoPorcentaje =new Intl.NumberFormat("es-ES", { style: "percent", maximumFractionDigits: 0 });
 
   // ---------- Utilidades ----------
 
@@ -399,6 +400,118 @@
     }
   }
 
+  // ---------- Copia de seguridad ----------
+
+  function mostrarMensajeCopia(texto, esError) {
+    var mensaje = document.getElementById("mensaje-copia");
+    mensaje.textContent = texto;
+    mensaje.classList.toggle("error", Boolean(esError));
+  }
+
+  var DIAS_AVISO_COPIA = 7;
+
+  function pintarEstadoCopia() {
+    var estado = document.getElementById("estado-copia");
+    var ultima = Almacen.leer("ultimaCopia", null);
+
+    if (!ultima) {
+      estado.textContent = "⚠️ Todavía no has descargado ninguna copia.";
+      estado.classList.add("aviso");
+      return;
+    }
+
+    var fecha = new Date(ultima);
+    var hoy = new Date();
+    // Días de calendario entre la copia y hoy (Math.round por los cambios de hora).
+    var dias = Math.round(
+      (new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) -
+        new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate())) / 86400000
+    );
+
+    if (dias > DIAS_AVISO_COPIA) {
+      estado.textContent = "⚠️ Hace " + dias + " días de tu última copia (" + formatoFechaCopia.format(fecha) + ").";
+      estado.classList.add("aviso");
+    } else {
+      estado.textContent = "Última copia: " + formatoFechaCopia.format(fecha) + ".";
+      estado.classList.remove("aviso");
+    }
+  }
+
+  // Crea el archivo en el propio navegador y lo descarga: no se envía nada a internet.
+  function descargarCopia() {
+    var copia = Almacen.exportar();
+    var archivo = new Blob([JSON.stringify(copia, null, 2)], { type: "application/json" });
+    var enlace = document.createElement("a");
+
+    enlace.href = URL.createObjectURL(archivo);
+    enlace.download = "panel-de-vida-copia-" + claveFecha(new Date()) + ".json";
+    document.body.append(enlace);
+    enlace.click();
+    enlace.remove();
+    // Se libera un poco después para dar tiempo a que empiece la descarga.
+    setTimeout(function () { URL.revokeObjectURL(enlace.href); }, 1000);
+
+    Almacen.guardar("ultimaCopia", copia.fecha);
+    pintarEstadoCopia();
+    mostrarMensajeCopia("Copia descargada: " + enlace.download);
+  }
+
+  // Lee el archivo elegido, comprueba que es una copia y, si se confirma, sustituye los datos.
+  function restaurarCopia(archivo) {
+    var lector = new FileReader();
+
+    lector.onload = function () {
+      var copia = null;
+      try {
+        copia = JSON.parse(lector.result);
+      } catch (error) {
+        // Un archivo que no es JSON se trata igual que una copia no válida.
+      }
+
+      if (!Almacen.esCopiaValida(copia)) {
+        mostrarMensajeCopia("Este archivo no es una copia del panel de vida. No se ha cambiado nada.", true);
+        return;
+      }
+
+      var fecha = formatoFechaCopia.format(new Date(copia.fecha));
+      if (!window.confirm("Esto sustituirá lo que tienes ahora por la copia del " + fecha + ". ¿Continuar?")) {
+        mostrarMensajeCopia("Restauración cancelada. No se ha cambiado nada.");
+        return;
+      }
+
+      try {
+        Almacen.importar(copia);
+      } catch (error) {
+        mostrarMensajeCopia("No se ha podido restaurar la copia. Tus datos siguen como estaban.", true);
+        return;
+      }
+      // Recargar es lo más sencillo para que todo (tema incluido) se pinte con los datos nuevos.
+      window.location.reload();
+    };
+
+    lector.onerror = function () {
+      mostrarMensajeCopia("No se ha podido leer el archivo.", true);
+    };
+
+    lector.readAsText(archivo);
+  }
+
+  function iniciarCopia() {
+    var selector = document.getElementById("archivo-copia");
+
+    pintarEstadoCopia();
+
+    document.getElementById("boton-descargar").addEventListener("click", descargarCopia);
+    document.getElementById("boton-restaurar").addEventListener("click", function () {
+      selector.click();
+    });
+    selector.addEventListener("change", function () {
+      if (selector.files.length > 0) restaurarCopia(selector.files[0]);
+      // Se vacía para que elegir otra vez el mismo archivo vuelva a funcionar.
+      selector.value = "";
+    });
+  }
+
   // ---------- Arranque ----------
 
   var diaPintado = claveFecha(new Date());
@@ -409,6 +522,7 @@
   pintarPrioridades();
   pintarHabitos();
   pintarObjetivos();
+  iniciarCopia();
 
   // Cada minuto se actualizan saludo y agenda; si cambia el día, todo.
   setInterval(function () {
@@ -420,6 +534,7 @@
       pintarPrioridades();
       pintarHabitos();
       pintarObjetivos();
+      pintarEstadoCopia();
     }
   }, 60 * 1000);
 })();

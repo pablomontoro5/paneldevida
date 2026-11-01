@@ -32,6 +32,7 @@ Es una sola página hecha con **HTML, CSS y JavaScript normales**. No hay que in
 | **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. |
 | **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
 | **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. |
+| **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
 
 El diseño es **adaptable**: dos columnas en el portátil y una en el móvil.
@@ -52,7 +53,16 @@ La página se actualiza sola cada minuto (saludo y agenda), y si pasa la mediano
 
 Funciona en cualquier navegador moderno (Chrome, Edge, Firefox, Safari).
 
-> **Ojo:** el navegador guarda lo marcado por separado según *cómo* se abra la página. Si la abres a veces con doble clic (`file://`) y otras desde otra dirección, cada una tendrá sus propios datos.
+> **Ojo:** el navegador guarda lo marcado por separado según *cómo* se abra la página. Si la abres a veces con doble clic (`file://`) y otras desde otra dirección, cada una tendrá sus propios datos. Para pasar los datos de una a otra (o de un dispositivo a otro), usa la [copia de seguridad](#copia-de-seguridad).
+
+### Copia de seguridad
+
+Lo que marcas solo existe en tu navegador: si borras sus datos, se pierde. En la tarjeta **Tus datos**:
+
+- **⬇️ Descargar copia** baja un archivo `panel-de-vida-copia-AAAA-MM-DD.json` con todo lo que guarda el panel. Guárdalo donde quieras (por ejemplo, en una carpeta de tu nube).
+- **⬆️ Restaurar copia** carga uno de esos archivos. Antes de cambiar nada comprueba que es una copia válida y te pide confirmación, porque **sustituye** lo que tienes ahora.
+
+El archivo se crea y se lee en el propio navegador: no se envía nada a internet. Por eso el `.gitignore` impide subir a GitHub por error un archivo de copia que guardes dentro de la carpeta del proyecto.
 
 ---
 
@@ -125,6 +135,7 @@ paneldevida/
 │   ├── datos.js      Datos de ejemplo (agenda, prioridades, hábitos, objetivos)
 │   ├── almacen.js    Guardar y leer en el navegador (localStorage)
 │   └── panel.js      Lógica: dibuja cada sección y responde a los clics
+├── .gitignore        Evita subir archivos de copia de seguridad
 ├── CLAUDE.md         Descripción y reglas del proyecto (para Claude Code)
 └── README.md         Este archivo
 ```
@@ -145,8 +156,24 @@ Los scripts se cargan con `<script src="..." defer>` normales, en este orden: `d
 | `panelDeVida:prioridades:AAAA-MM-DD` | Las prioridades hechas ese día | `["p1", "p3"]` |
 | `panelDeVida:habitos` | Los días en que se cumplió cada hábito | `{ "leer": ["2026-10-31", "2026-11-01"] }` |
 | `panelDeVida:objetivos:AAAA` | El progreso de cada objetivo ese año | `{ "libros": 11, "ahorro": 1334 }` |
+| `panelDeVida:ultimaCopia` | Cuándo se descargó la última copia (no viaja en la copia) | `"2026-11-02T08:15:00.000Z"` |
 
 Como las prioridades se guardan con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada.
+
+### Formato de la copia de seguridad
+
+`Almacen.exportar()` reúne todas las claves con el prefijo `panelDeVida:` (menos `ultimaCopia`) en un objeto así:
+
+```json
+{
+  "app": "panel-de-vida",
+  "version": 1,
+  "fecha": "2026-11-02T08:15:00.000Z",
+  "datos": { "tema": "oscuro", "habitos": { "leer": ["2026-11-01"] } }
+}
+```
+
+Al restaurar, `Almacen.esCopiaValida()` comprueba `app`, `version`, `fecha` y `datos` antes de tocar nada, y `Almacen.importar()` sustituye los datos; si algo falla a mitad, vuelve a dejar los anteriores. Como la copia incluye todas las claves del panel, las secciones nuevas entran en ella sin cambiar este código.
 
 ### Rachas de hábitos
 
@@ -240,6 +267,7 @@ Las reglas completas están en [`CLAUDE.md`](CLAUDE.md).
 - [x] Hábitos con rachas
 - [x] Modo claro y oscuro, diseño adaptable
 - [x] Objetivos del año con su progreso
+- [x] Copia de seguridad: descargar y restaurar
 - [ ] Cuenta atrás de viajes
 - [ ] Editar prioridades, agenda y hábitos desde el propio panel
 - [ ] Usarlo en el iPhone como app desde la pantalla de inicio
