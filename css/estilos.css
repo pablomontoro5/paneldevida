@@ -11,6 +11,7 @@
   --exito-suave: #e1f2e8;
   --racha: #b8641a;
   --aviso-suave: #fbeedd;
+  --error: #c62828;
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.06);
   color-scheme: light;
 }
@@ -29,6 +30,7 @@
     --exito-suave: #1d3328;
     --racha: #f0a35a;
     --aviso-suave: #3a2a18;
+    --error: #ff7b72;
     --sombra: none;
     color-scheme: dark;
   }
@@ -46,6 +48,7 @@
   --exito-suave: #1d3328;
   --racha: #f0a35a;
   --aviso-suave: #3a2a18;
+  --error: #ff7b72;
   --sombra: none;
   color-scheme: dark;
 }
@@ -424,6 +427,41 @@ ul, ol {
   opacity: 0.4;
   cursor: default;
 }
+
+/* ---------- Tus datos (copia de seguridad) ---------- */
+.texto-datos {
+  margin: 0 0 12px;
+  color: var(--texto-suave);
+}
+
+.acciones-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.boton {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.boton:hover { border-color: var(--acento); }
+
+.mensaje-copia {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}
+
+.mensaje-copia:empty { display: none; }
+
+.mensaje-copia.error { color: var(--error); }
 
 /* Foco visible para quien usa el teclado */
 button:focus-visible,

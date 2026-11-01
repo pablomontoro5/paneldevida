@@ -399,6 +399,36 @@
     }
   }
 
+  // ---------- Copia de seguridad ----------
+
+  function mostrarMensajeCopia(texto, esError) {
+    var mensaje = document.getElementById("mensaje-copia");
+    mensaje.textContent = texto;
+    mensaje.classList.toggle("error", Boolean(esError));
+  }
+
+  // Crea el archivo en el propio navegador y lo descarga: no se envía nada a internet.
+  function descargarCopia() {
+    var copia = Almacen.exportar();
+    var archivo = new Blob([JSON.stringify(copia, null, 2)], { type: "application/json" });
+    var enlace = document.createElement("a");
+
+    enlace.href = URL.createObjectURL(archivo);
+    enlace.download = "panel-de-vida-copia-" + claveFecha(new Date()) + ".json";
+    document.body.append(enlace);
+    enlace.click();
+    enlace.remove();
+    // Se libera un poco después para dar tiempo a que empiece la descarga.
+    setTimeout(function () { URL.revokeObjectURL(enlace.href); }, 1000);
+
+    Almacen.guardar("ultimaCopia", copia.fecha);
+    mostrarMensajeCopia("Copia descargada: " + enlace.download);
+  }
+
+  function iniciarCopia() {
+    document.getElementById("boton-descargar").addEventListener("click", descargarCopia);
+  }
+
   // ---------- Arranque ----------
 
   var diaPintado = claveFecha(new Date());
@@ -409,6 +439,7 @@
   pintarPrioridades();
   pintarHabitos();
   pintarObjetivos();
+  iniciarCopia();
 
   // Cada minuto se actualizan saludo y agenda; si cambia el día, todo.
   setInterval(function () {
