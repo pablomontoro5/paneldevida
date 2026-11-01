@@ -27,7 +27,11 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 ## Reglas
 
 1. **Antes de un cambio grande, primero el plan** y espera a que diga que sí.
-2. **Un cambio cada vez.** Cuando funcione, se guarda con un **commit de Git con mensaje en español**.
+2. **Un cambio cada vez, en su propia rama.** Nunca se trabaja ni se fusiona directamente en `main`:
+   - Se crea una rama desde `main` con nombre en español: `funcionalidad/...`, `arreglo/...`, `diseño/...` o `documentacion/...`.
+   - Cuando funcione, se guarda con **commits de Git con mensaje en español**.
+   - Se sube la rama a GitHub y se abre un **pull request** hacia `main` con una descripción en español (qué cambia y cómo se ha probado).
+   - **El PR lo fusiono yo.** Después se actualiza `main` en local con `git pull`.
 3. **Nada de librerías, frameworks ni servidores** salvo que lo pida expresamente.
 4. **Todo en español de España**: textos, nombres en la interfaz y mensajes. Fechas en formato español (p. ej. `1 de noviembre de 2026`, `01/11/2026`) y euros en formato español (p. ej. `1.234,50 €`). Usar `Intl` con `es-ES`.
 5. **Tiene que verse bien en el portátil y en el móvil** (diseño adaptable).
