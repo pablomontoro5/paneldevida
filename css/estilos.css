@@ -9,7 +9,8 @@
   --acento-suave: #e3ecfb;
   --exito: #2e8b57;
   --exito-suave: #e1f2e8;
-  --racha: #d9822b;
+  --racha: #b8641a;
+  --aviso-suave: #fbeedd;
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.06);
   color-scheme: light;
 }
@@ -27,6 +28,7 @@
     --exito: #5cc28a;
     --exito-suave: #1d3328;
     --racha: #f0a35a;
+    --aviso-suave: #3a2a18;
     --sombra: none;
     color-scheme: dark;
   }
@@ -43,6 +45,7 @@
   --exito: #5cc28a;
   --exito-suave: #1d3328;
   --racha: #f0a35a;
+  --aviso-suave: #3a2a18;
   --sombra: none;
   color-scheme: dark;
 }
@@ -306,6 +309,120 @@ ul, ol {
   background: var(--exito);
   border-color: var(--exito);
   color: #fff;
+}
+
+/* ---------- Objetivos del año ---------- */
+.objetivos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 760px) {
+  .objetivos { grid-template-columns: 1fr 1fr; }
+}
+
+.objetivo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.objetivo-cabecera,
+.objetivo-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.objetivo-nombre { font-weight: 600; }
+
+.objetivo-porcentaje {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.objetivo-progreso {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.barra {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--fondo);
+}
+
+.barra-relleno {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--acento);
+}
+
+.objetivo.conseguido .barra-relleno { background: var(--exito); }
+
+/* Línea que marca dónde deberías ir según lo que ha pasado del año */
+.barra-marca {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 18px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: var(--texto);
+}
+
+.objetivo-estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.etiqueta-al-dia {
+  background: var(--exito-suave);
+  color: var(--exito);
+}
+
+.etiqueta-detras {
+  background: var(--aviso-suave);
+  color: var(--racha);
+}
+
+.etiqueta-conseguido {
+  background: var(--exito);
+  color: #fff;
+}
+
+.objetivo-controles {
+  display: flex;
+  gap: 6px;
+}
+
+.boton-objetivo {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boton-objetivo:hover:not(:disabled) { border-color: var(--acento); }
+
+.boton-objetivo:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 /* Foco visible para quien usa el teclado */

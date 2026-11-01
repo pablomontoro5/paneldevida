@@ -5,6 +5,7 @@
   var formatoFecha = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   var formatoDiaLargo = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" });
   var formatoInicialDia = new Intl.DateTimeFormat("es-ES", { weekday: "narrow" });
+  var formatoPorcentaje = new Intl.NumberFormat("es-ES", { style: "percent", maximumFractionDigits: 0 });
 
   // ---------- Utilidades ----------
 
@@ -274,6 +275,130 @@
     }
   }
 
+  // ---------- Objetivos del año ----------
+
+  // Una cantidad de un objetivo, en euros o como número normal.
+  // useGrouping "always" hace que 1284 salga como 1.284 (por defecto es-ES no agrupa números de 4 cifras).
+  function formatoCantidad(objetivo, valor) {
+    var decimales = Number.isInteger(valor) ? 0 : 2;
+    var opciones = { minimumFractionDigits: decimales, maximumFractionDigits: decimales, useGrouping: "always" };
+    if (objetivo.formato === "euros") {
+      opciones.style = "currency";
+      opciones.currency = "EUR";
+    }
+    return new Intl.NumberFormat("es-ES", opciones).format(valor);
+  }
+
+  function textoProgreso(objetivo, valor) {
+    var texto = formatoCantidad(objetivo, valor) + " de " + formatoCantidad(objetivo, objetivo.meta);
+    return objetivo.unidad ? texto + " " + objetivo.unidad : texto;
+  }
+
+  // Parte del año que ya ha pasado contando hoy, de 0 a 1 (el 1 de noviembre de 2026 son 305 de 365 días).
+  // Math.round evita que los cambios de hora de verano descuadren la cuenta de días.
+  function fraccionDelAnio(fecha) {
+    var inicio = new Date(fecha.getFullYear(), 0, 1);
+    var hoy = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+    var diasDelAnio = Math.round((new Date(fecha.getFullYear() + 1, 0, 1) - inicio) / 86400000);
+    var diaDelAnio = Math.round((hoy - inicio) / 86400000) + 1;
+    return diaDelAnio / diasDelAnio;
+  }
+
+  // Se guardan por año, así el 1 de enero empiezan de nuevo sin perder los del año anterior.
+  function claveObjetivos() {
+    return "objetivos:" + new Date().getFullYear();
+  }
+
+  function cambiarObjetivo(objetivo, signo) {
+    var clave = claveObjetivos();
+    var progreso = Almacen.leer(clave, {});
+    var valor = progreso[objetivo.id] !== undefined ? progreso[objetivo.id] : objetivo.actual;
+    // Redondeo a 2 decimales para que pasos como 0,1 no acumulen errores de coma flotante.
+    progreso[objetivo.id] = Math.max(0, Math.round((valor + signo * objetivo.paso) * 100) / 100);
+    Almacen.guardar(clave, progreso);
+  }
+
+  function crearBotonObjetivo(objetivo, signo) {
+    var simbolo = signo > 0 ? "+" : "−";
+    var boton = crear("button", "boton-objetivo", simbolo);
+    boton.type = "button";
+    boton.dataset.objetivo = objetivo.id + (signo > 0 ? "+" : "-");
+    boton.setAttribute("aria-label",
+      (signo > 0 ? "Sumar " : "Restar ") + formatoCantidad(objetivo, objetivo.paso) + " a " + objetivo.nombre);
+    boton.addEventListener("click", function () {
+      cambiarObjetivo(objetivo, signo);
+      pintarObjetivos(boton.dataset.objetivo);
+    });
+    return boton;
+  }
+
+  function pintarObjetivos(botonConFoco) {
+    var lista = document.getElementById("objetivos");
+    var progreso = Almacen.leer(claveObjetivos(), {});
+    var ritmo = fraccionDelAnio(new Date());
+
+    document.getElementById("titulo-objetivos").textContent = "Objetivos " + new Date().getFullYear();
+    document.getElementById("progreso-anio").textContent = "Llevas el " + formatoPorcentaje.format(ritmo) + " del año";
+    lista.replaceChildren();
+
+    DATOS.objetivos.forEach(function (objetivo) {
+      var valor = progreso[objetivo.id] !== undefined ? progreso[objetivo.id] : objetivo.actual;
+      var fraccion = valor / objetivo.meta;
+      var elemento = crear("li", "objetivo");
+
+      // Comparado con lo que ya ha pasado del año: si llevas el 84 % del año, deberías ir por el 84 %.
+      var estado = crear("span", "etiqueta");
+      if (fraccion >= 1) {
+        elemento.classList.add("conseguido");
+        estado.classList.add("etiqueta-conseguido");
+        estado.textContent = "¡Conseguido!";
+      } else if (fraccion >= ritmo) {
+        estado.classList.add("etiqueta-al-dia");
+        estado.textContent = "Vas al día";
+      } else {
+        estado.classList.add("etiqueta-detras");
+        estado.textContent = "Vas por detrás";
+      }
+
+      var datosDerecha = crear("div", "objetivo-estado");
+      datosDerecha.append(estado, crear("span", "objetivo-porcentaje", formatoPorcentaje.format(fraccion)));
+
+      var cabecera = crear("div", "objetivo-cabecera");
+      cabecera.append(crear("span", "objetivo-nombre", objetivo.icono + " " + objetivo.nombre), datosDerecha);
+
+      // La barra se queda llena aunque se pase de la meta.
+      var barra = crear("div", "barra");
+      barra.setAttribute("role", "progressbar");
+      barra.setAttribute("aria-label", objetivo.nombre);
+      barra.setAttribute("aria-valuemin", "0");
+      barra.setAttribute("aria-valuemax", String(objetivo.meta));
+      barra.setAttribute("aria-valuenow", String(valor));
+      barra.setAttribute("aria-valuetext", textoProgreso(objetivo, valor));
+      var relleno = crear("div", "barra-relleno");
+      relleno.style.width = Math.min(fraccion, 1) * 100 + "%";
+      var marca = crear("div", "barra-marca");
+      marca.style.left = ritmo * 100 + "%";
+      marca.title = "Donde deberías ir hoy: " + formatoPorcentaje.format(ritmo);
+      barra.append(relleno, marca);
+
+      var pie = crear("div", "objetivo-pie");
+      var controles = crear("div", "objetivo-controles");
+      var botonRestar = crearBotonObjetivo(objetivo, -1);
+      botonRestar.disabled = valor <= 0;
+      controles.append(botonRestar, crearBotonObjetivo(objetivo, 1));
+      pie.append(crear("span", "objetivo-progreso", textoProgreso(objetivo, valor)), controles);
+
+      elemento.append(cabecera, barra, pie);
+      lista.append(elemento);
+    });
+
+    // Al redibujar, el foco vuelve al botón pulsado (útil con teclado).
+    if (botonConFoco) {
+      var boton = lista.querySelector('[data-objetivo="' + botonConFoco + '"]');
+      if (boton && !boton.disabled) boton.focus();
+    }
+  }
+
   // ---------- Arranque ----------
 
   var diaPintado = claveFecha(new Date());
@@ -283,6 +408,7 @@
   pintarAgenda();
   pintarPrioridades();
   pintarHabitos();
+  pintarObjetivos();
 
   // Cada minuto se actualizan saludo y agenda; si cambia el día, todo.
   setInterval(function () {
@@ -293,6 +419,7 @@
       diaPintado = hoy;
       pintarPrioridades();
       pintarHabitos();
+      pintarObjetivos();
     }
   }, 60 * 1000);
 })();
