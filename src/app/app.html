@@ -36,7 +36,7 @@
     <h2>Hábitos</h2>
     <ul>
       @for (h of datos().habitos; track h.id) {
-        <li>{{ h.icono }} {{ h.nombre }}</li>
+        <li>{{ h.icono }} {{ h.nombre }} · {{ textoRacha(calcularRacha(historialAFechas(h.historialEjemplo))) }}</li>
       }
     </ul>
   </section>
