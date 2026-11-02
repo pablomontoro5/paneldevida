@@ -37,6 +37,23 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 5. **Tiene que verse bien en el portátil y en el móvil** (diseño adaptable).
 6. **Mis datos no salen del ordenador**: nada de enviar datos a servicios externos, analíticas ni peticiones a internet.
 
+## Migración a Angular: sesiones
+
+| Lección | Estado |
+| --- | --- |
+| 1. Crear el proyecto y arrancarlo | ✅ Hecha |
+| 2. Idioma español y estilos globales | ✅ Hecha |
+| 3. Modelos y datos de ejemplo | ✅ Hecha |
+| 4. Utilidades de fechas y primeras pruebas | ✅ Hecha |
+| 5. AlmacenService | ⬜ Sin empezar |
+| 6. Cabecera: saludo, fecha y tema | ⏳ A medias |
+| 7. Agenda | ⬜ Sin empezar |
+| 8. Prioridades | ⬜ Sin empezar |
+| 9. Hábitos | ⬜ Sin empezar |
+| 10. Objetivos | ⬜ Sin empezar |
+| 11. Tus datos (copia de seguridad) | ⬜ Sin empezar |
+| 12. Quitar la versión vanilla, compilar y documentar | ⬜ Sin empezar |
+
 ## Ideas para más adelante
 
 - Conectar **Google Calendar** para la agenda del día.
