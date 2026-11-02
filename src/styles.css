@@ -1,1 +1,149 @@
-/* You can add global styles to this file, and also import other style files */
+/* ---------- Colores: modo claro por defecto ---------- */
+:root {
+  --fondo: #f4f3ef;
+  --tarjeta: #ffffff;
+  --texto: #1f2328;
+  --texto-suave: #5f6670;
+  --borde: #e2e0d8;
+  --acento: #2f6fdb;
+  --acento-suave: #e3ecfb;
+  --exito: #2e8b57;
+  --exito-suave: #e1f2e8;
+  --racha: #b8641a;
+  --aviso-suave: #fbeedd;
+  --error: #c62828;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.06);
+  color-scheme: light;
+}
+
+/* Modo oscuro: sigue al sistema salvo que se haya elegido el claro a mano */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --fondo: #15171a;
+    --tarjeta: #1e2125;
+    --texto: #e8e6e1;
+    --texto-suave: #9aa1ab;
+    --borde: #30343a;
+    --acento: #6ea2ff;
+    --acento-suave: #1f2c45;
+    --exito: #5cc28a;
+    --exito-suave: #1d3328;
+    --racha: #f0a35a;
+    --aviso-suave: #3a2a18;
+    --error: #ff7b72;
+    --sombra: none;
+    color-scheme: dark;
+  }
+}
+
+:root[data-tema="oscuro"] {
+  --fondo: #15171a;
+  --tarjeta: #1e2125;
+  --texto: #e8e6e1;
+  --texto-suave: #9aa1ab;
+  --borde: #30343a;
+  --acento: #6ea2ff;
+  --acento-suave: #1f2c45;
+  --exito: #5cc28a;
+  --exito-suave: #1d3328;
+  --racha: #f0a35a;
+  --aviso-suave: #3a2a18;
+  --error: #ff7b72;
+  --sombra: none;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 16px 48px;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.45;
+}
+
+.cabecera,
+.rejilla {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* ---------- Rejilla de tarjetas ---------- */
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 760px) {
+  .rejilla { grid-template-columns: 1fr 1fr; }
+  .tarjeta-ancha { grid-column: 1 / -1; }
+}
+
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--sombra);
+  min-width: 0;
+}
+
+.tarjeta-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--acento-suave);
+  color: var(--acento);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.vacio { color: var(--texto-suave); }
+
+.boton {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.boton:hover { border-color: var(--acento); }
+
+.estado-copia,
+.mensaje-copia {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}	
+ /* Foco visible para quien usa el teclado */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
