@@ -1,2 +1,12 @@
 <h1>Panel de vida</h1>
 <p>Hola, {{ title() }}</p>
+<p> Hoy es {{ hoy | date: 'fullDate' }} </p>
+<p> {{ descripcion() }} </p>
+
+<main class="rejilla">
+  <section class="tarjeta">
+    <h1>Panel de vida</h1>
+    <p>Hola, {{ title() }}</p>
+    <p>{{ hoy | date: 'fullDate' }}</p>
+  </section>
+</main>
