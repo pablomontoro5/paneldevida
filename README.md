@@ -4,6 +4,8 @@ Un panel personal que abro cada mañana para ver de un vistazo cómo voy en todo
 
 Es una sola página hecha con **HTML, CSS y JavaScript normales**. No hay que instalar nada, ni compilar, ni arrancar un servidor: se abre con **doble clic en `index.html`**.
 
+**🔗 Demo:** [pablomontoro5.github.io/paneldevida](https://pablomontoro5.github.io/paneldevida/), con los datos de ejemplo. Lo que marques ahí se guarda solo en tu navegador.
+
 > **Estado:** en desarrollo. Ya funcionan el saludo, la agenda, las prioridades, los hábitos y los objetivos del año. La cuenta atrás de viajes está pendiente (ver [Hoja de ruta](#hoja-de-ruta)).
 
 ---
@@ -17,6 +19,7 @@ Es una sola página hecha con **HTML, CSS y JavaScript normales**. No hay que in
 - [Cómo funciona por dentro](#cómo-funciona-por-dentro)
 - [Privacidad](#privacidad)
 - [Reglas del proyecto](#reglas-del-proyecto)
+- [Publicación en GitHub Pages](#publicación-en-github-pages)
 - [Flujo de trabajo con Git](#flujo-de-trabajo-con-git)
 - [Hoja de ruta](#hoja-de-ruta)
 - [Licencia](#licencia)
@@ -42,6 +45,12 @@ La página se actualiza sola cada minuto (saludo y agenda), y si pasa la mediano
 ---
 
 ## Cómo usarlo
+
+### En el navegador, sin descargar nada
+
+Abre la **[demo](https://pablomontoro5.github.io/paneldevida/)**. Funciona también en el móvil: en el iPhone, desde Safari, pulsa **Compartir → Añadir a pantalla de inicio** para tenerla con su propio icono (de momento necesita conexión para abrirse).
+
+### En tu ordenador
 
 1. Descarga el proyecto, de una de estas dos formas:
    - Sin Git: en GitHub, botón verde **Code → Download ZIP**, y descomprímelo.
@@ -135,6 +144,9 @@ paneldevida/
 │   ├── datos.js      Datos de ejemplo (agenda, prioridades, hábitos, objetivos)
 │   ├── almacen.js    Guardar y leer en el navegador (localStorage)
 │   └── panel.js      Lógica: dibuja cada sección y responde a los clics
+├── .github/
+│   └── workflows/
+│       └── publicar.yml  Publica la demo en GitHub Pages
 ├── .gitignore        Evita subir archivos de copia de seguridad
 ├── CLAUDE.md         Descripción y reglas del proyecto (para Claude Code)
 └── README.md         Este archivo
@@ -232,6 +244,21 @@ Las reglas completas están en [`CLAUDE.md`](CLAUDE.md).
 
 ---
 
+## Publicación en GitHub Pages
+
+La demo se publica sola con **GitHub Actions** ([`.github/workflows/publicar.yml`](.github/workflows/publicar.yml)) cada vez que algo entra en `main`. También se puede lanzar a mano desde la pestaña **Actions → Publicar en GitHub Pages → Run workflow**.
+
+El workflow tiene dos partes:
+
+1. **build**: descarga el código y lo empaqueta tal cual (sin compilar, porque es HTML, CSS y JS normales).
+2. **deploy**: publica ese paquete en `https://pablomontoro5.github.io/paneldevida/`.
+
+Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **GitHub Actions**.
+
+> En la demo solo está el código y los datos de ejemplo. Lo que cada persona marca se queda en su navegador.
+
+---
+
 ## Flujo de trabajo con Git
 
 `main` siempre tiene una versión que funciona. Nunca se trabaja directamente en ella.
@@ -270,7 +297,9 @@ Las reglas completas están en [`CLAUDE.md`](CLAUDE.md).
 - [x] Copia de seguridad: descargar y restaurar
 - [ ] Cuenta atrás de viajes
 - [ ] Editar prioridades, agenda y hábitos desde el propio panel
-- [ ] Usarlo en el iPhone como app desde la pantalla de inicio
+- [x] Demo publicada en GitHub Pages
+- [ ] Usarlo en el iPhone como app sin conexión (con icono y service worker)
+- [ ] Migrar a Angular
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
 
