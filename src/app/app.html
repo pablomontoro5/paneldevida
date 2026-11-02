@@ -1,12 +1,57 @@
-<h1>Panel de vida</h1>
-<p>Hola, {{ title() }}</p>
-<p> Hoy es {{ hoy | date: 'fullDate' }} </p>
-<p> {{ descripcion() }} </p>
+<header class="cabecera">
+  <div>
+    <h1 class="saludo">Panel de vida</h1>
+    <p class="fecha">Hola, {{ title() }} · {{ hoy | date: 'fullDate' }}</p>
+  </div>
+</header>
+
+<nav class="navegacion" aria-label="Secciones del panel">
+  <ul>
+    @for (s of secciones; track s.id) {
+      <li><a routerLink="." [fragment]="s.id">{{ s.nombre }}</a></li>
+    }
+  </ul>
+</nav>
 
 <main class="rejilla">
-  <section class="tarjeta">
-    <h1>Panel de vida</h1>
-    <p>Hola, {{ title() }}</p>
-    <p>{{ hoy | date: 'fullDate' }}</p>
+  <section class="tarjeta" id="agenda">
+    <h2>Agenda</h2>
+    <ul>
+      @for (e of datos().agenda; track e.inicio) {
+        <li>{{ e.inicio }}–{{ e.fin }} · {{ e.titulo }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="tarjeta" id="prioridades">
+    <h2>Prioridades</h2>
+    <ul>
+      @for (p of datos().prioridades; track p.id) {
+        <li>{{ p.texto }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="tarjeta" id="habitos">
+    <h2>Hábitos</h2>
+    <ul>
+      @for (h of datos().habitos; track h.id) {
+        <li>{{ h.icono }} {{ h.nombre }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="tarjeta" id="objetivos">
+    <h2>Objetivos</h2>
+    <ul>
+      @for (o of datos().objetivos; track o.id) {
+        <li>{{ o.icono }} {{ o.nombre }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="tarjeta" id="datos">
+    <h2>Tus datos</h2>
+    <p class="vacio">Próximamente.</p>
   </section>
 </main>
