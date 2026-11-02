@@ -45,7 +45,7 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 2. Idioma español y estilos globales | ✅ Hecha |
 | 3. Modelos y datos de ejemplo | ✅ Hecha |
 | 4. Utilidades de fechas y primeras pruebas | ✅ Hecha |
-| 5. AlmacenService | ⬜ Sin empezar |
+| 5. AlmacenService | ✅ Hecha |
 | 6. Cabecera: saludo, fecha y tema | ⏳ A medias |
 | 7. Agenda | ⬜ Sin empezar |
 | 8. Prioridades | ⬜ Sin empezar |
