@@ -31,7 +31,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 
 | Sección | Qué muestra |
 |---|---|
-| **Saludo** | «Buenos días», «Buenas tardes» o «Buenas noches» según la hora, y la fecha completa en español (p. ej. *Domingo, 1 de noviembre de 2026*). |
+| **Inicio** | La bienvenida: «Buenos días», «Buenas tardes» o «Buenas noches» según la hora, la fecha completa en español (p. ej. *Domingo, 1 de noviembre de 2026*) y una frase con lo que te queda del día. Debajo, un resumen de cada sección que enlaza a ella: el evento en curso o el siguiente, las prioridades hechas, la mejor racha, los objetivos al día y el próximo viaje. |
 | **Agenda de hoy** | Los eventos del día ordenados por hora. Los que ya han pasado salen atenuados y el que está en curso (**Ahora**) o el próximo (**Siguiente**) salen resaltados. Se actualiza sola cada minuto. |
 | **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. |
 | **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
@@ -40,7 +40,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 | **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
 
-El **Inicio** junta todas las tarjetas para verlo todo de un vistazo, y cada sección tiene además su propia página (`/agenda`, `/habitos`, `/viajes`…). El diseño es **adaptable**:
+Cada sección tiene su propia página (`/agenda`, `/habitos`, `/viajes`…), con su nombre en la cabecera. El diseño es **adaptable**:
 
 - **En el portátil**, un menú lateral con las secciones agrupadas (*Hoy*, *Planes* y *Tú*) y el contenido en dos columnas.
 - **En el móvil**, una columna y una barra flotante abajo con Inicio, Agenda, Hábitos, Objetivos y Viajes. *Tus datos* se abre con el botón ⚙️ de la cabecera.
@@ -179,11 +179,12 @@ paneldevida/
 │       ├── nucleo/           Lo que usa toda la aplicación
 │       │   ├── almacen.ts    Guardar y leer en localStorage, exportar e importar la copia
 │       │   ├── archivo-copia.modelo.ts
-│       │   └── cabecera/     Saludo, fecha y botón de tema
+│       │   ├── titulo.ts     Título de la pestaña y de la cabecera según la ruta
+│       │   └── cabecera/     Nombre de la sección y botones de tema y de Tus datos
 │       ├── compartido/
 │       │   └── fechas.ts     Fechas y formatos en español, con sus pruebas
 │       └── secciones/        Una carpeta por sección: componente, modelo y lógica con sus pruebas
-│           ├── inicio/       La portada con todas las tarjetas
+│           ├── inicio/       La bienvenida y el resumen del día (reúne la lógica de las demás)
 │           ├── agenda/       agenda.ts/.html/.css, agenda.modelo.ts, agenda.logica.ts…
 │           ├── prioridades/
 │           ├── habitos/
@@ -228,7 +229,7 @@ Son las mismas claves que usaba la versión vanilla. Como las prioridades se gua
 
 ### Rutas (`app.routes.ts`)
 
-Cada sección tiene su ruta con **Angular Router**, y `''` abre el Inicio. Cualquier dirección desconocida vuelve al Inicio. Con `withComponentInputBinding()`, los datos que se ponen en `data` de cada ruta llegan directamente a los `input()` de su componente, así que las secciones no saben si se muestran solas o dentro del Inicio. Los enlaces usan `routerLink` y `routerLinkActive` para resaltar la sección abierta.
+Cada sección tiene su ruta con **Angular Router**, y `''` abre el Inicio. Cualquier dirección desconocida vuelve al Inicio. Con `withComponentInputBinding()`, los datos que se ponen en `data` de cada ruta llegan directamente a los `input()` de su componente, así que las secciones no saben si se muestran solas o dentro del Inicio. Los enlaces usan `routerLink` y `routerLinkActive` para resaltar la sección abierta. El `title` de cada ruta lo recoge `TituloPanel` (`nucleo/titulo.ts`), un `TitleStrategy` propio: pone «Hábitos · Panel de vida» en la pestaña y deja «Hábitos» en una signal que lee la cabecera. El Inicio no tiene `title`, así que allí la cabecera no muestra nombre y la bienvenida ocupa su lugar.
 
 GitHub Pages no conoce estas rutas: al recargar `/paneldevida/habitos` buscaría un archivo que no existe y daría 404. Por eso `publicar.yml` copia `index.html` como `404.html`: Pages lo sirve en su lugar, carga la aplicación y el router abre la sección correcta.
 

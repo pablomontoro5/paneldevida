@@ -23,7 +23,8 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
   - `app.ts` / `app.html` — el marco: cabecera, menú lateral (portátil), barra inferior (móvil) y `<router-outlet>`.
   - `app.routes.ts` — una ruta por sección (`''` es el Inicio); los datos de ejemplo llegan a los `input()` por `data` con `withComponentInputBinding()`. En Pages, `publicar.yml` copia `index.html` a `404.html` para que recargar una ruta no dé 404.
   - `datos.ts` — los **datos de ejemplo** (agenda, prioridades, hábitos, objetivos); `datos.modelo.ts`, el tipo que los agrupa.
-  - `nucleo/` — lo que usa toda la app: `almacen.ts` (guarda y lee en **`localStorage`**, prefijo `panelDeVida:`, y exporta/importa la copia), `archivo-copia.modelo.ts` y la `cabecera/`.
+  - `nucleo/` — lo que usa toda la app: `almacen.ts` (guarda y lee en **`localStorage`**, prefijo `panelDeVida:`, y exporta/importa la copia), `archivo-copia.modelo.ts`, `titulo.ts` (un `TitleStrategy` que pone el título de la pestaña y da a la `cabecera/` el nombre de la sección) y la `cabecera/`.
+  - `secciones/inicio/` — la bienvenida (saludo según la hora) y el resumen del día. Es la única sección que importa de las demás, porque las reúne.
   - `compartido/` — utilidades genéricas sin dependencias (`fechas.ts`).
   - `secciones/<nombre>/` — una carpeta por sección con su componente (`.ts`, `.html`, `.css`, `.spec.ts`), su `<nombre>.modelo.ts` y su `<nombre>.logica.ts` con su `.spec.ts`.
   - `src/styles.css` tiene los estilos globales con **modo claro y oscuro**.
@@ -63,10 +64,12 @@ Cada una se hace en su propia conversación, rama y pull request.
 | 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | ✅ Hecha |
 | 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | ✅ Hecha |
 | 5 | App sin conexión en el iPhone (PWA) | ⭐⭐⭐ | `ng add @angular/pwa` (paquete oficial de Angular). Lo difícil es probar la caché, el `base-href` y el icono en el móvil. Después del router. | Pendiente |
-| 6 | Editar agenda, prioridades y hábitos desde el panel | ⭐⭐⭐⭐ | Formularios (crear, editar, borrar), pasar los datos de `datos.ts` a `localStorage` y migrar lo guardado sin perder el historial. Probablemente una conversación por sección. | Pendiente |
+| 6 | Añadir, editar y borrar agenda, prioridades, hábitos, objetivos y viajes | ⭐⭐⭐⭐ | Formularios (crear, editar, borrar), pasar los datos de `datos.ts` a `localStorage` y migrar lo guardado sin perder el historial. **Plantillas de ideas** en un `<nombre>.plantillas.ts` por sección (p. ej. 📚 Leer 20 minutos, ahorrar X €, 🏖️ playa) que rellenan el formulario, además de crear desde cero. Una conversación por sección. | Pendiente |
 | 7 | Sección de planes con recordatorios | ⭐⭐⭐⭐ | Formularios y guardado como en la 6, más fechas y horas, la API de `Notification` y temporizadores. Sin servidor, el aviso solo salta con la página abierta. | Pendiente |
 | 8 | Mejorar el README | ⭐ (al final) | En cada PR se actualiza lo justo; aquí, repaso final con capturas, un GIF de la demo y la arquitectura. | Pendiente |
 | 9 | Resumen semanal cada domingo | ⭐⭐⭐⭐ | Necesita historial de hábitos, objetivos y planes. Sin servidor, se genera al abrir el panel el domingo (o el primer día después). | Pendiente |
 | 10 | Conectar Google Calendar | ⭐⭐⭐⭐⭐ | OAuth, API de Google y tokens. **Choca con la regla 6**: hay que decidir si se hace una excepción o se descarta. Alternativa sin internet: importar un `.ics`. | Pendiente |
 
-Orden recomendado (el README como repaso final): 1 → 2 → 3 → 4 → 5 → 6 → 7 → 9 → 8 → 10.
+| 11 | Perfiles locales (un usuario por persona) | ⭐⭐⭐⭐ | Elegir perfil al abrir el panel (como en Netflix); cada uno con su agenda, hábitos, objetivos y viajes en `localStorage` con su prefijo (`panelDeVida:<perfil>:…`). Sin servidor para cumplir la regla 6: los perfiles viven en el dispositivo y se pasan a otro con la copia de seguridad. Un PIN sería solo cortesía, no seguridad. Los datos de ejemplo quedan como perfil «Demo». Después de la 6. | Pendiente |
+
+Orden recomendado (el README como repaso final): 1 → 2 → 3 → 4 → 5 → 6 → 11 → 7 → 9 → 8 → 10.
