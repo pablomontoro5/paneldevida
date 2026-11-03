@@ -62,3 +62,22 @@ Convenciones: cada componente en `src/app/componentes/<nombre>/` con sus estilos
 
 - Conectar **Google Calendar** para la agenda del día.
 - **Resumen semanal automático** cada domingo.
+
+## Próximas tareas (de más fácil a más difícil)
+
+Cada una se hace en su propia conversación, rama y pull request.
+
+| # | Tarea | Dificultad | Qué implica | Estado |
+| --- | --- | --- | --- | --- |
+| 1 | Cumplir los community standards de GitHub | ⭐ | Solo documentos: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues y PR en `.github/`. Hay que elegir licencia (ahora el README dice que no tiene). | Pendiente |
+| 2 | Reorganizar las carpetas | ⭐⭐ | Mover archivos a una estructura más clara (p. ej. `nucleo/`, `secciones/<nombre>/`, `compartido/`) y arreglar los `import`; las pruebas avisan si algo se rompe. Antes de añadir secciones nuevas. | Pendiente |
+| 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | Pendiente |
+| 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | Pendiente |
+| 5 | App sin conexión en el iPhone (PWA) | ⭐⭐⭐ | `ng add @angular/pwa` (paquete oficial de Angular). Lo difícil es probar la caché, el `base-href` y el icono en el móvil. Después del router. | Pendiente |
+| 6 | Editar agenda, prioridades y hábitos desde el panel | ⭐⭐⭐⭐ | Formularios (crear, editar, borrar), pasar los datos de `datos.ts` a `localStorage` y migrar lo guardado sin perder el historial. Probablemente una conversación por sección. | Pendiente |
+| 7 | Sección de planes con recordatorios | ⭐⭐⭐⭐ | Formularios y guardado como en la 6, más fechas y horas, la API de `Notification` y temporizadores. Sin servidor, el aviso solo salta con la página abierta. | Pendiente |
+| 8 | Mejorar el README | ⭐ (al final) | En cada PR se actualiza lo justo; aquí, repaso final con capturas, un GIF de la demo y la arquitectura. | Pendiente |
+| 9 | Resumen semanal cada domingo | ⭐⭐⭐⭐ | Necesita historial de hábitos, objetivos y planes. Sin servidor, se genera al abrir el panel el domingo (o el primer día después). | Pendiente |
+| 10 | Conectar Google Calendar | ⭐⭐⭐⭐⭐ | OAuth, API de Google y tokens. **Choca con la regla 6**: hay que decidir si se hace una excepción o se descarta. Alternativa sin internet: importar un `.ics`. | Pendiente |
+
+Orden recomendado (el README como repaso final): 1 → 2 → 3 → 4 → 5 → 6 → 7 → 9 → 8 → 10.
