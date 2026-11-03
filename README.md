@@ -6,7 +6,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 
 **🔗 Demo:** [pablomontoro5.github.io/paneldevida](https://pablomontoro5.github.io/paneldevida/), con los datos de ejemplo. Lo que marques ahí se guarda solo en tu navegador.
 
-> **Estado:** en desarrollo. Ya funcionan el saludo, la agenda, las prioridades, los hábitos, los objetivos del año, la cuenta atrás de viajes y la copia de seguridad (lo siguiente, en la [Hoja de ruta](#hoja-de-ruta)).
+> **Estado:** en desarrollo. Ya funcionan el saludo, la agenda, las prioridades, los hábitos, los objetivos del año, la cuenta atrás de viajes, la copia de seguridad y la app sin conexión en el móvil (lo siguiente, en la [Hoja de ruta](#hoja-de-ruta)).
 
 ---
 
@@ -38,6 +38,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 | **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. |
 | **Próximos viajes** | Cada viaje con su destino, sus fechas («19 de diciembre de 2026 – 7 de enero de 2027») y los **días que faltan**. Muestra *Mañana* y *¡Es hoy!* cuando toca, *En curso* mientras estás de viaje, y oculta los que ya han pasado. |
 | **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
+| **App sin conexión** | Se puede instalar en el móvil o en el portátil con su propio icono y abre aunque no haya internet. Cuando se publica una versión nueva, un aviso arriba ofrece **Recargar** para usarla. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
 
 Cada sección tiene su propia página (`/agenda`, `/habitos`, `/viajes`…), con su nombre en la cabecera. El diseño es **adaptable**:
@@ -51,7 +52,7 @@ Cada sección tiene su propia página (`/agenda`, `/habitos`, `/viajes`…), con
 
 ### En el navegador, sin descargar nada
 
-Abre la **[demo](https://pablomontoro5.github.io/paneldevida/)**. Funciona también en el móvil: en el iPhone, desde Safari, pulsa **Compartir → Añadir a pantalla de inicio** para tenerla con su propio icono (de momento necesita conexión para abrirse).
+Abre la **[demo](https://pablomontoro5.github.io/paneldevida/)**. Funciona también en el móvil: en el iPhone, desde Safari, pulsa **Compartir → Añadir a pantalla de inicio** para tenerla con su propio icono. Ábrela una vez con conexión y a partir de ahí funciona también sin internet (en modo avión, en el metro…). En Chrome o Edge del portátil, el botón **Instalar** de la barra de direcciones hace lo mismo.
 
 ### En tu ordenador
 
@@ -78,7 +79,7 @@ Ya no se puede abrir con doble clic en un `index.html`: el código compilado usa
 | Comando | Qué hace |
 |---|---|
 | `npm test` | Pasa las pruebas unitarias con Vitest y se queda vigilando los cambios. Para pasarlas una sola vez: `npm test -- --watch=false`. |
-| `npm run build` | Compila la versión de producción en `dist/paneldevida/browser/`. |
+| `npm run build` | Compila la versión de producción en `dist/paneldevida/browser/`, con el *service worker* para usarla sin conexión. |
 
 ### Copia de seguridad
 
@@ -168,7 +169,7 @@ viajes: [
 ```
 paneldevida/
 ├── src/
-│   ├── index.html            La página base: solo carga <app-root>
+│   ├── index.html            La página base: carga <app-root>, el manifiesto y los iconos del iPhone
 │   ├── main.ts               Arranca la aplicación
 │   ├── styles.css            Estilos globales: colores (claro y oscuro), rejilla, tarjetas
 │   └── app/
@@ -180,6 +181,7 @@ paneldevida/
 │       │   ├── almacen.ts    Guardar y leer en localStorage, exportar e importar la copia
 │       │   ├── archivo-copia.modelo.ts
 │       │   ├── titulo.ts     Título de la pestaña y de la cabecera según la ruta
+│       │   ├── aviso-version/  Aviso de «Hay una versión nueva» con el botón Recargar
 │       │   └── cabecera/     Nombre de la sección y botones de tema y de Tus datos
 │       ├── compartido/
 │       │   └── fechas.ts     Fechas y formatos en español, con sus pruebas
@@ -191,13 +193,16 @@ paneldevida/
 │           ├── objetivos/
 │           ├── viajes/
 │           └── tus-datos/    Descargar y restaurar la copia
-├── public/                   Archivos que se copian tal cual (favicon)
+├── public/                   Archivos que se copian tal cual
+│   ├── manifest.webmanifest  Nombre, colores e iconos de la app instalada
+│   └── icons/                Iconos de 72 a 512 px (el de 180 px es el del iPhone)
 ├── .github/
 │   ├── workflows/
 │   │   └── publicar.yml      Compila y publica la demo en GitHub Pages
 │   ├── ISSUE_TEMPLATE/       Plantillas de issues: informe de fallo y propuesta de mejora
 │   └── pull_request_template.md
 ├── angular.json              Configuración de Angular CLI
+├── ngsw-config.json          Qué archivos guarda en caché el service worker
 ├── package.json              Dependencias y comandos (npm start, npm test…)
 ├── CLAUDE.md                 Descripción y reglas del proyecto (para Claude Code)
 ├── CONTRIBUTING.md           Cómo contribuir
@@ -232,6 +237,17 @@ Son las mismas claves que usaba la versión vanilla. Como las prioridades se gua
 Cada sección tiene su ruta con **Angular Router**, y `''` abre el Inicio. Cualquier dirección desconocida vuelve al Inicio. Con `withComponentInputBinding()`, los datos que se ponen en `data` de cada ruta llegan directamente a los `input()` de su componente, así que las secciones no saben si se muestran solas o dentro del Inicio. Los enlaces usan `routerLink` y `routerLinkActive` para resaltar la sección abierta. El `title` de cada ruta lo recoge `TituloPanel` (`nucleo/titulo.ts`), un `TitleStrategy` propio: pone «Hábitos · Panel de vida» en la pestaña y deja «Hábitos» en una signal que lee la cabecera. El Inicio no tiene `title`, así que allí la cabecera no muestra nombre y la bienvenida ocupa su lugar.
 
 GitHub Pages no conoce estas rutas: al recargar `/paneldevida/habitos` buscaría un archivo que no existe y daría 404. Por eso `publicar.yml` copia `index.html` como `404.html`: Pages lo sirve en su lugar, carga la aplicación y el router abre la sección correcta.
+
+### App sin conexión (PWA)
+
+El panel es una **PWA** (aplicación web progresiva) gracias a `@angular/service-worker`, el paquete oficial de Angular:
+
+- **`public/manifest.webmanifest`** dice el nombre («Panel de vida»), los colores y los iconos que se usan al instalarla. Usa rutas relativas (`./`), así que vale igual en `localhost` que en `/paneldevida/`.
+- **`index.html`** añade lo que Safari del iPhone no lee del manifiesto: `apple-touch-icon` (icono de 180 px) y `apple-mobile-web-app-title`.
+- **El service worker** (`ngsw-worker.js`, lo genera `ng build` según `ngsw-config.json`) se registra en `app.config.ts` y guarda en caché el HTML, el JavaScript, el CSS y los iconos. La siguiente vez, la app se abre desde la caché aunque no haya conexión. Solo se activa en la versión compilada: con `npm start` está apagado para no estorbar al recargar los cambios.
+- **Versiones nuevas**: el service worker sigue sirviendo la versión guardada y descarga la nueva por detrás. Cuando la tiene lista, `AvisoVersion` (`nucleo/aviso-version/`) escucha `SwUpdate` y muestra «Hay una versión nueva del panel» con un botón **Recargar**.
+
+Para probarlo en el ordenador hace falta servir la carpeta compilada (por ejemplo, la propia demo), abrirla una vez, desconectar la red en las herramientas del navegador (F12 → *Application* → *Service workers* → *Offline*) y recargar. La caché solo guarda los archivos de la propia app: los datos siguen en `localStorage`, como siempre.
 
 ### Estado con signals
 
@@ -290,7 +306,7 @@ Object.keys(localStorage).filter(k => k.startsWith("panelDeVida:")).forEach(k =>
 
 ## Privacidad
 
-**Tus datos no salen del ordenador.** Lo que marcas en el panel se guarda solo en tu navegador. La página no hace ninguna petición a internet: ni analíticas, ni fuentes externas, ni servicios de terceros.
+**Tus datos no salen del ordenador.** Lo que marcas en el panel se guarda solo en tu navegador. El service worker solo guarda en caché los archivos de la propia app. La página no hace ninguna petición a internet: ni analíticas, ni fuentes externas, ni servicios de terceros.
 
 ---
 
@@ -361,8 +377,9 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 - [x] Demo publicada en GitHub Pages
 - [x] Migrar a Angular
 - [x] Cuenta atrás de viajes
+- [x] Navegación por secciones
+- [x] Usarlo en el iPhone como app sin conexión (con icono y service worker)
 - [ ] Editar prioridades, agenda y hábitos desde el propio panel
-- [ ] Usarlo en el iPhone como app sin conexión (con icono y service worker)
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
 
@@ -373,8 +390,8 @@ Lo que falta, de más fácil a más difícil (los detalles de cada tarea están 
 1. ~~Cumplir los *community standards* de GitHub (licencia, guía de contribución, código de conducta, política de seguridad y plantillas).~~ ✅
 2. ~~Reorganizar las carpetas del proyecto.~~ ✅
 3. ~~Cuenta atrás de viajes.~~ ✅
-4. Panel de navegación entre secciones con Angular Router.
-5. Usarlo en el iPhone como app sin conexión.
+4. ~~Panel de navegación entre secciones con Angular Router.~~ ✅
+5. ~~Usarlo en el iPhone como app sin conexión.~~ ✅
 6. Editar agenda, prioridades y hábitos desde el propio panel.
 7. Sección de planes con recordatorios.
 8. Resumen semanal cada domingo.
