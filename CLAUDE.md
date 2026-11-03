@@ -46,7 +46,7 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 3. Modelos y datos de ejemplo | ✅ Hecha |
 | 4. Utilidades de fechas y primeras pruebas | ✅ Hecha |
 | 5. AlmacenService | ✅ Hecha |
-| 6. Cabecera: saludo, fecha y tema | ⏳ A medias |
+| 6. Cabecera: saludo, fecha y tema | ✅ Hecha |
 | 7. Agenda | ⬜ Sin empezar |
 | 8. Prioridades | ⬜ Sin empezar |
 | 9. Hábitos | ⬜ Sin empezar |

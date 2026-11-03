@@ -62,6 +62,15 @@ export function historialAFechas(historial: number[], hoy: Date = new Date()): s
   return historial.map(n => claveFecha(haceDiasDesde(n, hoy)));
 }
 
+export function saludoSegunHora(hora: number): string{
+  if(hora >=6 && hora < 14){
+    return 'Buenos días';
+  }else if(hora >=14 && hora < 21){
+    return 'Buenas tardes';
+  }
+  return 'Buenas noches';
+}
+
 function haceDiasDesde(n: number, hoy: Date): Date {
   const fecha = new Date(hoy);
   fecha.setDate(fecha.getDate() - n);

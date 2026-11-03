@@ -1,0 +1,32 @@
+.cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.saludo {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.fecha {
+  margin: 2px 0 0;
+  color: var(--texto-suave);
+}
+
+.boton-tema {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.boton-tema:hover { border-color: var(--acento); }
