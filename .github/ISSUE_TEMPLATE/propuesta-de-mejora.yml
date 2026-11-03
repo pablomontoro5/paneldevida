@@ -1,0 +1,32 @@
+name: 💡 Propuesta de mejora
+description: Una idea nueva o un cambio en algo que ya existe.
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qué problema resuelve
+      description: ¿Qué echas en falta o qué te resulta incómodo ahora?
+      placeholder: "Cada mañana tengo que mirar en otro sitio cuántos días faltan para el viaje."
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Qué propones
+      description: Cómo te imaginas que funcionaría.
+    validations:
+      required: true
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Alternativas que has pensado
+  - type: checkboxes
+    id: reglas
+    attributes:
+      label: Reglas del proyecto
+      description: La propuesta tiene que respetar las reglas del [README](https://github.com/pablomontoro5/paneldevida#reglas-del-proyecto).
+      options:
+        - label: No necesita enviar datos a internet ni a servicios externos.
+        - label: No necesita librerías nuevas aparte de Angular (o lo explico arriba).

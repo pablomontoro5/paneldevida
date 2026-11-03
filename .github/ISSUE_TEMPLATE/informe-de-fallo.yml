@@ -1,0 +1,56 @@
+name: 🐞 Informe de fallo
+description: Algo del panel no funciona como debería.
+title: "[Fallo] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por avisar. Si el fallo es de **seguridad**, no lo cuentes aquí: sigue la [política de seguridad](https://github.com/pablomontoro5/paneldevida/security/policy).
+  - type: textarea
+    id: que-pasa
+    attributes:
+      label: Qué pasa
+      description: Describe el fallo en pocas palabras.
+      placeholder: "Al marcar un hábito, la racha no cambia."
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Cómo reproducirlo
+      description: Los pasos para que yo vea lo mismo.
+      placeholder: |
+        1. Abre la demo.
+        2. Pulsa el botón del hábito «Leer 20 minutos».
+        3. Mira la racha.
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué esperabas que pasara
+    validations:
+      required: true
+  - type: dropdown
+    id: donde
+    attributes:
+      label: Dónde lo has visto
+      multiple: true
+      options:
+        - Demo en GitHub Pages
+        - En local (npm start)
+    validations:
+      required: true
+  - type: input
+    id: navegador
+    attributes:
+      label: Navegador y dispositivo
+      placeholder: "Safari en iPhone 15, Chrome 140 en Windows 11…"
+    validations:
+      required: true
+  - type: textarea
+    id: capturas
+    attributes:
+      label: Capturas o mensajes de la consola
+      description: Si tienes alguna captura o error de la consola (F12), pégalo aquí. No incluyas datos personales.

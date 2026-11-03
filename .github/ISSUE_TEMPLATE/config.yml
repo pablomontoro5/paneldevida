@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 Avisar de un fallo de seguridad
+    url: https://github.com/pablomontoro5/paneldevida/security/advisories/new
+    about: Los fallos de seguridad se cuentan en privado, no en un issue público.
