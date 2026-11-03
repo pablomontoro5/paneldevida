@@ -1,0 +1,78 @@
+/* ---------- Hábitos ---------- */
+.habitos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 760px) {
+  .habitos { grid-template-columns: 1fr 1fr; }
+}
+
+.habito {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.habito-info {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.habito-nombre { font-weight: 600; }
+
+.habito-racha {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.habito-racha strong { color: var(--racha); }
+
+.semana {
+  display: flex;
+  gap: 4px;
+}
+
+.dia {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--fondo);
+  color: var(--texto-suave);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.dia.cumplido {
+  background: var(--exito);
+  color: #fff;
+}
+
+.dia.hoy { outline: 2px solid var(--acento); outline-offset: 1px; }
+
+.boton-habito {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.boton-habito:hover { border-color: var(--exito); }
+
+.boton-habito[aria-pressed="true"] {
+  background: var(--exito);
+  border-color: var(--exito);
+  color: #fff;
+}

@@ -1,0 +1,30 @@
+<div class="tarjeta-cabecera"><h2>Hábitos</h2></div>
+
+<ul class="habitos">
+  @for (h of filas(); track h.id) {
+    <li class="habito">
+      <div class="habito-info">
+        <div class="habito-nombre">{{ h.icono }} {{ h.nombre }}</div>
+        <div class="habito-racha">
+          @if (h.racha > 0) { <strong>🔥 </strong> }
+          {{ textoRacha(h.racha) }}
+        </div>
+      </div>
+
+      <div class="semana" role="img" [attr.aria-label]="'Últimos 7 días: ' + h.cumplidosSemana + ' cumplidos'">
+        @for (d of h.semana; track d.clave) {
+          <span class="dia" [class.cumplido]="d.cumplido" [class.hoy]="d.esHoy" [title]="d.titulo" aria-hidden="true">{{ d.inicial }}</span>
+        }
+      </div>
+
+      <button type="button" class="boton-habito"
+              [attr.aria-pressed]="h.hechoHoy"
+              [attr.aria-label]="h.nombre + ': hecho hoy'"
+              (click)="marcarHoy(h.id)">
+        {{ h.hechoHoy ? '✓ Hecho hoy' : 'Marcar hoy' }}
+      </button>
+    </li>
+  } @empty {
+    <li class="vacio">No tienes hábitos todavía.</li>
+  }
+</ul>
