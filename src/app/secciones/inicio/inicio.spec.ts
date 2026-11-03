@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Inicio } from './inicio';
 import { clavePrioridades } from '../prioridades/prioridades.logica';
+import { claveObjetivos } from '../objetivos/objetivos.logica';
 
 describe('Inicio', () => {
   let fixture: ComponentFixture<Inicio>;
@@ -43,6 +44,23 @@ describe('Inicio: resumen de prioridades', () => {
     await fixture.whenStable();
 
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('1 de 2 hechas');
+    localStorage.clear();
+  });
+});
+
+describe('Inicio: resumen de objetivos', () => {
+  it('cuenta los objetivos guardados con lo que llevas este año', async () => {
+    localStorage.clear();
+    const objetivo = (id: string) => ({ id, icono: '🎯', nombre: id, actual: 0, meta: 10, paso: 1, unidad: 'veces' });
+    localStorage.setItem('panelDeVida:objetivos', JSON.stringify([objetivo('a'), objetivo('b')]));
+    // "a" ya está conseguido este año; "b" sigue en 0, así que va por detrás cualquier día del año.
+    localStorage.setItem(`panelDeVida:${claveObjetivos(new Date())}`, JSON.stringify({ a: 10 }));
+
+    await TestBed.configureTestingModule({ imports: [Inicio], providers: [provideRouter([])] }).compileComponents();
+    const fixture = TestBed.createComponent(Inicio);
+    await fixture.whenStable();
+
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('1 de 2 al día');
     localStorage.clear();
   });
 });

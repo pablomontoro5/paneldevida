@@ -111,3 +111,100 @@
   opacity: 0.4;
   cursor: default;
 }
+
+.objetivo.editandose { border-color: var(--acento); }
+
+/* ---------- Editar y borrar ---------- */
+.objetivo-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.objetivo-acciones.confirmar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--aviso-suave);
+  font-size: 0.9rem;
+}
+
+.objetivo-acciones.confirmar span { flex: 1; }
+
+/* ---------- Unidades o euros ---------- */
+.tipo-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tipo-opciones legend {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.tipo-opciones label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.tipo-opciones input {
+  margin: 0;
+  accent-color: var(--acento);
+}
+
+/* ---------- Iconos del formulario (como en Viajes) ---------- */
+.iconos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.iconos legend {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.icono-opcion { position: relative; }
+
+/* El círculo de la opción se oculta, pero sigue ahí para el teclado y los lectores de pantalla */
+.icono-opcion input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.icono-opcion span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  font-size: 1.3rem;
+}
+
+.icono-opcion input:checked + span {
+  border: 2px solid var(--acento);
+  background: var(--acento-suave);
+}
+
+.icono-opcion input:focus-visible + span {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}

@@ -8,6 +8,7 @@ import { clavePrioridades, contarHechas } from '../prioridades/prioridades.logic
 import { PrioridadesGuardadas } from '../prioridades/prioridades.guardados';
 import { RegistroHabitos, completarRegistro, textoRacha } from '../habitos/habitos.logica';
 import { ProgresoObjetivos, claveObjetivos, formatoPorcentaje, fraccionDelAnio } from '../objetivos/objetivos.logica';
+import { ObjetivosGuardados } from '../objetivos/objetivos.guardados';
 import { AgendaGuardada } from '../agenda/agenda.guardados';
 import { textoCuentaAtras } from '../viajes/viajes.logica';
 import { ViajesGuardados } from '../viajes/viajes.guardados';
@@ -69,9 +70,10 @@ export class Inicio {
     total: this.datos.habitos.length,
   };
 
+  private readonly listaObjetivos = inject(ObjetivosGuardados).elementos();
   protected readonly objetivos = {
-    alDia: objetivosAlDia(this.datos.objetivos, this.progreso, this.ritmo),
-    total: this.datos.objetivos.length,
+    alDia: objetivosAlDia(this.listaObjetivos, this.progreso, this.ritmo),
+    total: this.listaObjetivos.length,
     textoRitmo: formatoPorcentaje(this.ritmo),
   };
 
