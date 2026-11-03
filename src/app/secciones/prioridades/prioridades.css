@@ -1,5 +1,11 @@
 /* ---------- Prioridades ---------- */
-.prioridad + .prioridad { margin-top: 8px; }
+.prioridad {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prioridad + .prioridad { margin-top: 12px; }
 
 .prioridad-etiqueta {
   display: flex;
@@ -27,6 +33,8 @@
   font-variant-numeric: tabular-nums;
 }
 
+.prioridad-texto { min-width: 0; } /* deja que el texto largo baje de línea en el móvil */
+
 .prioridad.hecha .prioridad-etiqueta {
   background: var(--exito-suave);
   border-color: transparent;
@@ -35,4 +43,33 @@
 .prioridad.hecha .prioridad-texto {
   text-decoration: line-through;
   color: var(--texto-suave);
+}
+
+.prioridad.editandose .prioridad-etiqueta { border-color: var(--acento); }
+
+/* ---------- Editar y borrar ---------- */
+.prioridad-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.prioridad-acciones.confirmar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--aviso-suave);
+  font-size: 0.9rem;
+}
+
+.prioridad-acciones.confirmar span { flex: 1; }
+
+/* Con 3 prioridades, en lugar del botón de añadir */
+.aviso-limite {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--aviso-suave);
+  font-size: 0.9rem;
 }
