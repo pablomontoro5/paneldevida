@@ -1,5 +1,5 @@
 import { ArchivoCopia } from '../../nucleo/archivo-copia.modelo';
-import { claveFecha } from '../../compartido/fechas';
+import { claveFecha, diasDesde } from '../../compartido/fechas';
 
 // Si la última copia es más antigua que esto, se avisa.
 export const DIAS_AVISO_COPIA = 7;
@@ -24,15 +24,6 @@ export function esCopiaValida(copia: unknown): copia is ArchivoCopia {
     typeof datos === 'object' &&
     !Array.isArray(datos)
   );
-}
-
-// Días de calendario entre dos fechas
-
-export function diasDesde(fecha: Date, hoy: Date): number{
-    const inicio = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
-    const fin = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-    const diferencia = fin.getTime() - inicio.getTime();
-    return Math.round(diferencia / 86_400_000);
 }
 
 export interface EstadoCopia {

@@ -69,3 +69,10 @@ export function haceDiasDesde(n: number, hoy: Date): Date {
   fecha.setDate(fecha.getDate() - n);
   return fecha;
 }
+// Días de calendario entre dos fechas (sin contar la hora).
+// Negativo si "fecha" es posterior a "hoy".
+export function diasDesde(fecha: Date, hoy: Date): number {
+  const inicio = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+  const fin = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+  return Math.round((fin.getTime() - inicio.getTime()) / 86_400_000);
+}

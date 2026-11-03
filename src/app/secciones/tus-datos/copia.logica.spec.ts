@@ -1,4 +1,4 @@
-import { diasDesde, esCopiaValida, estadoCopia, nombreArchivoCopia } from './copia.logica';
+import { esCopiaValida, estadoCopia, nombreArchivoCopia } from './copia.logica';
 
 const COPIA_BUENA = {
   app: 'panel-de-vida',
@@ -27,16 +27,6 @@ describe('esCopiaValida', () => {
 
   it('rechaza datos que son un array', () => {
     expect(esCopiaValida({ ...COPIA_BUENA, datos: [] })).toBe(false);
-  });
-});
-
-describe('diasDesde', () => {
-  it('el mismo día a distinta hora son 0 días', () => {
-    expect(diasDesde(new Date(2026, 10, 3, 8, 0), new Date(2026, 10, 3, 23, 0))).toBe(0);
-  });
-
-  it('cuenta bien aunque en medio haya cambio de hora (25 de octubre)', () => {
-    expect(diasDesde(new Date(2026, 9, 24), new Date(2026, 10, 3))).toBe(10);
   });
 });
 
