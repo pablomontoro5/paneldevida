@@ -30,3 +30,19 @@
 }
 
 .boton-tema:hover { border-color: var(--acento); }
+
+.acciones {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.boton-datos {
+  display: none;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .boton-datos { display: inline-flex; }
+}

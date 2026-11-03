@@ -3,7 +3,11 @@
         <h1 class="saludo">{{ saludo }}</h1>
         <p class="fecha">{{ fecha }}</p>
     </div>
-    <button class="boton-tema" type="button" (click)="cambiarTema()">
-        {{ textoBoton() }}
-    </button>
+    <div class="acciones">
+        <button class="boton-tema" type="button" (click)="cambiarTema()">
+            {{ textoBoton() }}
+        </button>
+        <!-- En el móvil, «Tus datos» no cabe en la barra inferior y se abre desde aquí -->
+        <a class="boton-tema boton-datos" routerLink="/datos" aria-label="Tus datos">⚙️</a>
+    </div>
 </header>

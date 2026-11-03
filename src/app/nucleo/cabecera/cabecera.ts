@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Almacen } from '../almacen';
 import { mayusculaInicial, saludoSegunHora } from '../../compartido/fechas';
 
@@ -7,6 +8,7 @@ const formatoFecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' });
 
 @Component({
   selector: 'app-cabecera',
+  imports: [RouterLink],
   templateUrl: './cabecera.html',
   styleUrl: './cabecera.css',
 })
