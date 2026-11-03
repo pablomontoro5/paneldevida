@@ -8,10 +8,10 @@ import { Agenda } from './componentes/agenda/agenda';
 import { Prioridades } from './componentes/prioridades/prioridades';
 
 import { Habitos } from './componentes/habitos/habitos';
-
+import { Objetivos } from './componentes/objetivos/objetivos';
 @Component({
   selector: 'app-root',
-  imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos],
+  imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos,Objetivos],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })

@@ -21,13 +21,8 @@
     <app-habitos [habitos]="datos().habitos" />
   </section>
 
-  <section class="tarjeta" id="objetivos">
-    <h2>Objetivos</h2>
-    <ul>
-      @for (o of datos().objetivos; track o.id) {
-        <li>{{ o.icono }} {{ o.nombre }}</li>
-      }
-    </ul>
+  <section class="tarjeta tarjeta-ancha" id="objetivos">
+    <app-objetivos [objetivos]="datos().objetivos" />
   </section>
 
   <section class="tarjeta" id="datos">
