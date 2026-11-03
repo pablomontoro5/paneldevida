@@ -11,14 +11,21 @@
 
 .viaje {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 10px;
   padding: 12px;
   border: 1px solid var(--borde);
   border-radius: 10px;
 }
 
 .viaje.en-curso { border-color: var(--exito); }
+.viaje.editandose { border-color: var(--acento); }
+
+.viaje-fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 .viaje-icono { font-size: 1.6rem; }
 
@@ -65,4 +72,166 @@
 .etiqueta-pronto {
   background: var(--aviso-suave);
   color: var(--racha);
+}
+
+/* ---------- Editar y borrar ---------- */
+.viaje-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.viaje-acciones.confirmar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--aviso-suave);
+  font-size: 0.9rem;
+}
+
+.viaje-acciones.confirmar span { flex: 1; }
+
+/* ---------- Formulario ---------- */
+.boton-anadir {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 14px;
+  border: 1px solid var(--acento);
+  border-radius: 10px;
+  background: var(--fondo);
+}
+
+.formulario-titulo {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.campo-etiqueta {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.opcional { font-weight: 400; }
+
+.campo input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 1rem; /* 16 px: así el iPhone no hace zoom al escribir */
+}
+
+.campo input[aria-invalid="true"] { border-color: var(--error); }
+
+.campo-error {
+  color: var(--error);
+  font-size: 0.85rem;
+}
+
+.fechas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fechas .campo { flex-basis: 180px; }
+
+.plantillas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.plantillas-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.plantilla {
+  min-height: 36px;
+  padding: 4px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.plantilla:hover { border-color: var(--acento); }
+
+.iconos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.iconos legend {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.icono-opcion { position: relative; }
+
+/* El círculo de la opción se oculta, pero sigue ahí para el teclado y los lectores de pantalla */
+.icono-opcion input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.icono-opcion span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  font-size: 1.3rem;
+}
+
+.icono-opcion input:checked + span {
+  border: 2px solid var(--acento);
+  background: var(--acento-suave);
+}
+
+.icono-opcion input:focus-visible + span {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.formulario-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }

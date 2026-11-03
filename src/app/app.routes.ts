@@ -29,7 +29,8 @@ export const routes: Routes = [
     title: 'Objetivos',
     data: { objetivos: datos.objetivos },
   },
-  { path: 'viajes', component: Viajes, title: 'Viajes', data: { viajes: datos.viajes } },
+  // Viajes ya no usa `data`: lee y guarda su lista en localStorage (ViajesGuardados).
+  { path: 'viajes', component: Viajes, title: 'Viajes' },
   { path: 'datos', component: TusDatos, title: 'Tus datos' },
   // Cualquier dirección que no exista vuelve al inicio.
   { path: '**', redirectTo: '' },
