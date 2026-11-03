@@ -76,3 +76,71 @@
   border-color: var(--exito);
   color: #fff;
 }
+.habito.editandose { border-color: var(--acento); }
+
+/* ---------- Editar y borrar ---------- */
+.habito-acciones {
+  display: flex;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.habito-acciones.confirmar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--aviso-suave);
+  font-size: 0.9rem;
+}
+
+.habito-acciones.confirmar span { flex: 1; }
+
+/* ---------- Iconos del formulario (como en Viajes y Objetivos) ---------- */
+.iconos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.iconos legend {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.icono-opcion { position: relative; }
+
+/* El círculo de la opción se oculta, pero sigue ahí para el teclado y los lectores de pantalla */
+.icono-opcion input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.icono-opcion span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--tarjeta);
+  font-size: 1.3rem;
+}
+
+.icono-opcion input:checked + span {
+  border: 2px solid var(--acento);
+  background: var(--acento-suave);
+}
+
+.icono-opcion input:focus-visible + span {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}

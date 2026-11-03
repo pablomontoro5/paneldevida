@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { Inicio } from './inicio';
 import { clavePrioridades } from '../prioridades/prioridades.logica';
 import { claveObjetivos } from '../objetivos/objetivos.logica';
+import { claveFecha } from '../../compartido/fechas';
 
 describe('Inicio', () => {
   let fixture: ComponentFixture<Inicio>;
@@ -61,6 +62,31 @@ describe('Inicio: resumen de objetivos', () => {
     await fixture.whenStable();
 
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('1 de 2 al día');
+    localStorage.clear();
+  });
+});
+
+describe('Inicio: resumen de hábitos', () => {
+  it('cuenta los hábitos guardados y no los días de uno que se borró', async () => {
+    localStorage.clear();
+    const hoy = claveFecha(new Date());
+    localStorage.setItem(
+      'panelDeVida:habitos-lista',
+      JSON.stringify([
+        { id: 'a', icono: '🧘', nombre: 'Meditar', historialEjemplo: [] },
+        { id: 'b', icono: '📚', nombre: 'Leer', historialEjemplo: [] },
+      ]),
+    );
+    // La fecha de hoy se calcula igual que en el componente, así no depende del día.
+    localStorage.setItem('panelDeVida:habitos', JSON.stringify({ a: [hoy], borrado: [hoy] }));
+
+    await TestBed.configureTestingModule({ imports: [Inicio], providers: [provideRouter([])] }).compileComponents();
+    const fixture = TestBed.createComponent(Inicio);
+    await fixture.whenStable();
+
+    const texto = (fixture.nativeElement as HTMLElement).textContent;
+    expect(texto).toContain('1 de 2 hechos hoy');
+    expect(texto).toContain('🧘 Meditar');
     localStorage.clear();
   });
 });

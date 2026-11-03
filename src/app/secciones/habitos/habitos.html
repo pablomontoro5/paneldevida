@@ -1,8 +1,55 @@
 <div class="tarjeta-cabecera"><h2>Hábitos</h2></div>
 
+@if (editando() === null) {
+  <button type="button" class="boton boton-principal boton-anadir" (click)="abrirNuevo()">＋ Añadir hábito</button>
+} @else {
+  <form class="formulario" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <h3 class="formulario-titulo">{{ editando() ? 'Editar hábito' : 'Nuevo hábito' }}</h3>
+
+    @if (!editando()) {
+      <div class="plantillas">
+        <span class="campo-etiqueta" id="titulo-plantillas">Ideas para empezar</span>
+        <div class="plantillas-lista" role="group" aria-labelledby="titulo-plantillas">
+          @for (p of plantillas; track p.nombre) {
+            <button type="button" class="plantilla" (click)="usarPlantilla(p)">
+              <span aria-hidden="true">{{ p.icono }}</span> {{ p.nombre }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <fieldset class="iconos">
+      <legend class="campo-etiqueta">Icono</legend>
+      @for (i of iconos; track i) {
+        <label class="icono-opcion">
+          <input type="radio" formControlName="icono" [value]="i" />
+          <span>{{ i }}</span>
+        </label>
+      }
+    </fieldset>
+
+    <div class="campo">
+      <label class="campo-etiqueta" for="habito-nombre">Nombre</label>
+      <input #campoNombre id="habito-nombre" type="text" formControlName="nombre" maxlength="60"
+             placeholder="Por ejemplo, Leer 20 minutos"
+             [attr.aria-invalid]="!!errores().nombre"
+             [attr.aria-describedby]="errores().nombre ? 'error-nombre' : null" />
+      @if (errores().nombre; as e) {
+        <span class="campo-error" id="error-nombre">{{ e }}</span>
+      }
+    </div>
+
+    <div class="formulario-acciones">
+      <button type="button" class="boton" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="boton boton-principal">{{ editando() ? 'Guardar cambios' : 'Añadir hábito' }}</button>
+    </div>
+  </form>
+}
+
 <ul class="habitos">
   @for (h of filas(); track h.id) {
-    <li class="habito">
+    <li class="habito" [class.editandose]="editando() === h.id">
       <div class="habito-info">
         <div class="habito-nombre">{{ h.icono }} {{ h.nombre }}</div>
         <div class="habito-racha">
@@ -23,8 +70,26 @@
               (click)="marcarHoy(h.id)">
         {{ h.hechoHoy ? '✓ Hecho hoy' : 'Marcar hoy' }}
       </button>
+
+      @if (borrando() === h.id) {
+        <div class="habito-acciones confirmar" role="alert">
+          <span>
+            ¿Borrar este hábito y todos los días que lo has cumplido?
+            @if (h.racha > 0) { Perderás tu racha de {{ textoRacha(h.racha) }}. }
+          </span>
+          <button type="button" class="boton boton-peligro" (click)="confirmarBorrado(h.id)">Sí, borrar</button>
+          <button type="button" class="boton" (click)="borrando.set(null)">No</button>
+        </div>
+      } @else {
+        <div class="habito-acciones">
+          <button type="button" class="boton boton-pequeno" (click)="editar(h)"
+                  [attr.aria-label]="'Editar ' + h.nombre">Editar</button>
+          <button type="button" class="boton boton-pequeno boton-borrar" (click)="borrando.set(h.id)"
+                  [attr.aria-label]="'Borrar ' + h.nombre">Borrar</button>
+        </div>
+      }
     </li>
   } @empty {
-    <li class="vacio">No tienes hábitos todavía.</li>
+    <li class="vacio">No tienes hábitos todavía. Añade uno para empezar.</li>
   }
 </ul>

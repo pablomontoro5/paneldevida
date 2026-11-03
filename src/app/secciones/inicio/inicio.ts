@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 
 import { Almacen } from '../../nucleo/almacen';
 import { mayusculaInicial, saludoSegunHora } from '../../compartido/fechas';
-import { crearDatosDeEjemplo } from '../../datos';
+import { HabitosGuardados } from '../habitos/habitos.guardados';
 import { clavePrioridades, contarHechas } from '../prioridades/prioridades.logica';
 import { PrioridadesGuardadas } from '../prioridades/prioridades.guardados';
 import { RegistroHabitos, completarRegistro, textoRacha } from '../habitos/habitos.logica';
@@ -33,18 +33,19 @@ const formatoFecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' });
 })
 export class Inicio {
   private readonly almacen = inject(Almacen);
-  private readonly datos = crearDatosDeEjemplo();
   private readonly hoy = new Date();
   private readonly minutoActual = this.hoy.getHours() * 60 + this.hoy.getMinutes();
 
   protected readonly saludo = saludoSegunHora(this.hoy.getHours());
   protected readonly fecha = mayusculaInicial(formatoFecha.format(this.hoy));
 
+  private readonly listaHabitos = inject(HabitosGuardados).elementos();
+
   // Lo que ya está marcado en cada sección, para que el resumen coincida con ellas.
   private readonly hechas = this.almacen.leer<string[]>(clavePrioridades(this.hoy), []);
   private readonly registro = completarRegistro(
     this.almacen.leer<RegistroHabitos | null>('habitos', null),
-    this.datos.habitos,
+    this.listaHabitos,
     this.hoy,
   );
   private readonly progreso = this.almacen.leer<ProgresoObjetivos>(claveObjetivos(this.hoy), {});
@@ -65,9 +66,9 @@ export class Inicio {
   };
 
   protected readonly habitos = {
-    mejor: mejorRacha(this.datos.habitos, this.registro, this.hoy),
-    hechosHoy: habitosHechosHoy(this.datos.habitos, this.registro, this.hoy),
-    total: this.datos.habitos.length,
+    mejor: mejorRacha(this.listaHabitos, this.registro, this.hoy),
+    hechosHoy: habitosHechosHoy(this.listaHabitos, this.registro, this.hoy),
+    total: this.listaHabitos.length,
   };
 
   private readonly listaObjetivos = inject(ObjetivosGuardados).elementos();
