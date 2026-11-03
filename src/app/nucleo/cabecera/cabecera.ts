@@ -1,10 +1,9 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Almacen } from '../almacen';
-import { mayusculaInicial, saludoSegunHora } from '../../compartido/fechas';
+import { TituloPanel } from '../titulo';
 
 type Tema = 'claro' | 'oscuro';
-const formatoFecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' });
 
 @Component({
   selector: 'app-cabecera',
@@ -15,9 +14,7 @@ const formatoFecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' });
 
 export class Cabecera {
   private readonly almacen = inject(Almacen);
-  private readonly ahora = new Date();
-  protected readonly saludo = saludoSegunHora(this.ahora.getHours());
-  protected readonly fecha = mayusculaInicial(formatoFecha.format(this.ahora));
+  protected readonly seccion = inject(TituloPanel).seccion;
 
   private readonly sistemaOscuro = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
   protected readonly elegido = signal(this.almacen.leer<Tema | null>('tema', null));

@@ -1,8 +1,8 @@
 <header class="cabecera">
-    <div>
-        <h1 class="saludo">{{ saludo }}</h1>
-        <p class="fecha">{{ fecha }}</p>
-    </div>
+    <!-- En el inicio no hay título: allí el protagonista es la bienvenida -->
+    @if (seccion(); as titulo) {
+        <h1 class="titulo">{{ titulo }}</h1>
+    }
     <div class="acciones">
         <button class="boton-tema" type="button" (click)="cambiarTema()">
             {{ textoBoton() }}

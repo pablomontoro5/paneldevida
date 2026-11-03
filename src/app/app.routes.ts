@@ -14,23 +14,23 @@ const datos = crearDatosDeEjemplo();
 // Una ruta por sección. Con withComponentInputBinding(), cada clave de `data`
 // llega al input del mismo nombre del componente (p. ej. `eventos` de Agenda).
 export const routes: Routes = [
-  { path: '', component: Inicio, title: 'Panel de vida' },
-  { path: 'agenda', component: Agenda, title: 'Agenda · Panel de vida', data: { eventos: datos.agenda } },
+  { path: '', component: Inicio },
+  { path: 'agenda', component: Agenda, title: 'Agenda', data: { eventos: datos.agenda } },
   {
     path: 'prioridades',
     component: Prioridades,
-    title: 'Prioridades · Panel de vida',
+    title: 'Prioridades',
     data: { prioridades: datos.prioridades },
   },
-  { path: 'habitos', component: Habitos, title: 'Hábitos · Panel de vida', data: { habitos: datos.habitos } },
+  { path: 'habitos', component: Habitos, title: 'Hábitos', data: { habitos: datos.habitos } },
   {
     path: 'objetivos',
     component: Objetivos,
-    title: 'Objetivos · Panel de vida',
+    title: 'Objetivos',
     data: { objetivos: datos.objetivos },
   },
-  { path: 'viajes', component: Viajes, title: 'Viajes · Panel de vida', data: { viajes: datos.viajes } },
-  { path: 'datos', component: TusDatos, title: 'Tus datos · Panel de vida' },
+  { path: 'viajes', component: Viajes, title: 'Viajes', data: { viajes: datos.viajes } },
+  { path: 'datos', component: TusDatos, title: 'Tus datos' },
   // Cualquier dirección que no exista vuelve al inicio.
   { path: '**', redirectTo: '' },
 ];

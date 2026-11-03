@@ -1,10 +1,11 @@
 import { Location } from '@angular/common';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { TitleStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { routes } from './app.routes';
+import { TituloPanel } from './nucleo/titulo';
 import { Inicio } from './secciones/inicio/inicio';
 import { Agenda } from './secciones/agenda/agenda';
 import { Prioridades } from './secciones/prioridades/prioridades';
@@ -18,7 +19,10 @@ describe('Rutas del panel', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes, withComponentInputBinding())],
+      providers: [
+        provideRouter(routes, withComponentInputBinding()),
+        { provide: TitleStrategy, useExisting: TituloPanel },
+      ],
     });
     harness = await RouterTestingHarness.create();
   });
@@ -45,6 +49,18 @@ describe('Rutas del panel', () => {
     await harness.navigateByUrl('/viajes', Viajes);
     const filas = harness.routeNativeElement?.querySelectorAll('.viaje') ?? [];
     expect(filas.length).toBeGreaterThan(0);
+  });
+
+  it('pone el título de la sección en la pestaña y en la cabecera', async () => {
+    await harness.navigateByUrl('/habitos', Habitos);
+    expect(document.title).toBe('Hábitos · Panel de vida');
+    expect(TestBed.inject(TituloPanel).seccion()).toBe('Hábitos');
+  });
+
+  it('en el inicio la pestaña solo dice Panel de vida', async () => {
+    await harness.navigateByUrl('/', Inicio);
+    expect(document.title).toBe('Panel de vida');
+    expect(TestBed.inject(TituloPanel).seccion()).toBeNull();
   });
 
   it('una dirección que no existe vuelve al inicio', async () => {
