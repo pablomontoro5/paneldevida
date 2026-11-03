@@ -18,12 +18,7 @@
   </section>
 
   <section class="tarjeta" id="habitos">
-    <h2>Hábitos</h2>
-    <ul>
-      @for (h of datos().habitos; track h.id) {
-        <li>{{ h.icono }} {{ h.nombre }} · {{ textoRacha(calcularRacha(historialAFechas(h.historialEjemplo))) }}</li>
-      }
-    </ul>
+    <app-habitos [habitos]="datos().habitos" />
   </section>
 
   <section class="tarjeta" id="objetivos">

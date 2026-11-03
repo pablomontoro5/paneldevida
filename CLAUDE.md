@@ -49,7 +49,7 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 6. Cabecera: saludo, fecha y tema | ✅ Hecha |
 | 7. Agenda | ✅ Hecha |
 | 8. Prioridades | ✅ Hecha |
-| 9. Hábitos | ⬜ Sin empezar |
+| 9. Hábitos | ✅ Hecha |
 | 10. Objetivos | ⬜ Sin empezar |
 | 11. Tus datos (copia de seguridad) | ⬜ Sin empezar |
 | 12. Quitar la versión vanilla, compilar y documentar | ⬜ Sin empezar |
