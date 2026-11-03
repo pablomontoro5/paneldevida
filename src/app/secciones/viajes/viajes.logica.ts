@@ -1,5 +1,5 @@
 import { Viaje } from './viaje.modelo';
-import { diasDesde } from '../../compartido/fechas';
+import { claveFecha, diasDesde } from '../../compartido/fechas';
 
 export type EstadoViaje = 'falta' | 'en-curso' | 'pasado';
 
@@ -46,4 +46,52 @@ export function viajesPendientes(viajes: Viaje[], hoy: Date): Viaje[] {
   return viajes
     .filter(v => estadoViaje(v, hoy) !== 'pasado')
     .sort((a, b) => a.salida.localeCompare(b.salida)); // "AAAA-MM-DD" se ordena bien como texto
+}
+
+// ---------- Formulario de viajes ----------
+
+// Lo que hay escrito en el formulario. Todo es texto: "" significa "vacío".
+export interface BorradorViaje {
+  icono: string;
+  destino: string;
+  salida: string; // "AAAA-MM-DD", como lo da <input type="date">
+  vuelta: string;
+}
+
+export type ErroresViaje = Partial<Record<'destino' | 'salida' | 'vuelta', string>>;
+
+export const BORRADOR_VACIO: BorradorViaje = { icono: '✈️', destino: '', salida: '', vuelta: '' };
+
+// Qué falta o está mal. Si devuelve {}, el viaje se puede guardar.
+export function validarViaje(borrador: BorradorViaje): ErroresViaje {
+  const errores: ErroresViaje = {};
+  if (!borrador.destino.trim()) errores.destino = 'Escribe a dónde vas.';
+  if (!borrador.salida) errores.salida = 'Elige el día de salida.';
+  if (borrador.salida && borrador.vuelta && borrador.vuelta < borrador.salida) {
+    errores.vuelta = 'La vuelta no puede ser antes de la salida.';
+  }
+  return errores;
+}
+
+export function borradorAViaje(borrador: BorradorViaje, id: string): Viaje {
+  const viaje: Viaje = {
+    id,
+    icono: borrador.icono || BORRADOR_VACIO.icono,
+    destino: borrador.destino.trim(),
+    salida: borrador.salida,
+  };
+  // La vuelta solo se guarda si es otro día; si no, el viaje dura un día.
+  if (borrador.vuelta && borrador.vuelta !== borrador.salida) viaje.vuelta = borrador.vuelta;
+  return viaje;
+}
+
+export function viajeABorrador(viaje: Viaje): BorradorViaje {
+  return { icono: viaje.icono, destino: viaje.destino, salida: viaje.salida, vuelta: viaje.vuelta ?? '' };
+}
+
+// La fecha "dias" días después, también como "AAAA-MM-DD".
+export function sumarDias(texto: string, dias: number): string {
+  const fecha = aFecha(texto);
+  fecha.setDate(fecha.getDate() + dias);
+  return claveFecha(fecha);
 }

@@ -6,6 +6,12 @@ import {
   textoCuentaAtras,
   textoFechasViaje,
   viajesPendientes,
+  BORRADOR_VACIO,
+  BorradorViaje,
+  borradorAViaje,
+  sumarDias,
+  validarViaje,
+  viajeABorrador,
 } from './viajes.logica';
 
 const hoy = new Date(2026, 10, 3, 9, 30); // 3 de noviembre de 2026 por la mañana
@@ -81,5 +87,53 @@ describe('viajesPendientes', () => {
   it('quita los pasados y ordena por fecha de salida', () => {
     const ids = viajesPendientes([NAVIDAD, EXCURSION, PUENTE], hoy).map(v => v.id);
     expect(ids).toEqual(['puente', 'navidad']);
+  });
+});
+
+describe('validarViaje', () => {
+  const bueno: BorradorViaje = { icono: '🏖️', destino: 'Cádiz', salida: '2027-07-15', vuelta: '2027-07-30' };
+
+  it('un viaje completo no tiene errores', () => {
+    expect(validarViaje(bueno)).toEqual({});
+  });
+
+  it('sin vuelta también vale (viaje de un día)', () => {
+    expect(validarViaje({ ...bueno, vuelta: '' })).toEqual({});
+  });
+
+  it('pide destino aunque solo haya espacios', () => {
+    expect(validarViaje({ ...bueno, destino: '   ' }).destino).toBe('Escribe a dónde vas.');
+  });
+
+  it('pide la salida', () => {
+    expect(validarViaje({ ...bueno, salida: '' }).salida).toBe('Elige el día de salida.');
+  });
+
+  it('la vuelta no puede ser antes de la salida', () => {
+    expect(validarViaje({ ...bueno, vuelta: '2027-07-14' }).vuelta).toBe('La vuelta no puede ser antes de la salida.');
+  });
+});
+
+describe('borradorAViaje y viajeABorrador', () => {
+  it('quita espacios del destino y guarda el id', () => {
+    const viaje = borradorAViaje({ icono: '🏖️', destino: '  Cádiz ', salida: '2027-07-15', vuelta: '2027-07-30' }, 'v1');
+    expect(viaje).toEqual({ id: 'v1', icono: '🏖️', destino: 'Cádiz', salida: '2027-07-15', vuelta: '2027-07-30' });
+  });
+
+  it('sin vuelta, o con la vuelta el mismo día, no guarda vuelta', () => {
+    expect(borradorAViaje({ ...BORRADOR_VACIO, destino: 'Toledo', salida: '2026-12-01' }, 'v2').vuelta).toBeUndefined();
+    expect(
+      borradorAViaje({ ...BORRADOR_VACIO, destino: 'Toledo', salida: '2026-12-01', vuelta: '2026-12-01' }, 'v2').vuelta,
+    ).toBeUndefined();
+  });
+
+  it('ida y vuelta devuelven el mismo viaje', () => {
+    expect(borradorAViaje(viajeABorrador(NAVIDAD), NAVIDAD.id)).toEqual(NAVIDAD);
+  });
+});
+
+describe('sumarDias', () => {
+  it('cambia de año sin problemas', () => {
+    expect(sumarDias('2026-12-30', 3)).toBe('2027-01-02');
   });
 });
