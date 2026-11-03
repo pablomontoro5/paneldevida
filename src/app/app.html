@@ -14,12 +14,7 @@
   </section>
 
   <section class="tarjeta" id="prioridades">
-    <h2>Prioridades</h2>
-    <ul>
-      @for (p of datos().prioridades; track p.id) {
-        <li>{{ p.texto }}</li>
-      }
-    </ul>
+    <app-prioridades [prioridades]="datos().prioridades" />
   </section>
 
   <section class="tarjeta" id="habitos">
