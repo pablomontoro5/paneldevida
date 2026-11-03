@@ -71,7 +71,7 @@ export function saludoSegunHora(hora: number): string{
   return 'Buenas noches';
 }
 
-function haceDiasDesde(n: number, hoy: Date): Date {
+export function haceDiasDesde(n: number, hoy: Date): Date {
   const fecha = new Date(hoy);
   fecha.setDate(fecha.getDate() - n);
   return fecha;
