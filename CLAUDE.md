@@ -56,7 +56,7 @@ Cada una se hace en su propia conversación, rama y pull request.
 
 | # | Tarea | Dificultad | Qué implica | Estado |
 | --- | --- | --- | --- | --- |
-| 1 | Cumplir los community standards de GitHub | ⭐ | Solo documentos: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues y PR en `.github/`. Hay que elegir licencia (ahora el README dice que no tiene). | Pendiente |
+| 1 | Cumplir los community standards de GitHub | ⭐ | Solo documentos: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues y PR en `.github/`. Licencia elegida: MIT. Seguridad por aviso privado de GitHub. | ✅ Hecha |
 | 2 | Reorganizar las carpetas | ⭐⭐ | Mover archivos a una estructura más clara (p. ej. `nucleo/`, `secciones/<nombre>/`, `compartido/`) y arreglar los `import`; las pruebas avisan si algo se rompe. Antes de añadir secciones nuevas. | Pendiente |
 | 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | Pendiente |
 | 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | Pendiente |

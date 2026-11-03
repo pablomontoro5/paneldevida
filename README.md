@@ -22,6 +22,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 - [Publicación en GitHub Pages](#publicación-en-github-pages)
 - [Flujo de trabajo con Git](#flujo-de-trabajo-con-git)
 - [Hoja de ruta](#hoja-de-ruta)
+- [Contribuir](#contribuir)
 - [Licencia](#licencia)
 
 ---
@@ -168,11 +169,18 @@ paneldevida/
 │       │   └── almacen.ts    Guardar y leer en localStorage, exportar e importar la copia
 │       └── utilidades/       Lógica sin Angular (fechas, rachas, ritmo de objetivos…) con sus pruebas
 ├── public/                   Archivos que se copian tal cual (favicon)
-├── .github/workflows/
-│   └── publicar.yml          Compila y publica la demo en GitHub Pages
+├── .github/
+│   ├── workflows/
+│   │   └── publicar.yml      Compila y publica la demo en GitHub Pages
+│   ├── ISSUE_TEMPLATE/       Plantillas de issues: informe de fallo y propuesta de mejora
+│   └── pull_request_template.md
 ├── angular.json              Configuración de Angular CLI
 ├── package.json              Dependencias y comandos (npm start, npm test…)
 ├── CLAUDE.md                 Descripción y reglas del proyecto (para Claude Code)
+├── CONTRIBUTING.md           Cómo contribuir
+├── CODE_OF_CONDUCT.md        Código de conducta
+├── SECURITY.md               Cómo avisar de un fallo de seguridad
+├── LICENSE                   Licencia MIT
 └── README.md                 Este archivo
 ```
 
@@ -333,7 +341,7 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 
 Lo que falta, de más fácil a más difícil (los detalles de cada tarea están en [`CLAUDE.md`](CLAUDE.md)):
 
-1. Cumplir los *community standards* de GitHub (licencia, guía de contribución, código de conducta, política de seguridad y plantillas).
+1. ~~Cumplir los *community standards* de GitHub (licencia, guía de contribución, código de conducta, política de seguridad y plantillas).~~ ✅
 2. Reorganizar las carpetas del proyecto.
 3. Cuenta atrás de viajes.
 4. Panel de navegación entre secciones con Angular Router.
@@ -346,8 +354,18 @@ Lo que falta, de más fácil a más difícil (los detalles de cada tarea están 
 
 ---
 
+## Contribuir
+
+Las ideas y los avisos de fallos son bienvenidos. Antes de abrir un issue o un pull request, echa un vistazo a:
+
+- [Cómo contribuir](CONTRIBUTING.md): preparar el entorno, ramas, commits y pull requests.
+- [Código de conducta](CODE_OF_CONDUCT.md).
+- [Política de seguridad](SECURITY.md): los fallos de seguridad se avisan en privado, no en un issue.
+
+---
+
 ## Licencia
 
-Este proyecto todavía **no tiene licencia**. El código se puede ver, pero no reutilizar ni redistribuir sin permiso del autor.
+Este proyecto tiene [licencia MIT](LICENSE): puedes usar, copiar, modificar y distribuir el código libremente, siempre que mantengas el aviso de copyright y de la licencia.
 
 Hecho por [pablomontoro5](https://github.com/pablomontoro5), estudiante de Ingeniería Informática.
