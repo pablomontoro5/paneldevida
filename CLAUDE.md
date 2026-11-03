@@ -40,22 +40,9 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 5. **Tiene que verse bien en el portátil y en el móvil** (diseño adaptable).
 6. **Mis datos no salen del ordenador**: nada de enviar datos a servicios externos, analíticas ni peticiones a internet.
 
-## Migración a Angular: sesiones
+## Migración a Angular
 
-| Lección | Estado |
-| --- | --- |
-| 1. Crear el proyecto y arrancarlo | ✅ Hecha |
-| 2. Idioma español y estilos globales | ✅ Hecha |
-| 3. Modelos y datos de ejemplo | ✅ Hecha |
-| 4. Utilidades de fechas y primeras pruebas | ✅ Hecha |
-| 5. AlmacenService | ✅ Hecha |
-| 6. Cabecera: saludo, fecha y tema | ✅ Hecha |
-| 7. Agenda | ✅ Hecha |
-| 8. Prioridades | ✅ Hecha |
-| 9. Hábitos | ✅ Hecha |
-| 10. Objetivos | ✅ Hecha |
-| 11. Tus datos (copia de seguridad) | ✅ Hecha |
-| 12. Quitar la versión vanilla, compilar y documentar | ✅ Hecha |
+✅ **Hecha** en 12 lecciones: proyecto, idioma y estilos, modelos, utilidades, almacén, cabecera, agenda, prioridades, hábitos, objetivos, copia de seguridad y quitar la versión vanilla.
 
 Convenciones: cada componente en `src/app/componentes/<nombre>/` con sus estilos propios; la lógica sin Angular va en `src/app/utilidades/` con su `.spec.ts` al lado. Las pruebas no deben depender del día en que se ejecutan (pasar la fecha como parámetro).
 ## Ideas para más adelante
