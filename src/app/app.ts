@@ -9,10 +9,11 @@ import { Prioridades } from './secciones/prioridades/prioridades';
 
 import { Habitos } from './secciones/habitos/habitos';
 import { Objetivos } from './secciones/objetivos/objetivos';
+import { Viajes } from './secciones/viajes/viajes';
 import { TusDatos } from './secciones/tus-datos/tus-datos';
 @Component({
   selector: 'app-root',
-  imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos,Objetivos,TusDatos],
+  imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos,Objetivos,Viajes,TusDatos],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
@@ -24,6 +25,7 @@ export class App {
     { id: 'prioridades', nombre: 'Prioridades' },
     { id: 'habitos', nombre: 'Hábitos' },
     { id: 'objetivos', nombre: 'Objetivos' },
+    { id: 'viajes', nombre: 'Viajes' },
     { id: 'datos', nombre: 'Tus datos' },
   ];
 }
