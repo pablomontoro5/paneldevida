@@ -48,7 +48,7 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 5. AlmacenService | ✅ Hecha |
 | 6. Cabecera: saludo, fecha y tema | ✅ Hecha |
 | 7. Agenda | ✅ Hecha |
-| 8. Prioridades | ⬜ Sin empezar |
+| 8. Prioridades | ✅ Hecha |
 | 9. Hábitos | ⬜ Sin empezar |
 | 10. Objetivos | ⬜ Sin empezar |
 | 11. Tus datos (copia de seguridad) | ⬜ Sin empezar |
