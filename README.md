@@ -33,7 +33,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 |---|---|
 | **Inicio** | La bienvenida: «Buenos días», «Buenas tardes» o «Buenas noches» según la hora, la fecha completa en español (p. ej. *Domingo, 1 de noviembre de 2026*) y una frase con lo que te queda del día. Debajo, un resumen de cada sección que enlaza a ella: el evento en curso o el siguiente, las prioridades hechas, la mejor racha, los objetivos al día y el próximo viaje. |
 | **Agenda de hoy** | Los eventos del día ordenados por hora. Los que ya han pasado salen atenuados y el que está en curso (**Ahora**) o el próximo (**Siguiente**) salen resaltados. Se actualiza sola cada minuto. Con **＋ Añadir evento** se crean nuevos (desde cero o con una idea: 📚 Estudiar, 🎓 Clase, 🏋️ Gimnasio…; si no pones la hora de fin, dura una hora), y cada evento tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
-| **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. |
+| **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. Con **＋ Añadir prioridad** se crean nuevas (desde cero o con una idea: 📚 Repasar apuntes, 📝 Entregar la práctica, 📞 Llamar a casa…) hasta un máximo de tres; al llegar a tres, el botón se cambia por un aviso. Cada una tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
 | **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
 | **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. |
 | **Próximos viajes** | Cada viaje con su destino, sus fechas («19 de diciembre de 2026 – 7 de enero de 2027») y los **días que faltan**. Muestra *Mañana* y *¡Es hoy!* cuando toca, *En curso* mientras estás de viaje, y oculta los que ya han pasado. Con **＋ Añadir viaje** se crean nuevos (desde cero o con una idea: 🏖️ playa, 🏔️ montaña, 🎄 Navidad…), y cada viaje tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
@@ -116,6 +116,8 @@ agenda: [
 
 ### Prioridades
 
+Las prioridades se editan desde el propio panel. Las de `datos.ts` solo se usan la primera vez que se abre (cuando aún no hay nada guardado en `panelDeVida:prioridades`); a partir de ahí manda lo guardado.
+
 ```ts
 prioridades: [
   { id: 'p1', texto: 'Terminar la práctica 3 de Redes' },
@@ -123,7 +125,9 @@ prioridades: [
 ]
 ```
 
-- `id` tiene que ser único; es lo que se guarda al marcar una prioridad.
+- `id` tiene que ser único; es lo que se guarda al marcar una prioridad (y sirve para editarla y borrarla).
+- Como mucho, tres.
+- Al borrar una prioridad se desmarca en el día de hoy; lo marcado en días anteriores no se toca.
 
 ### Hábitos
 
@@ -195,7 +199,7 @@ paneldevida/
 │       └── secciones/        Una carpeta por sección: componente, modelo y lógica con sus pruebas
 │           ├── inicio/       La bienvenida y el resumen del día (reúne la lógica de las demás)
 │           ├── agenda/       agenda.ts/.html/.css, agenda.modelo.ts, agenda.logica.ts, agenda.guardados.ts y agenda.plantillas.ts
-│           ├── prioridades/
+│           ├── prioridades/  Además: prioridades.guardados.ts (la lista guardada) y prioridades.plantillas.ts (ideas)
 │           ├── habitos/
 │           ├── objetivos/
 │           ├── viajes/       Además: viajes.guardados.ts (la lista guardada) y viajes.plantillas.ts (ideas)
@@ -232,6 +236,7 @@ El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el pre
 | Clave en `localStorage` | Qué guarda | Ejemplo |
 |---|---|---|
 | `panelDeVida:tema` | El tema elegido a mano | `"oscuro"` |
+| `panelDeVida:prioridades` | La lista de prioridades (la primera vez, las de ejemplo) | `[{ "id": "p1", "texto": "Terminar la práctica 3 de Redes" }]` |
 | `panelDeVida:prioridades:AAAA-MM-DD` | Las prioridades hechas ese día | `["p1", "p3"]` |
 | `panelDeVida:habitos` | Los días en que se cumplió cada hábito | `{ "leer": ["2026-10-31", "2026-11-01"] }` |
 | `panelDeVida:agenda` | Los eventos de la agenda (la primera vez, los de ejemplo) | `[{ "id": "gimnasio", "inicio": "19:00", "fin": "20:00", "titulo": "Gimnasio", "lugar": "" }]` |
@@ -239,7 +244,7 @@ El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el pre
 | `panelDeVida:objetivos:AAAA` | El progreso de cada objetivo ese año | `{ "libros": 11, "ahorro": 1334 }` |
 | `panelDeVida:ultimaCopia` | Cuándo se descargó la última copia (no viaja en la copia) | `"2026-11-02T08:15:00.000Z"` |
 
-Son las mismas claves que usaba la versión vanilla. Como las prioridades se guardan con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada.
+Son las mismas claves que usaba la versión vanilla. Como lo marcado de las prioridades se guarda con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada; la lista de prioridades va en su propia clave, sin fecha, así que se mantiene de un día para otro.
 
 ### Rutas (`app.routes.ts`)
 
@@ -388,7 +393,7 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 - [x] Cuenta atrás de viajes
 - [x] Navegación por secciones
 - [x] Usarlo en el iPhone como app sin conexión (con icono y service worker)
-- [ ] Añadir, editar y borrar desde el propio panel (✅ viajes y agenda; faltan prioridades, hábitos y objetivos)
+- [ ] Añadir, editar y borrar desde el propio panel (✅ viajes, agenda y prioridades; faltan hábitos y objetivos)
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
 
@@ -401,7 +406,7 @@ Lo que falta, de más fácil a más difícil (los detalles de cada tarea están 
 3. ~~Cuenta atrás de viajes.~~ ✅
 4. ~~Panel de navegación entre secciones con Angular Router.~~ ✅
 5. ~~Usarlo en el iPhone como app sin conexión.~~ ✅
-6. Añadir, editar y borrar desde el propio panel: ✅ viajes y agenda; faltan prioridades, hábitos y objetivos.
+6. Añadir, editar y borrar desde el propio panel: ✅ viajes, agenda y prioridades; faltan hábitos y objetivos.
 7. Sección de planes con recordatorios.
 8. Resumen semanal cada domingo.
 9. Repaso final del README.
