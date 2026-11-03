@@ -49,3 +49,43 @@ export function textoRacha(racha: number): string {
   if (racha === 0) return 'Sin racha';
   return racha === 1 ? '1 día seguido' : `${racha} días seguidos`;
 }
+
+// ---------- Formulario de los hábitos ----------
+
+// Lo que hay escrito en el formulario.
+export interface BorradorHabito {
+  icono: string;
+  nombre: string;
+}
+
+export type ErroresHabito = Partial<Record<'nombre', string>>;
+
+export const BORRADOR_HABITO_VACIO: BorradorHabito = { icono: '✅', nombre: '' };
+
+// Qué falta o está mal. Si devuelve {}, el hábito se puede guardar.
+export function validarHabito(borrador: BorradorHabito): ErroresHabito {
+  const errores: ErroresHabito = {};
+  if (!borrador.nombre.trim()) errores.nombre = 'Escribe el nombre del hábito.';
+  return errores;
+}
+
+// Convierte el formulario (ya validado) en un hábito. Un hábito nuevo no trae historial de ejemplo:
+// empieza sin racha. Al editar se mantiene el id, así que su historial sigue ahí.
+export function borradorAHabito(borrador: BorradorHabito, id: string): Habito {
+  return {
+    id,
+    icono: borrador.icono || BORRADOR_HABITO_VACIO.icono,
+    nombre: borrador.nombre.trim(),
+    historialEjemplo: [],
+  };
+}
+
+export function habitoABorrador(habito: Habito): BorradorHabito {
+  return { icono: habito.icono, nombre: habito.nombre };
+}
+
+// Registro nuevo sin los días de ese hábito (al borrarlo).
+export function quitarRegistro(registro: RegistroHabitos, id: string): RegistroHabitos {
+  const { [id]: _borrado, ...resto } = registro;
+  return resto;
+}
