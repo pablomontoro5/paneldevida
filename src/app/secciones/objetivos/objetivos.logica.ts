@@ -36,3 +36,87 @@ export function textoProgreso(objetivo: Objetivo, valor: number): string {
 export function formatoPorcentaje(fraccion: number): string {
   return formatoPorciento.format(fraccion);
 }
+
+// Quita el progreso de un objetivo borrado (devuelve un objeto nuevo, no cambia el original).
+export function quitarProgreso(progreso: ProgresoObjetivos, id: string): ProgresoObjetivos {
+  const resto = { ...progreso };
+  delete resto[id];
+  return resto;
+}
+
+// ---------- Formulario de los objetivos ----------
+
+export type TipoObjetivo = 'unidad' | 'euros';
+
+// Lo que hay escrito en el formulario. Los números son null si el campo está vacío.
+export interface BorradorObjetivo {
+  icono: string;
+  nombre: string;
+  meta: number | null;
+  paso: number | null;
+  tipo: TipoObjetivo;
+  unidad: string;
+  llevas: number | null; // al crear, el valor de partida; al editar, lo que llevas este año
+}
+
+export type ErroresObjetivo = Partial<Record<'nombre' | 'meta' | 'paso' | 'unidad' | 'llevas', string>>;
+
+export const BORRADOR_OBJETIVO_VACIO: BorradorObjetivo = {
+  icono: '🎯',
+  nombre: '',
+  meta: null,
+  paso: 1,
+  tipo: 'unidad',
+  unidad: '',
+  llevas: 0,
+};
+
+// "n is number" le dice a TypeScript que, si devuelve true, n ya no es null.
+function esPositivo(n: number | null): n is number {
+  return n !== null && Number.isFinite(n) && n > 0;
+}
+
+// Qué falta o está mal. Si devuelve {}, el objetivo se puede guardar.
+export function validarObjetivo(borrador: BorradorObjetivo): ErroresObjetivo {
+  const errores: ErroresObjetivo = {};
+  if (!borrador.nombre.trim()) errores.nombre = 'Escribe el nombre del objetivo.';
+  if (!esPositivo(borrador.meta)) errores.meta = 'La meta tiene que ser mayor que 0.';
+  if (!esPositivo(borrador.paso)) errores.paso = 'El paso tiene que ser mayor que 0.';
+  if (borrador.tipo === 'unidad' && !borrador.unidad.trim()) {
+    errores.unidad = 'Escribe la unidad (por ejemplo, libros o km) o elige euros.';
+  }
+  const llevas = borrador.llevas;
+  const pasaDeLaMeta = esPositivo(borrador.meta) && llevas !== null && llevas > borrador.meta;
+  if (llevas === null || !Number.isFinite(llevas) || llevas < 0 || pasaDeLaMeta) {
+    errores.llevas = 'Tiene que estar entre 0 y la meta.';
+  }
+  return errores;
+}
+
+// Convierte el formulario (ya validado) en un objetivo. "llevas" se guarda como valor de partida.
+export function borradorAObjetivo(borrador: BorradorObjetivo, id: string): Objetivo {
+  const objetivo: Objetivo = {
+    id,
+    icono: borrador.icono || BORRADOR_OBJETIVO_VACIO.icono,
+    nombre: borrador.nombre.trim(),
+    actual: borrador.llevas ?? 0,
+    meta: borrador.meta ?? 0,
+    paso: borrador.paso ?? 0,
+  };
+  if (borrador.tipo === 'euros') objetivo.formato = 'euros';
+  else objetivo.unidad = borrador.unidad.trim();
+  return objetivo;
+}
+
+// "valor" es lo que llevas este año, que puede ser distinto del valor de partida.
+export function objetivoABorrador(objetivo: Objetivo, valor: number): BorradorObjetivo {
+  return {
+    icono: objetivo.icono,
+    nombre: objetivo.nombre,
+    meta: objetivo.meta,
+    paso: objetivo.paso,
+    tipo: objetivo.formato === 'euros' ? 'euros' : 'unidad',
+    unidad: objetivo.unidad ?? '',
+    llevas: valor,
+  };
+}
