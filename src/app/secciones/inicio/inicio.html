@@ -1,0 +1,21 @@
+<div class="rejilla">
+  <section class="tarjeta">
+    <app-agenda [eventos]="datos.agenda" />
+  </section>
+
+  <section class="tarjeta">
+    <app-prioridades [prioridades]="datos.prioridades" />
+  </section>
+
+  <section class="tarjeta">
+    <app-habitos [habitos]="datos.habitos" />
+  </section>
+
+  <section class="tarjeta tarjeta-ancha">
+    <app-objetivos [objetivos]="datos.objetivos" />
+  </section>
+
+  <section class="tarjeta tarjeta-ancha">
+    <app-viajes [viajes]="datos.viajes" />
+  </section>
+</div>
