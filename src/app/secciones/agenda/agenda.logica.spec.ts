@@ -1,6 +1,6 @@
 import { marcarEventos } from './agenda.logica';
 
-const ev = (inicio: string, fin: string) => ({ inicio, fin, titulo: inicio, lugar: '' });
+const ev = (inicio: string, fin: string) => ({ id: inicio, inicio, fin, titulo: inicio, lugar: '' });
 
 describe('marcarEventos', () => {
   it('ordena por hora de inicio', () => {

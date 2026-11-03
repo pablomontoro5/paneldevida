@@ -16,9 +16,9 @@ const hoy = new Date(2026, 10, 3, 18, 0); // 3 de noviembre de 2026 a las 18:00
 const LAS_18 = 18 * 60;
 
 const AGENDA: Evento[] = [
-  { inicio: '19:00', fin: '20:00', titulo: 'Gimnasio', lugar: '' },
-  { inicio: '08:30', fin: '10:30', titulo: 'Clase', lugar: 'Aula 2.4' },
-  { inicio: '16:30', fin: '18:30', titulo: 'Estudiar', lugar: 'Biblioteca' },
+  { id: 'e1', inicio: '19:00', fin: '20:00', titulo: 'Gimnasio', lugar: '' },
+  { id: 'e2', inicio: '08:30', fin: '10:30', titulo: 'Clase', lugar: 'Aula 2.4' },
+  { id: 'e3', inicio: '16:30', fin: '18:30', titulo: 'Estudiar', lugar: 'Biblioteca' },
 ];
 
 describe('eventosRestantes', () => {
