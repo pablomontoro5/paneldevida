@@ -1,26 +1,110 @@
 <h2>Agenda de hoy</h2>
+
+@if (editando() === null) {
+  <button type="button" class="boton boton-principal boton-anadir" (click)="abrirNuevo()">＋ Añadir evento</button>
+} @else {
+  <form class="formulario" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <h3 class="formulario-titulo">{{ editando() ? 'Editar evento' : 'Nuevo evento' }}</h3>
+
+    @if (!editando()) {
+      <div class="plantillas">
+        <span class="campo-etiqueta" id="titulo-plantillas">Ideas para empezar</span>
+        <div class="plantillas-lista" role="group" aria-labelledby="titulo-plantillas">
+          @for (p of plantillas; track p.titulo) {
+            <button type="button" class="plantilla" (click)="usarPlantilla(p)">
+              <span aria-hidden="true">{{ p.icono }}</span> {{ p.titulo }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="campo">
+      <label class="campo-etiqueta" for="evento-titulo">Qué tienes</label>
+      <input #campoTitulo id="evento-titulo" type="text" formControlName="titulo" maxlength="80"
+             placeholder="Por ejemplo, Clase de Álgebra"
+             [attr.aria-invalid]="!!errores().titulo"
+             [attr.aria-describedby]="errores().titulo ? 'error-titulo' : null" />
+      @if (errores().titulo; as e) {
+        <span class="campo-error" id="error-titulo">{{ e }}</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label class="campo-etiqueta" for="evento-lugar">Dónde <span class="opcional">(opcional)</span></label>
+      <input id="evento-lugar" type="text" formControlName="lugar" maxlength="60"
+             placeholder="Por ejemplo, Aula 2.4" />
+    </div>
+
+    <div class="campos-fila">
+      <div class="campo">
+        <label class="campo-etiqueta" for="evento-inicio">Empieza</label>
+        <input id="evento-inicio" type="time" formControlName="inicio"
+               [attr.aria-invalid]="!!errores().inicio"
+               [attr.aria-describedby]="errores().inicio ? 'error-inicio' : null" />
+        @if (errores().inicio; as e) {
+          <span class="campo-error" id="error-inicio">{{ e }}</span>
+        }
+      </div>
+      <div class="campo">
+        <label class="campo-etiqueta" for="evento-fin">Termina <span class="opcional">(si no, dura 1 hora)</span></label>
+        <input id="evento-fin" type="time" formControlName="fin"
+               [min]="formulario.controls.inicio.value"
+               [attr.aria-invalid]="!!errores().fin"
+               [attr.aria-describedby]="errores().fin ? 'error-fin' : null" />
+        @if (errores().fin; as e) {
+          <span class="campo-error" id="error-fin">{{ e }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="formulario-acciones">
+      <button type="button" class="boton" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="boton boton-principal">{{ editando() ? 'Guardar cambios' : 'Añadir evento' }}</button>
+    </div>
+  </form>
+}
+
 <ol class="agenda">
-  @for (e of lista(); track e.inicio) {
+  @for (e of lista(); track e.id) {
     <li
       class="evento"
       [class.evento-pasado]="e.estado === 'pasado'"
       [class.evento-actual]="e.estado === 'actual'"
       [class.evento-siguiente]="e.estado === 'siguiente'"
+      [class.editandose]="editando() === e.id"
     >
-      <span class="evento-hora">{{ e.inicio }}–{{ e.fin }}</span>
-      <div class="evento-cuerpo">
-        <span class="evento-titulo">{{ e.titulo }}</span>
-        @if (e.lugar) {
-          <span class="evento-lugar">{{ e.lugar }}</span>
+      <div class="evento-fila">
+        <span class="evento-hora">{{ e.inicio }}–{{ e.fin }}</span>
+        <div class="evento-cuerpo">
+          <span class="evento-titulo">{{ e.titulo }}</span>
+          @if (e.lugar) {
+            <span class="evento-lugar">{{ e.lugar }}</span>
+          }
+        </div>
+        @if (e.estado === 'actual') {
+          <span class="etiqueta">Ahora</span>
+        } @else if (e.estado === 'siguiente') {
+          <span class="etiqueta">Siguiente</span>
         }
       </div>
-      @if (e.estado === 'actual') {
-        <span class="etiqueta">Ahora</span>
-      } @else if (e.estado === 'siguiente') {
-        <span class="etiqueta">Siguiente</span>
+
+      @if (borrando() === e.id) {
+        <div class="evento-acciones confirmar" role="alert">
+          <span>¿Borrar este evento?</span>
+          <button type="button" class="boton boton-peligro" (click)="confirmarBorrado(e.id)">Sí, borrar</button>
+          <button type="button" class="boton" (click)="borrando.set(null)">No</button>
+        </div>
+      } @else {
+        <div class="evento-acciones">
+          <button type="button" class="boton boton-pequeno" (click)="editar(e)"
+                  [attr.aria-label]="'Editar ' + e.titulo">Editar</button>
+          <button type="button" class="boton boton-pequeno boton-borrar" (click)="borrando.set(e.id)"
+                  [attr.aria-label]="'Borrar ' + e.titulo">Borrar</button>
+        </div>
       }
     </li>
   } @empty {
-    <li class="vacio">No tienes nada en la agenda hoy.</li>
+    <li class="vacio">No tienes nada en la agenda hoy. Añade un evento para empezar.</li>
   }
 </ol>
