@@ -58,9 +58,6 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 12. Quitar la versión vanilla, compilar y documentar | ✅ Hecha |
 
 Convenciones: cada componente en `src/app/componentes/<nombre>/` con sus estilos propios; la lógica sin Angular va en `src/app/utilidades/` con su `.spec.ts` al lado. Las pruebas no deben depender del día en que se ejecutan (pasar la fecha como parámetro).
-
-**Siguiente paso tras la lección 12** (rama `arreglo/racha-con-fecha-fija`): `calcularRacha` ignora su parámetro `hoy` en el bucle (usa `haceDias`, que mira el reloj real); cambiarlo por `haceDiasDesde(desde + racha, hoy)` y fijar `ayer` en `fechas.spec.ts`. Hasta entonces esa prueba falla.
-
 ## Ideas para más adelante
 
 - Conectar **Google Calendar** para la agenda del día.
