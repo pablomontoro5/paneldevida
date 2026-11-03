@@ -34,7 +34,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 | **Inicio** | La bienvenida: «Buenos días», «Buenas tardes» o «Buenas noches» según la hora, la fecha completa en español (p. ej. *Domingo, 1 de noviembre de 2026*) y una frase con lo que te queda del día. Debajo, un resumen de cada sección que enlaza a ella: el evento en curso o el siguiente, las prioridades hechas, la mejor racha, los objetivos al día y el próximo viaje. |
 | **Agenda de hoy** | Los eventos del día ordenados por hora. Los que ya han pasado salen atenuados y el que está en curso (**Ahora**) o el próximo (**Siguiente**) salen resaltados. Se actualiza sola cada minuto. Con **＋ Añadir evento** se crean nuevos (desde cero o con una idea: 📚 Estudiar, 🎓 Clase, 🏋️ Gimnasio…; si no pones la hora de fin, dura una hora), y cada evento tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
 | **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. Con **＋ Añadir prioridad** se crean nuevas (desde cero o con una idea: 📚 Repasar apuntes, 📝 Entregar la práctica, 📞 Llamar a casa…) hasta un máximo de tres; al llegar a tres, el botón se cambia por un aviso. Cada una tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
-| **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
+| **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. Con **＋ Añadir hábito** se crean nuevos (desde cero o con una idea: 📚 Leer 20 minutos, 🧘 Meditar 10 minutos, 💧 Beber 2 litros de agua…), que empiezan sin racha. Cada uno tiene **Editar** (la racha se mantiene) y **Borrar** (con confirmación, que avisa de la racha que se pierde). Se guardan en este navegador. |
 | **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. Con **＋ Añadir objetivo** se crean nuevos (desde cero o con una idea: 📚 Leer 24 libros, 💶 Ahorrar 1.500 €, 🏃 Correr 300 km…), en unidades o en euros. Cada uno tiene **Editar** (también para corregir lo que llevas) y **Borrar** (con confirmación). Se guardan en este navegador. |
 | **Próximos viajes** | Cada viaje con su destino, sus fechas («19 de diciembre de 2026 – 7 de enero de 2027») y los **días que faltan**. Muestra *Mañana* y *¡Es hoy!* cuando toca, *En curso* mientras estás de viaje, y oculta los que ya han pasado. Con **＋ Añadir viaje** se crean nuevos (desde cero o con una idea: 🏖️ playa, 🏔️ montaña, 🎄 Navidad…), y cada viaje tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
 | **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
@@ -131,6 +131,8 @@ prioridades: [
 
 ### Hábitos
 
+Los hábitos se editan desde el propio panel. Los de `datos.ts` solo se usan la primera vez que se abre (cuando aún no hay nada guardado en `panelDeVida:habitos-lista`); a partir de ahí manda lo guardado.
+
 ```ts
 habitos: [
   { id: 'leer', icono: '📚', nombre: 'Leer 20 minutos', historialEjemplo: [1, 2, 3] },
@@ -138,8 +140,9 @@ habitos: [
 ]
 ```
 
-- `id` tiene que ser único y **no conviene cambiarlo** después: si cambia, se pierde el historial de ese hábito.
-- `historialEjemplo` son los días atrás en que se cumplió (`1` = ayer, `2` = anteayer…). **Solo se usa la primera vez** que se abre el panel, para que las rachas no empiecen a cero. Después manda lo que marques tú.
+- `id` tiene que ser único: es lo que une el hábito con su historial, así que no cambia al editar.
+- `historialEjemplo` son los días atrás en que se cumplió (`1` = ayer, `2` = anteayer…). **Solo se usa la primera vez** que se abre el panel, para que las rachas no empiecen a cero. Después manda lo que marques tú. Los hábitos que creas desde el panel lo llevan vacío (`[]`): empiezan sin racha.
+- Al borrar un hábito se borran también los días que lo habías cumplido.
 
 ### Objetivos del año
 
@@ -186,7 +189,7 @@ paneldevida/
 │   ├── styles.css            Estilos globales: colores (claro y oscuro), rejilla, tarjetas
 │   └── app/
 │       ├── app.ts / .html    Componente raíz: cabecera, menú lateral, barra del móvil y <router-outlet>
-│       ├── app.routes.ts     Una ruta por sección, con sus datos de ejemplo
+│       ├── app.routes.ts     Una ruta por sección
 │       ├── datos.ts          Datos de ejemplo
 │       ├── datos.modelo.ts   Tipo que agrupa los datos de todas las secciones
 │       ├── nucleo/           Lo que usa toda la aplicación
@@ -203,7 +206,7 @@ paneldevida/
 │           ├── inicio/       La bienvenida y el resumen del día (reúne la lógica de las demás)
 │           ├── agenda/       agenda.ts/.html/.css, agenda.modelo.ts, agenda.logica.ts, agenda.guardados.ts y agenda.plantillas.ts
 │           ├── prioridades/  Además: prioridades.guardados.ts (la lista guardada) y prioridades.plantillas.ts (ideas)
-│           ├── habitos/
+│           ├── habitos/      Además: habitos.guardados.ts (la lista guardada) y habitos.plantillas.ts (ideas)
 │           ├── objetivos/    Además: objetivos.guardados.ts (la lista guardada) y objetivos.plantillas.ts (ideas)
 │           ├── viajes/       Además: viajes.guardados.ts (la lista guardada) y viajes.plantillas.ts (ideas)
 │           └── tus-datos/    Descargar y restaurar la copia
@@ -241,6 +244,7 @@ El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el pre
 | `panelDeVida:tema` | El tema elegido a mano | `"oscuro"` |
 | `panelDeVida:prioridades` | La lista de prioridades (la primera vez, las de ejemplo) | `[{ "id": "p1", "texto": "Terminar la práctica 3 de Redes" }]` |
 | `panelDeVida:prioridades:AAAA-MM-DD` | Las prioridades hechas ese día | `["p1", "p3"]` |
+| `panelDeVida:habitos-lista` | La lista de hábitos (la primera vez, los de ejemplo) | `[{ "id": "leer", "icono": "📚", "nombre": "Leer 20 minutos", "historialEjemplo": [] }]` |
 | `panelDeVida:habitos` | Los días en que se cumplió cada hábito | `{ "leer": ["2026-10-31", "2026-11-01"] }` |
 | `panelDeVida:agenda` | Los eventos de la agenda (la primera vez, los de ejemplo) | `[{ "id": "gimnasio", "inicio": "19:00", "fin": "20:00", "titulo": "Gimnasio", "lugar": "" }]` |
 | `panelDeVida:viajes` | La lista de viajes (la primera vez, los de ejemplo) | `[{ "id": "navidad", "icono": "🎄", "destino": "Navidad en casa", "salida": "2026-12-19" }]` |
@@ -248,11 +252,11 @@ El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el pre
 | `panelDeVida:objetivos:AAAA` | El progreso de cada objetivo ese año | `{ "libros": 11, "ahorro": 1334 }` |
 | `panelDeVida:ultimaCopia` | Cuándo se descargó la última copia (no viaja en la copia) | `"2026-11-02T08:15:00.000Z"` |
 
-Son las mismas claves que usaba la versión vanilla. Como lo marcado de las prioridades se guarda con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada; la lista de prioridades va en su propia clave, sin fecha, así que se mantiene de un día para otro. Con los objetivos pasa lo mismo, pero por años: la lista va sin año y el progreso, con el año en la clave.
+Son las mismas claves que usaba la versión vanilla. Como lo marcado de las prioridades se guarda con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada; la lista de prioridades va en su propia clave, sin fecha, así que se mantiene de un día para otro. Con los objetivos pasa lo mismo, pero por años: la lista va sin año y el progreso, con el año en la clave. Los hábitos también separan las dos cosas: `habitos` ya guardaba los días cumplidos, así que la lista va en `habitos-lista` y el historial (y las rachas) de antes se conserva.
 
 ### Rutas (`app.routes.ts`)
 
-Cada sección tiene su ruta con **Angular Router**, y `''` abre el Inicio. Cualquier dirección desconocida vuelve al Inicio. Con `withComponentInputBinding()`, los datos que se ponen en `data` de cada ruta llegan directamente a los `input()` de su componente, así que las secciones no saben si se muestran solas o dentro del Inicio. Los enlaces usan `routerLink` y `routerLinkActive` para resaltar la sección abierta. El `title` de cada ruta lo recoge `TituloPanel` (`nucleo/titulo.ts`), un `TitleStrategy` propio: pone «Hábitos · Panel de vida» en la pestaña y deja «Hábitos» en una signal que lee la cabecera. El Inicio no tiene `title`, así que allí la cabecera no muestra nombre y la bienvenida ocupa su lugar.
+Cada sección tiene su ruta con **Angular Router**, y `''` abre el Inicio. Cualquier dirección desconocida vuelve al Inicio. Las rutas ya no llevan `data`: cada sección lee su lista de su servicio `*.guardados.ts`, el mismo que usa el Inicio. Los enlaces usan `routerLink` y `routerLinkActive` para resaltar la sección abierta. El `title` de cada ruta lo recoge `TituloPanel` (`nucleo/titulo.ts`), un `TitleStrategy` propio: pone «Hábitos · Panel de vida» en la pestaña y deja «Hábitos» en una signal que lee la cabecera. El Inicio no tiene `title`, así que allí la cabecera no muestra nombre y la bienvenida ocupa su lugar.
 
 GitHub Pages no conoce estas rutas: al recargar `/paneldevida/habitos` buscaría un archivo que no existe y daría 404. Por eso `publicar.yml` copia `index.html` como `404.html`: Pages lo sirve en su lugar, carga la aplicación y el router abre la sección correcta.
 
@@ -397,7 +401,7 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 - [x] Cuenta atrás de viajes
 - [x] Navegación por secciones
 - [x] Usarlo en el iPhone como app sin conexión (con icono y service worker)
-- [ ] Añadir, editar y borrar desde el propio panel (✅ viajes, agenda, prioridades y objetivos; faltan los hábitos)
+- [x] Añadir, editar y borrar desde el propio panel (viajes, agenda, prioridades, objetivos y hábitos)
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
 
@@ -410,7 +414,7 @@ Lo que falta, de más fácil a más difícil (los detalles de cada tarea están 
 3. ~~Cuenta atrás de viajes.~~ ✅
 4. ~~Panel de navegación entre secciones con Angular Router.~~ ✅
 5. ~~Usarlo en el iPhone como app sin conexión.~~ ✅
-6. Añadir, editar y borrar desde el propio panel: ✅ viajes, agenda, prioridades y objetivos; faltan los hábitos.
+6. ~~Añadir, editar y borrar desde el propio panel.~~ ✅
 7. Sección de planes con recordatorios.
 8. Resumen semanal cada domingo.
 9. Repaso final del README.
