@@ -329,6 +329,21 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
 
+### Orden previsto
+
+Lo que falta, de más fácil a más difícil (los detalles de cada tarea están en [`CLAUDE.md`](CLAUDE.md)):
+
+1. Cumplir los *community standards* de GitHub (licencia, guía de contribución, código de conducta, política de seguridad y plantillas).
+2. Reorganizar las carpetas del proyecto.
+3. Cuenta atrás de viajes.
+4. Panel de navegación entre secciones con Angular Router.
+5. Usarlo en el iPhone como app sin conexión.
+6. Editar agenda, prioridades y hábitos desde el propio panel.
+7. Sección de planes con recordatorios.
+8. Resumen semanal cada domingo.
+9. Repaso final del README.
+10. Conectar Google Calendar (pendiente de decidir, porque los datos no deben salir del ordenador).
+
 ---
 
 ## Licencia
