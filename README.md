@@ -1,12 +1,12 @@
 # Panel de vida
 
-Un panel personal que abro cada mañana para ver de un vistazo cómo voy en todo: lo que tengo hoy, mis tres prioridades, mis hábitos y mis objetivos del año.
+Un panel personal que abro cada mañana para ver de un vistazo cómo voy en todo: lo que tengo hoy, mis tres prioridades, mis hábitos, mis objetivos del año y cuánto falta para mis viajes.
 
 Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals y pruebas con Vitest. Empezó como una página en HTML, CSS y JavaScript normales y lo he migrado a Angular paso a paso para aprenderlo. La versión original sigue guardada en la etiqueta [`v1-vanilla`](https://github.com/pablomontoro5/paneldevida/tree/v1-vanilla).
 
 **🔗 Demo:** [pablomontoro5.github.io/paneldevida](https://pablomontoro5.github.io/paneldevida/), con los datos de ejemplo. Lo que marques ahí se guarda solo en tu navegador.
 
-> **Estado:** en desarrollo. Ya funcionan el saludo, la agenda, las prioridades, los hábitos, los objetivos del año y la copia de seguridad. La cuenta atrás de viajes está pendiente (ver [Hoja de ruta](#hoja-de-ruta)).
+> **Estado:** en desarrollo. Ya funcionan el saludo, la agenda, las prioridades, los hábitos, los objetivos del año, la cuenta atrás de viajes y la copia de seguridad (lo siguiente, en la [Hoja de ruta](#hoja-de-ruta)).
 
 ---
 
@@ -36,6 +36,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 | **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. |
 | **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
 | **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. |
+| **Próximos viajes** | Cada viaje con su destino, sus fechas («19 de diciembre de 2026 – 7 de enero de 2027») y los **días que faltan**. Muestra *Mañana* y *¡Es hoy!* cuando toca, *En curso* mientras estás de viaje, y oculta los que ya han pasado. |
 | **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
 
@@ -144,6 +145,19 @@ objetivos: [
 - Con `formato: 'euros'` las cantidades se muestran como dinero (`1.284 €`); si no, con su `unidad`.
 - Como en los hábitos, el `id` no conviene cambiarlo.
 
+### Viajes
+
+```ts
+viajes: [
+  { id: 'navidad', icono: '🎄', destino: 'Navidad en casa', salida: '2026-12-19', vuelta: '2027-01-07' },
+  // ...
+]
+```
+
+- Las fechas van como texto `AAAA-MM-DD`.
+- `vuelta` no es obligatoria: sin ella, el viaje dura un solo día.
+- Se ordenan solos por fecha de salida y desaparecen al día siguiente de la vuelta.
+
 ---
 
 ## Estructura del proyecto
@@ -169,6 +183,7 @@ paneldevida/
 │           ├── prioridades/
 │           ├── habitos/
 │           ├── objetivos/
+│           ├── viajes/
 │           └── tus-datos/    Descargar y restaurar la copia
 ├── public/                   Archivos que se copian tal cual (favicon)
 ├── .github/
@@ -333,7 +348,7 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 - [x] Copia de seguridad: descargar y restaurar
 - [x] Demo publicada en GitHub Pages
 - [x] Migrar a Angular
-- [ ] Cuenta atrás de viajes
+- [x] Cuenta atrás de viajes
 - [ ] Editar prioridades, agenda y hábitos desde el propio panel
 - [ ] Usarlo en el iPhone como app sin conexión (con icono y service worker)
 - [ ] Conectar Google Calendar para la agenda
@@ -344,8 +359,8 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 Lo que falta, de más fácil a más difícil (los detalles de cada tarea están en [`CLAUDE.md`](CLAUDE.md)):
 
 1. ~~Cumplir los *community standards* de GitHub (licencia, guía de contribución, código de conducta, política de seguridad y plantillas).~~ ✅
-2. Reorganizar las carpetas del proyecto.
-3. Cuenta atrás de viajes.
+2. ~~Reorganizar las carpetas del proyecto.~~ ✅
+3. ~~Cuenta atrás de viajes.~~ ✅
 4. Panel de navegación entre secciones con Angular Router.
 5. Usarlo en el iPhone como app sin conexión.
 6. Editar agenda, prioridades y hábitos desde el propio panel.

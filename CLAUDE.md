@@ -59,7 +59,7 @@ Cada una se hace en su propia conversación, rama y pull request.
 | --- | --- | --- | --- | --- |
 | 1 | Cumplir los community standards de GitHub | ⭐ | Solo documentos: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues y PR en `.github/`. Licencia elegida: MIT. Seguridad por aviso privado de GitHub. | ✅ Hecha |
 | 2 | Reorganizar las carpetas | ⭐⭐ | Mover archivos a una estructura más clara (p. ej. `nucleo/`, `secciones/<nombre>/`, `compartido/`) y arreglar los `import`; las pruebas avisan si algo se rompe. Antes de añadir secciones nuevas. | ✅ Hecha |
-| 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | Pendiente |
+| 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | ✅ Hecha |
 | 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | Pendiente |
 | 5 | App sin conexión en el iPhone (PWA) | ⭐⭐⭐ | `ng add @angular/pwa` (paquete oficial de Angular). Lo difícil es probar la caché, el `base-href` y el icono en el móvil. Después del router. | Pendiente |
 | 6 | Editar agenda, prioridades y hábitos desde el panel | ⭐⭐⭐⭐ | Formularios (crear, editar, borrar), pasar los datos de `datos.ts` a `localStorage` y migrar lo guardado sin perder el historial. Probablemente una conversación por sección. | Pendiente |
