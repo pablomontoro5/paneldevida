@@ -16,10 +16,27 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('muestra la cabecera', async () => {
+  it('muestra la cabecera y el hueco de las rutas', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('app-cabecera')).toBeTruthy();
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
+  });
+
+  it('el menú lateral tiene un enlace por sección', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const enlaces = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.menu-lateral a')];
+    expect(enlaces.map(a => a.getAttribute('href'))).toEqual([
+      '/', '/agenda', '/prioridades', '/habitos', '/objetivos', '/viajes', '/datos',
+    ]);
+  });
+
+  it('la barra del móvil tiene cinco enlaces', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const enlaces = (fixture.nativeElement as HTMLElement).querySelectorAll('.barra-movil a');
+    expect(enlaces.length).toBe(5);
   });
 });

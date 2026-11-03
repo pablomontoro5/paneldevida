@@ -71,6 +71,11 @@ body {
   margin: 0 auto;
 }
 
+/* En el móvil se deja sitio abajo para la barra de navegación flotante */
+@media (max-width: 767px) {
+  body { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+}
+
 h2 {
   margin: 0 0 12px;
   font-size: 1.05rem;
@@ -100,6 +105,17 @@ ul, ol {
   padding: 18px;
   box-shadow: var(--sombra);
   min-width: 0;
+}
+
+/* Cada sección abierta sola desde el menú se ve dentro de una tarjeta, como en el inicio.
+   Va aquí y no en app.css porque el router la pone fuera de la plantilla de App. */
+.contenido > :is(app-agenda, app-prioridades, app-habitos, app-objetivos, app-viajes, app-tus-datos) {
+  display: block;
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--sombra);
 }
 
 .tarjeta-cabecera {
