@@ -1,0 +1,38 @@
+/* ---------- Agenda ---------- */
+.evento {
+  display: grid;
+  grid-template-columns: 6.5em 1fr auto;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--borde);
+}
+
+.evento:first-child { border-top: none; padding-top: 0; }
+
+.evento-hora {
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+}
+
+.evento-cuerpo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.evento-titulo { font-weight: 600; }
+
+.evento-lugar {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.evento-pasado { opacity: 0.45; }
+
+.evento-actual .evento-hora,
+.evento-siguiente .evento-hora {
+  color: var(--acento);
+  font-weight: 600;
+}
