@@ -16,10 +16,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('muestra el título', async () => {
+  it('muestra la cabecera', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Panel de vida');
+    expect(compiled.querySelector('app-cabecera')).toBeTruthy();
   });
 });
