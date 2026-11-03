@@ -1,24 +1,83 @@
 <div class="tarjeta-cabecera">
-    <h2>Prioridades</h2>
-    <span class="etiqueta">{{ contador() }}</span>
+  <h2>Prioridades</h2>
+  <span class="etiqueta">{{ contador() }}</span>
 </div>
 
-<ul class="prioridades">
-    @for (p of prioridades(); track p.id; let i = $index) {
-        <li class="prioridad" [class.hecha]="hechas().includes(p.id)">
-            <label class="prioridad-etiqueta">
-                <input
-                    #casilla
-                    type="checkbox"
-                    [checked]="hechas().includes(p.id)"
-                    (change)="alternar(p.id,casilla.checked)"
-                />
-                <span class="prioridad-numero">{{ i+1 }}</span>
-                <span class="prioridad-texto">{{ p.texto }}</span>
-            </label>
-        
-        </li>
-    } @empty {
-        <li class="vacio">No tienes prioridades para hoy.</li>
+@if (editando() === null) {
+  @if (sePuedeAnadir()) {
+    <button type="button" class="boton boton-principal boton-anadir" (click)="abrirNuevo()">＋ Añadir prioridad</button>
+  } @else {
+    <p class="aviso-limite">Ya tienes tus {{ maximo }} prioridades: edita o borra una para cambiarla.</p>
+  }
+} @else {
+  <form class="formulario" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <h3 class="formulario-titulo">{{ editando() ? 'Editar prioridad' : 'Nueva prioridad' }}</h3>
+
+    @if (!editando()) {
+      <div class="plantillas">
+        <span class="campo-etiqueta" id="titulo-plantillas">Ideas para empezar</span>
+        <div class="plantillas-lista" role="group" aria-labelledby="titulo-plantillas">
+          @for (p of plantillas; track p.texto) {
+            <button type="button" class="plantilla" (click)="usarPlantilla(p)">
+              <span aria-hidden="true">{{ p.icono }}</span> {{ p.texto }}
+            </button>
+          }
+        </div>
+      </div>
     }
+
+    <div class="campo">
+      <label class="campo-etiqueta" for="prioridad-texto">Qué quieres hacer hoy</label>
+      <input #campoTexto id="prioridad-texto" type="text" formControlName="texto" maxlength="80"
+             placeholder="Por ejemplo, Terminar la práctica de Redes"
+             [attr.aria-invalid]="!!errores().texto"
+             [attr.aria-describedby]="errores().texto ? 'error-texto' : null" />
+      @if (errores().texto; as e) {
+        <span class="campo-error" id="error-texto">{{ e }}</span>
+      }
+    </div>
+
+    @if (errores().limite; as e) {
+      <span class="campo-error" role="alert">{{ e }}</span>
+    }
+
+    <div class="formulario-acciones">
+      <button type="button" class="boton" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="boton boton-principal">{{ editando() ? 'Guardar cambios' : 'Añadir prioridad' }}</button>
+    </div>
+  </form>
+}
+
+<ul class="prioridades">
+  @for (p of prioridades(); track p.id; let i = $index) {
+    <li class="prioridad" [class.hecha]="hechas().includes(p.id)" [class.editandose]="editando() === p.id">
+      <label class="prioridad-etiqueta">
+        <input
+          #casilla
+          type="checkbox"
+          [checked]="hechas().includes(p.id)"
+          (change)="alternar(p.id, casilla.checked)"
+        />
+        <span class="prioridad-numero">{{ i + 1 }}</span>
+        <span class="prioridad-texto">{{ p.texto }}</span>
+      </label>
+
+      @if (borrando() === p.id) {
+        <div class="prioridad-acciones confirmar" role="alert">
+          <span>¿Borrar esta prioridad?</span>
+          <button type="button" class="boton boton-peligro" (click)="confirmarBorrado(p.id)">Sí, borrar</button>
+          <button type="button" class="boton" (click)="borrando.set(null)">No</button>
+        </div>
+      } @else {
+        <div class="prioridad-acciones">
+          <button type="button" class="boton boton-pequeno" (click)="editar(p)"
+                  [attr.aria-label]="'Editar ' + p.texto">Editar</button>
+          <button type="button" class="boton boton-pequeno boton-borrar" (click)="borrando.set(p.id)"
+                  [attr.aria-label]="'Borrar ' + p.texto">Borrar</button>
+        </div>
+      }
+    </li>
+  } @empty {
+    <li class="vacio">No tienes prioridades para hoy. Añade una para empezar.</li>
+  }
 </ul>
