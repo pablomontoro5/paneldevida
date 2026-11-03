@@ -18,10 +18,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4          # bajar el código
+
+      - uses: actions/setup-node@v4        # instalar Node
+        with:
+          node-version: 24
+          cache: npm                       # guardar las descargas de npm entre ejecuciones
+
+      - run: npm ci                        # instalar las dependencias exactas del package-lock.json
+
+      - run: npx ng build --base-href /paneldevida/   # compilar para la dirección de Pages
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: dist/paneldevida/browser   # subir solo lo compilado
 
   deploy:
     needs: build
