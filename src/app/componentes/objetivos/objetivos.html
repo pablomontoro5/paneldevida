@@ -1,0 +1,43 @@
+<div class="tarjeta-cabecera">
+  <h2>Objetivos {{ anio }}</h2>
+  <span class="etiqueta">Llevas el {{ textoRitmo }} del año</span>
+</div>
+
+<ul class="objetivos">
+  @for (f of filas(); track f.id) {
+    <li class="objetivo" [class.conseguido]="f.estado === 'conseguido'">
+      <div class="objetivo-cabecera">
+        <span class="objetivo-nombre">{{ f.icono }} {{ f.nombre }}</span>
+        <div class="objetivo-estado">
+          <span class="etiqueta" [class]="'etiqueta-' + f.estado">{{ f.textoEstado }}</span>
+          <span class="objetivo-porcentaje">{{ f.porcentaje }}</span>
+        </div>
+      </div>
+
+      <div class="barra" role="progressbar" aria-valuemin="0"
+           [attr.aria-label]="f.nombre"
+           [attr.aria-valuemax]="f.meta"
+           [attr.aria-valuenow]="f.valor"
+           [attr.aria-valuetext]="f.texto">
+        <div class="barra-relleno" [style.width.%]="f.anchoBarra"></div>
+        <div class="barra-marca" [style.left.%]="ritmo * 100"
+             [title]="'Donde deberías ir hoy: ' + textoRitmo"></div>
+      </div>
+
+      <div class="objetivo-pie">
+        <span class="objetivo-progreso">{{ f.texto }}</span>
+        <div class="objetivo-controles">
+          <button type="button" class="boton-objetivo"
+                  [disabled]="f.valor <= 0"
+                  [attr.aria-label]="f.etiquetaRestar"
+                  (click)="cambiar(f, -1)">−</button>
+          <button type="button" class="boton-objetivo"
+                  [attr.aria-label]="f.etiquetaSumar"
+                  (click)="cambiar(f, 1)">+</button>
+        </div>
+      </div>
+    </li>
+  } @empty {
+    <li class="vacio">No tienes objetivos todavía.</li>
+  }
+</ul>
