@@ -20,7 +20,8 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 - Se arranca con `npm start` (en mi PowerShell, `npm.cmd`/`npx.cmd`) y se abre en `http://localhost:4200/`. Pruebas: `npm test -- --watch=false`. Compilar: `npm run build` (sale en `dist/paneldevida/browser/`).
 - La demo se publica sola en GitHub Pages con `.github/workflows/publicar.yml`, que compila con `--base-href /paneldevida/`.
 - Estructura (dentro de `src/app/`):
-  - `app.ts` / `app.html` — el panel: navegación y una tarjeta por sección.
+  - `app.ts` / `app.html` — el marco: cabecera, menú lateral (portátil), barra inferior (móvil) y `<router-outlet>`.
+  - `app.routes.ts` — una ruta por sección (`''` es el Inicio); los datos de ejemplo llegan a los `input()` por `data` con `withComponentInputBinding()`. En Pages, `publicar.yml` copia `index.html` a `404.html` para que recargar una ruta no dé 404.
   - `datos.ts` — los **datos de ejemplo** (agenda, prioridades, hábitos, objetivos); `datos.modelo.ts`, el tipo que los agrupa.
   - `nucleo/` — lo que usa toda la app: `almacen.ts` (guarda y lee en **`localStorage`**, prefijo `panelDeVida:`, y exporta/importa la copia), `archivo-copia.modelo.ts` y la `cabecera/`.
   - `compartido/` — utilidades genéricas sin dependencias (`fechas.ts`).
@@ -60,7 +61,7 @@ Cada una se hace en su propia conversación, rama y pull request.
 | 1 | Cumplir los community standards de GitHub | ⭐ | Solo documentos: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues y PR en `.github/`. Licencia elegida: MIT. Seguridad por aviso privado de GitHub. | ✅ Hecha |
 | 2 | Reorganizar las carpetas | ⭐⭐ | Mover archivos a una estructura más clara (p. ej. `nucleo/`, `secciones/<nombre>/`, `compartido/`) y arreglar los `import`; las pruebas avisan si algo se rompe. Antes de añadir secciones nuevas. | ✅ Hecha |
 | 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | ✅ Hecha |
-| 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | Pendiente |
+| 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | ✅ Hecha |
 | 5 | App sin conexión en el iPhone (PWA) | ⭐⭐⭐ | `ng add @angular/pwa` (paquete oficial de Angular). Lo difícil es probar la caché, el `base-href` y el icono en el móvil. Después del router. | Pendiente |
 | 6 | Editar agenda, prioridades y hábitos desde el panel | ⭐⭐⭐⭐ | Formularios (crear, editar, borrar), pasar los datos de `datos.ts` a `localStorage` y migrar lo guardado sin perder el historial. Probablemente una conversación por sección. | Pendiente |
 | 7 | Sección de planes con recordatorios | ⭐⭐⭐⭐ | Formularios y guardado como en la 6, más fechas y horas, la API de `Notification` y temporizadores. Sin servidor, el aviso solo salta con la página abierta. | Pendiente |

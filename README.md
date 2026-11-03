@@ -40,7 +40,10 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 | **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
 
-El diseño es **adaptable**: dos columnas en el portátil y una en el móvil.
+El **Inicio** junta todas las tarjetas para verlo todo de un vistazo, y cada sección tiene además su propia página (`/agenda`, `/habitos`, `/viajes`…). El diseño es **adaptable**:
+
+- **En el portátil**, un menú lateral con las secciones agrupadas (*Hoy*, *Planes* y *Tú*) y el contenido en dos columnas.
+- **En el móvil**, una columna y una barra flotante abajo con Inicio, Agenda, Hábitos, Objetivos y Viajes. *Tus datos* se abre con el botón ⚙️ de la cabecera.
 
 ---
 
@@ -169,7 +172,8 @@ paneldevida/
 │   ├── main.ts               Arranca la aplicación
 │   ├── styles.css            Estilos globales: colores (claro y oscuro), rejilla, tarjetas
 │   └── app/
-│       ├── app.ts / .html    Componente raíz: la navegación y una tarjeta por sección
+│       ├── app.ts / .html    Componente raíz: cabecera, menú lateral, barra del móvil y <router-outlet>
+│       ├── app.routes.ts     Una ruta por sección, con sus datos de ejemplo
 │       ├── datos.ts          Datos de ejemplo
 │       ├── datos.modelo.ts   Tipo que agrupa los datos de todas las secciones
 │       ├── nucleo/           Lo que usa toda la aplicación
@@ -179,6 +183,7 @@ paneldevida/
 │       ├── compartido/
 │       │   └── fechas.ts     Fechas y formatos en español, con sus pruebas
 │       └── secciones/        Una carpeta por sección: componente, modelo y lógica con sus pruebas
+│           ├── inicio/       La portada con todas las tarjetas
 │           ├── agenda/       agenda.ts/.html/.css, agenda.modelo.ts, agenda.logica.ts…
 │           ├── prioridades/
 │           ├── habitos/
@@ -220,6 +225,12 @@ El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el pre
 | `panelDeVida:ultimaCopia` | Cuándo se descargó la última copia (no viaja en la copia) | `"2026-11-02T08:15:00.000Z"` |
 
 Son las mismas claves que usaba la versión vanilla. Como las prioridades se guardan con la fecha en la clave, cada mañana empiezan sin marcar sin necesidad de borrar nada.
+
+### Rutas (`app.routes.ts`)
+
+Cada sección tiene su ruta con **Angular Router**, y `''` abre el Inicio. Cualquier dirección desconocida vuelve al Inicio. Con `withComponentInputBinding()`, los datos que se ponen en `data` de cada ruta llegan directamente a los `input()` de su componente, así que las secciones no saben si se muestran solas o dentro del Inicio. Los enlaces usan `routerLink` y `routerLinkActive` para resaltar la sección abierta.
+
+GitHub Pages no conoce estas rutas: al recargar `/paneldevida/habitos` buscaría un archivo que no existe y daría 404. Por eso `publicar.yml` copia `index.html` como `404.html`: Pages lo sirve en su lugar, carga la aplicación y el router abre la sección correcta.
 
 ### Estado con signals
 
