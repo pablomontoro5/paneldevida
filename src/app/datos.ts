@@ -2,6 +2,7 @@ import { Evento } from './secciones/agenda/agenda.modelo';
 import { Prioridad } from './secciones/prioridades/prioridad.modelo';
 import { Habito } from './secciones/habitos/habito.modelo';
 import { Objetivo } from './secciones/objetivos/objetivo.modelo';
+import { Viaje } from './secciones/viajes/viaje.modelo';
 import { CopiaSeguridad } from './datos.modelo';
 
 export function crearDatosDeEjemplo(): CopiaSeguridad {
@@ -29,6 +30,12 @@ export function crearDatosDeEjemplo(): CopiaSeguridad {
       { id: 'asignaturas', icono: '🎓', nombre: 'Aprobar 10 asignaturas', actual: 9, meta: 10, paso: 1, unidad: 'asignaturas' },
       { id: 'ahorro', icono: '💶', nombre: 'Ahorrar 1.500 €', actual: 1284, meta: 1500, paso: 50, formato: 'euros' },
       { id: 'correr', icono: '🏃', nombre: 'Correr 300 km', actual: 300, meta: 300, paso: 5, unidad: 'km' },
+    ],
+    viajes: [
+      { id: 'navidad', icono: '🎄', destino: 'Navidad en casa', salida: '2026-12-19', vuelta: '2027-01-07' },
+      { id: 'puente', icono: '🏔️', destino: 'Puente de diciembre en los Picos de Europa', salida: '2026-12-05', vuelta: '2026-12-08' },
+      { id: 'erasmus', icono: '✈️', destino: 'Visitar a Lucía en Lisboa', salida: '2027-03-26', vuelta: '2027-03-29' },
+      { id: 'verano', icono: '🏖️', destino: 'Verano en Cádiz', salida: '2027-07-15', vuelta: '2027-07-30' },
     ],
   };
 }

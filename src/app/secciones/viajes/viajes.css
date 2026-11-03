@@ -1,0 +1,68 @@
+/* ---------- Cuenta atrás de viajes ---------- */
+.viajes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 760px) {
+  .viajes { grid-template-columns: 1fr 1fr; }
+}
+
+.viaje {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.viaje.en-curso { border-color: var(--exito); }
+
+.viaje-icono { font-size: 1.6rem; }
+
+.viaje-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* deja que el texto largo baje de línea en el móvil */
+}
+
+.viaje-destino { font-weight: 600; }
+
+.viaje-fechas {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.viaje-cuenta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+}
+
+.viaje-dias {
+  color: var(--acento);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.viaje-unidad {
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
+.etiqueta-en-curso {
+  background: var(--exito-suave);
+  color: var(--exito);
+}
+
+.etiqueta-pronto {
+  background: var(--aviso-suave);
+  color: var(--racha);
+}
