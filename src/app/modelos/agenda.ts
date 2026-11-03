@@ -5,3 +5,9 @@ export interface Evento {
     titulo: string;
     lugar: string;
 }
+
+export type EstadoEvento = 'pasado' | 'actual' | 'siguiente' | 'futuro';
+
+export interface EventoConEstado extends Evento {
+    estado: EstadoEvento;
+}
