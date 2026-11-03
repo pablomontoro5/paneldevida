@@ -1,0 +1,24 @@
+<div class="tarjeta-cabecera">
+    <h2>Prioridades</h2>
+    <span class="etiqueta">{{ contador() }}</span>
+</div>
+
+<ul class="prioridades">
+    @for (p of prioridades(); track p.id; let i = $index) {
+        <li class="prioridad" [class.hecha]="hechas().includes(p.id)">
+            <label class="prioridad-etiqueta">
+                <input
+                    #casilla
+                    type="checkbox"
+                    [checked]="hechas().includes(p.id)"
+                    (change)="alternar(p.id,casilla.checked)"
+                />
+                <span class="prioridad-numero">{{ i+1 }}</span>
+                <span class="prioridad-texto">{{ p.texto }}</span>
+            </label>
+        
+        </li>
+    } @empty {
+        <li class="vacio">No tienes prioridades para hoy.</li>
+    }
+</ul>

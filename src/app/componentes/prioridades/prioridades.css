@@ -1,0 +1,38 @@
+/* ---------- Prioridades ---------- */
+.prioridad + .prioridad { margin-top: 8px; }
+
+.prioridad-etiqueta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.prioridad-etiqueta input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--exito);
+  cursor: pointer;
+}
+
+.prioridad-numero {
+  color: var(--texto-suave);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.prioridad.hecha .prioridad-etiqueta {
+  background: var(--exito-suave);
+  border-color: transparent;
+}
+
+.prioridad.hecha .prioridad-texto {
+  text-decoration: line-through;
+  color: var(--texto-suave);
+}
