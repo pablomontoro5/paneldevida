@@ -1,0 +1,26 @@
+.texto-datos {
+  margin: 0 0 12px;
+  color: var(--texto-suave);
+}
+
+.acciones-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.estado-copia,
+.mensaje-copia {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}
+
+.estado-copia { color: var(--texto-suave); }
+
+/* Más de 7 días sin copia, o ninguna todavía */
+.estado-copia.aviso {
+  color: var(--racha);
+  font-weight: 600;
+}
+
+.mensaje-copia.error { color: var(--error); }
