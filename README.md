@@ -36,7 +36,7 @@ Está hecho con **Angular 22** y **TypeScript**: componentes standalone, signals
 | **Prioridades** | Las tres cosas más importantes del día, con una casilla para marcarlas como hechas y un contador («2 de 3 hechas»). Cada día empiezan sin marcar. |
 | **Hábitos** | Cada hábito con su **racha** de días seguidos 🔥, una fila con los últimos 7 días y un botón para marcarlo como hecho hoy. |
 | **Objetivos del año** | Una barra de progreso por objetivo («9 de 24 libros», «1.284 € de 1.500 €»), con una marca de dónde deberías ir según la fecha y una etiqueta: *Vas al día*, *Vas por detrás* o *¡Conseguido!*. Los botones − y + actualizan el progreso. |
-| **Próximos viajes** | Cada viaje con su destino, sus fechas («19 de diciembre de 2026 – 7 de enero de 2027») y los **días que faltan**. Muestra *Mañana* y *¡Es hoy!* cuando toca, *En curso* mientras estás de viaje, y oculta los que ya han pasado. |
+| **Próximos viajes** | Cada viaje con su destino, sus fechas («19 de diciembre de 2026 – 7 de enero de 2027») y los **días que faltan**. Muestra *Mañana* y *¡Es hoy!* cuando toca, *En curso* mientras estás de viaje, y oculta los que ya han pasado. Con **＋ Añadir viaje** se crean nuevos (desde cero o con una idea: 🏖️ playa, 🏔️ montaña, 🎄 Navidad…), y cada viaje tiene **Editar** y **Borrar** (con confirmación). Se guardan en este navegador. |
 | **Tus datos** | Botones para **descargar** una copia de seguridad (`.json`) y **restaurarla**, con la fecha de la última copia y un aviso si han pasado más de 7 días. |
 | **App sin conexión** | Se puede instalar en el móvil o en el portátil con su propio icono y abre aunque no haya internet. Cuando se publica una versión nueva, un aviso arriba ofrece **Recargar** para usarla. |
 | **Modo claro y oscuro** | Sigue el tema del sistema. El botón de arriba a la derecha permite elegirlo a mano y se recuerda. |
@@ -151,6 +151,8 @@ objetivos: [
 
 ### Viajes
 
+Los viajes se editan desde el propio panel. Los de `datos.ts` solo se usan la primera vez que se abre (cuando aún no hay nada guardado en `panelDeVida:viajes`); a partir de ahí manda lo guardado.
+
 ```ts
 viajes: [
   { id: 'navidad', icono: '🎄', destino: 'Navidad en casa', salida: '2026-12-19', vuelta: '2027-01-07' },
@@ -179,19 +181,21 @@ paneldevida/
 │       ├── datos.modelo.ts   Tipo que agrupa los datos de todas las secciones
 │       ├── nucleo/           Lo que usa toda la aplicación
 │       │   ├── almacen.ts    Guardar y leer en localStorage, exportar e importar la copia
+│       │   ├── coleccion.ts  Una lista editable que se guarda sola (empieza con los datos de ejemplo)
 │       │   ├── archivo-copia.modelo.ts
 │       │   ├── titulo.ts     Título de la pestaña y de la cabecera según la ruta
 │       │   ├── aviso-version/  Aviso de «Hay una versión nueva» con el botón Recargar
 │       │   └── cabecera/     Nombre de la sección y botones de tema y de Tus datos
 │       ├── compartido/
-│       │   └── fechas.ts     Fechas y formatos en español, con sus pruebas
+│       │   ├── fechas.ts     Fechas y formatos en español, con sus pruebas
+│       │   └── lista.ts      Añadir, editar y quitar por id en una lista, y crear ids nuevos
 │       └── secciones/        Una carpeta por sección: componente, modelo y lógica con sus pruebas
 │           ├── inicio/       La bienvenida y el resumen del día (reúne la lógica de las demás)
 │           ├── agenda/       agenda.ts/.html/.css, agenda.modelo.ts, agenda.logica.ts…
 │           ├── prioridades/
 │           ├── habitos/
 │           ├── objetivos/
-│           ├── viajes/
+│           ├── viajes/       Además: viajes.guardados.ts (la lista guardada) y viajes.plantillas.ts (ideas)
 │           └── tus-datos/    Descargar y restaurar la copia
 ├── public/                   Archivos que se copian tal cual
 │   ├── manifest.webmanifest  Nombre, colores e iconos de la app instalada
@@ -227,6 +231,7 @@ El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el pre
 | `panelDeVida:tema` | El tema elegido a mano | `"oscuro"` |
 | `panelDeVida:prioridades:AAAA-MM-DD` | Las prioridades hechas ese día | `["p1", "p3"]` |
 | `panelDeVida:habitos` | Los días en que se cumplió cada hábito | `{ "leer": ["2026-10-31", "2026-11-01"] }` |
+| `panelDeVida:viajes` | La lista de viajes (la primera vez, los de ejemplo) | `[{ "id": "navidad", "icono": "🎄", "destino": "Navidad en casa", "salida": "2026-12-19" }]` |
 | `panelDeVida:objetivos:AAAA` | El progreso de cada objetivo ese año | `{ "libros": 11, "ahorro": 1334 }` |
 | `panelDeVida:ultimaCopia` | Cuándo se descargó la última copia (no viaja en la copia) | `"2026-11-02T08:15:00.000Z"` |
 
@@ -379,7 +384,7 @@ Para que funcione, en *Settings → Pages → Source* tiene que estar elegido **
 - [x] Cuenta atrás de viajes
 - [x] Navegación por secciones
 - [x] Usarlo en el iPhone como app sin conexión (con icono y service worker)
-- [ ] Editar prioridades, agenda y hábitos desde el propio panel
+- [ ] Añadir, editar y borrar desde el propio panel (✅ viajes; faltan agenda, prioridades, hábitos y objetivos)
 - [ ] Conectar Google Calendar para la agenda
 - [ ] Resumen semanal automático cada domingo
 
@@ -392,7 +397,7 @@ Lo que falta, de más fácil a más difícil (los detalles de cada tarea están 
 3. ~~Cuenta atrás de viajes.~~ ✅
 4. ~~Panel de navegación entre secciones con Angular Router.~~ ✅
 5. ~~Usarlo en el iPhone como app sin conexión.~~ ✅
-6. Editar agenda, prioridades y hábitos desde el propio panel.
+6. Añadir, editar y borrar desde el propio panel: ✅ viajes; faltan agenda, prioridades, hábitos y objetivos.
 7. Sección de planes con recordatorios.
 8. Resumen semanal cada domingo.
 9. Repaso final del README.

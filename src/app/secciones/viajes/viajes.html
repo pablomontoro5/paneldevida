@@ -5,26 +5,112 @@
   }
 </div>
 
-<ul class="viajes">
-  @for (f of filas(); track f.id) {
-    <li class="viaje" [class.en-curso]="f.enCurso">
-      <span class="viaje-icono" aria-hidden="true">{{ f.icono }}</span>
-      <div class="viaje-info">
-        <span class="viaje-destino">{{ f.destino }}</span>
-        <span class="viaje-fechas">{{ f.fechas }}</span>
+@if (editando() === null) {
+  <button type="button" class="boton boton-principal boton-anadir" (click)="abrirNuevo()">＋ Añadir viaje</button>
+} @else {
+  <form class="formulario" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <h3 class="formulario-titulo">{{ editando() ? 'Editar viaje' : 'Nuevo viaje' }}</h3>
+
+    @if (!editando()) {
+      <div class="plantillas">
+        <span class="campo-etiqueta" id="titulo-plantillas">Ideas para empezar</span>
+        <div class="plantillas-lista" role="group" aria-labelledby="titulo-plantillas">
+          @for (p of plantillas; track p.destino) {
+            <button type="button" class="plantilla" (click)="usarPlantilla(p)">
+              <span aria-hidden="true">{{ p.icono }}</span> {{ p.destino }}
+            </button>
+          }
+        </div>
       </div>
-      <div class="viaje-cuenta">
-        @if (f.enCurso) {
-          <span class="etiqueta etiqueta-en-curso">En curso</span>
-        } @else if (f.dias > 1) {
-          <span class="viaje-dias">{{ f.dias }}</span>
-          <span class="viaje-unidad">días</span>
-        } @else {
-          <span class="etiqueta etiqueta-pronto">{{ f.cuentaAtras }}</span>
+    }
+
+    <fieldset class="iconos">
+      <legend class="campo-etiqueta">Icono</legend>
+      @for (i of iconos; track i) {
+        <label class="icono-opcion">
+          <input type="radio" formControlName="icono" [value]="i" />
+          <span>{{ i }}</span>
+        </label>
+      }
+    </fieldset>
+
+    <div class="campo">
+      <label class="campo-etiqueta" for="viaje-destino">Destino</label>
+      <input #campoDestino id="viaje-destino" type="text" formControlName="destino" maxlength="80"
+             placeholder="Por ejemplo, Verano en Cádiz"
+             [attr.aria-invalid]="!!errores().destino"
+             [attr.aria-describedby]="errores().destino ? 'error-destino' : null" />
+      @if (errores().destino; as e) {
+        <span class="campo-error" id="error-destino">{{ e }}</span>
+      }
+    </div>
+
+    <div class="fechas">
+      <div class="campo">
+        <label class="campo-etiqueta" for="viaje-salida">Salida</label>
+        <input id="viaje-salida" type="date" formControlName="salida"
+               [attr.aria-invalid]="!!errores().salida"
+               [attr.aria-describedby]="errores().salida ? 'error-salida' : null" />
+        @if (errores().salida; as e) {
+          <span class="campo-error" id="error-salida">{{ e }}</span>
         }
       </div>
+      <div class="campo">
+        <label class="campo-etiqueta" for="viaje-vuelta">Vuelta <span class="opcional">(opcional)</span></label>
+        <input id="viaje-vuelta" type="date" formControlName="vuelta"
+               [min]="formulario.controls.salida.value"
+               [attr.aria-invalid]="!!errores().vuelta"
+               [attr.aria-describedby]="errores().vuelta ? 'error-vuelta' : null" />
+        @if (errores().vuelta; as e) {
+          <span class="campo-error" id="error-vuelta">{{ e }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="formulario-acciones">
+      <button type="button" class="boton" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="boton boton-principal">{{ editando() ? 'Guardar cambios' : 'Añadir viaje' }}</button>
+    </div>
+  </form>
+}
+
+<ul class="viajes">
+  @for (f of filas(); track f.id) {
+    <li class="viaje" [class.en-curso]="f.enCurso" [class.editandose]="editando() === f.id">
+      <div class="viaje-fila">
+        <span class="viaje-icono" aria-hidden="true">{{ f.icono }}</span>
+        <div class="viaje-info">
+          <span class="viaje-destino">{{ f.destino }}</span>
+          <span class="viaje-fechas">{{ f.fechas }}</span>
+        </div>
+        <div class="viaje-cuenta">
+          @if (f.enCurso) {
+            <span class="etiqueta etiqueta-en-curso">En curso</span>
+          } @else if (f.dias > 1) {
+            <span class="viaje-dias">{{ f.dias }}</span>
+            <span class="viaje-unidad">días</span>
+          } @else {
+            <span class="etiqueta etiqueta-pronto">{{ f.cuentaAtras }}</span>
+          }
+        </div>
+      </div>
+
+      @if (borrando() === f.id) {
+        <div class="viaje-acciones confirmar" role="alert">
+          <span>¿Borrar este viaje?</span>
+          <button type="button" class="boton boton-peligro" (click)="confirmarBorrado(f.id)">Sí, borrar</button>
+          <button type="button" class="boton" (click)="borrando.set(null)">No</button>
+        </div>
+      } @else {
+        <div class="viaje-acciones">
+          <button type="button" class="boton boton-pequeno" (click)="editar(f)"
+                  [attr.aria-label]="'Editar ' + f.destino">Editar</button>
+          <button type="button" class="boton boton-pequeno boton-borrar" (click)="borrando.set(f.id)"
+                  [attr.aria-label]="'Borrar ' + f.destino">Borrar</button>
+        </div>
+      }
     </li>
   } @empty {
-    <li class="vacio">No tienes viajes a la vista.</li>
+    <li class="vacio">No tienes viajes a la vista. Añade uno para empezar la cuenta atrás.</li>
   }
 </ul>

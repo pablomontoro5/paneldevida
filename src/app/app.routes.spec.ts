@@ -46,8 +46,8 @@ describe('Rutas del panel', () => {
   }
 
   it('los datos de ejemplo llegan a la sección', async () => {
-    await harness.navigateByUrl('/viajes', Viajes);
-    const filas = harness.routeNativeElement?.querySelectorAll('.viaje') ?? [];
+    await harness.navigateByUrl('/agenda', Agenda);
+    const filas = harness.routeNativeElement?.querySelectorAll('.evento') ?? [];
     expect(filas.length).toBeGreaterThan(0);
   });
 

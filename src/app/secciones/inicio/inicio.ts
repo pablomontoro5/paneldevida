@@ -8,6 +8,7 @@ import { clavePrioridades } from '../prioridades/prioridades.logica';
 import { RegistroHabitos, completarRegistro, textoRacha } from '../habitos/habitos.logica';
 import { ProgresoObjetivos, claveObjetivos, formatoPorcentaje, fraccionDelAnio } from '../objetivos/objetivos.logica';
 import { textoCuentaAtras } from '../viajes/viajes.logica';
+import { ViajesGuardados } from '../viajes/viajes.guardados';
 import {
   eventoDestacado,
   eventosRestantes,
@@ -69,7 +70,7 @@ export class Inicio {
     textoRitmo: formatoPorcentaje(this.ritmo),
   };
 
-  protected readonly viaje = proximoViaje(this.datos.viajes, this.hoy);
+  protected readonly viaje = proximoViaje(inject(ViajesGuardados).elementos(), this.hoy);
 
   protected readonly frase = fraseDelDia(
     this.agenda.restantes,
