@@ -4,7 +4,8 @@ import { RouterLink } from '@angular/router';
 import { Almacen } from '../../nucleo/almacen';
 import { mayusculaInicial, saludoSegunHora } from '../../compartido/fechas';
 import { crearDatosDeEjemplo } from '../../datos';
-import { clavePrioridades } from '../prioridades/prioridades.logica';
+import { clavePrioridades, contarHechas } from '../prioridades/prioridades.logica';
+import { PrioridadesGuardadas } from '../prioridades/prioridades.guardados';
 import { RegistroHabitos, completarRegistro, textoRacha } from '../habitos/habitos.logica';
 import { ProgresoObjetivos, claveObjetivos, formatoPorcentaje, fraccionDelAnio } from '../objetivos/objetivos.logica';
 import { AgendaGuardada } from '../agenda/agenda.guardados';
@@ -54,10 +55,12 @@ export class Inicio {
     restantes: eventosRestantes(this.eventos, this.minutoActual),
   };
 
+  private readonly listaPrioridades = inject(PrioridadesGuardadas).elementos();
+  private readonly prioridadesHechas = contarHechas(this.listaPrioridades, this.hechas);
   protected readonly prioridades = {
-    hechas: this.hechas.length,
-    total: this.datos.prioridades.length,
-    ancho: (this.hechas.length / Math.max(this.datos.prioridades.length, 1)) * 100,
+    hechas: this.prioridadesHechas,
+    total: this.listaPrioridades.length,
+    ancho: (this.prioridadesHechas / Math.max(this.listaPrioridades.length, 1)) * 100,
   };
 
   protected readonly habitos = {

@@ -11,7 +11,6 @@ describe('Prioridades', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(Prioridades);
-    fixture.componentRef.setInput('prioridades', []);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -15,15 +15,10 @@ const datos = crearDatosDeEjemplo();
 // llega al input del mismo nombre del componente (p. ej. `habitos` de Hábitos).
 export const routes: Routes = [
   { path: '', component: Inicio },
-  // Agenda y Viajes ya no usan `data`: leen y guardan su lista en localStorage
-  // (AgendaGuardada y ViajesGuardados).
+  // Agenda, Prioridades y Viajes ya no usan `data`: leen y guardan su lista en
+  // localStorage (AgendaGuardada, PrioridadesGuardadas y ViajesGuardados).
   { path: 'agenda', component: Agenda, title: 'Agenda' },
-  {
-    path: 'prioridades',
-    component: Prioridades,
-    title: 'Prioridades',
-    data: { prioridades: datos.prioridades },
-  },
+  { path: 'prioridades', component: Prioridades, title: 'Prioridades' },
   { path: 'habitos', component: Habitos, title: 'Hábitos', data: { habitos: datos.habitos } },
   {
     path: 'objetivos',

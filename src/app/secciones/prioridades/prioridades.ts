@@ -1,7 +1,7 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
-import { Prioridad } from './prioridad.modelo';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Almacen } from '../../nucleo/almacen';
-import { alternarHecha, clavePrioridades } from './prioridades.logica';
+import { PrioridadesGuardadas } from './prioridades.guardados';
+import { alternarHecha, clavePrioridades, contarHechas } from './prioridades.logica';
 
 @Component({
   selector: 'app-prioridades',
@@ -9,14 +9,15 @@ import { alternarHecha, clavePrioridades } from './prioridades.logica';
   styleUrl: './prioridades.css',
 })
 export class Prioridades {
-  readonly prioridades = input.required<Prioridad[]>();
+  private readonly guardadas = inject(PrioridadesGuardadas);
+  protected readonly prioridades = this.guardadas.elementos;
 
   private readonly almacen = inject(Almacen);
   private readonly clave = clavePrioridades(new Date());
 
   protected readonly hechas = signal(this.almacen.leer<string[]>(this.clave, []));
   protected readonly contador = computed(
-    () => `${this.hechas().length} de ${this.prioridades().length} hechas`,
+    () => `${contarHechas(this.prioridades(), this.hechas())} de ${this.prioridades().length} hechas`,
   );
 
   protected alternar(id: string, marcada: boolean): void {
