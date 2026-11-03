@@ -91,7 +91,7 @@ El archivo se crea y se lee en el propio navegador: no se envía nada a internet
 
 ## Personalizar los datos
 
-Los datos de ejemplo están en [`src/app/datos.ts`](src/app/datos.ts). Con `npm start` en marcha, basta con editar ese archivo y guardar. La forma de cada dato está definida en [`src/app/modelos/`](src/app/modelos/), así que TypeScript avisa si falta un campo o tiene el tipo equivocado.
+Los datos de ejemplo están en [`src/app/datos.ts`](src/app/datos.ts). Con `npm start` en marcha, basta con editar ese archivo y guardar. La forma de cada dato está definida en el `*.modelo.ts` de cada sección (por ejemplo, [`src/app/secciones/agenda/agenda.modelo.ts`](src/app/secciones/agenda/agenda.modelo.ts)), así que TypeScript avisa si falta un campo o tiene el tipo equivocado.
 
 ### Agenda
 
@@ -157,17 +157,19 @@ paneldevida/
 │   └── app/
 │       ├── app.ts / .html    Componente raíz: la navegación y una tarjeta por sección
 │       ├── datos.ts          Datos de ejemplo
-│       ├── componentes/      Un componente por sección, cada uno con su HTML, CSS y pruebas
-│       │   ├── cabecera/     Saludo, fecha y botón de tema
-│       │   ├── agenda/
-│       │   ├── prioridades/
-│       │   ├── habitos/
-│       │   ├── objetivos/
-│       │   └── tus-datos/    Descargar y restaurar la copia
-│       ├── modelos/          Tipos de TypeScript: Evento, Prioridad, Habito, Objetivo, ArchivoCopia…
-│       ├── servicios/
-│       │   └── almacen.ts    Guardar y leer en localStorage, exportar e importar la copia
-│       └── utilidades/       Lógica sin Angular (fechas, rachas, ritmo de objetivos…) con sus pruebas
+│       ├── datos.modelo.ts   Tipo que agrupa los datos de todas las secciones
+│       ├── nucleo/           Lo que usa toda la aplicación
+│       │   ├── almacen.ts    Guardar y leer en localStorage, exportar e importar la copia
+│       │   ├── archivo-copia.modelo.ts
+│       │   └── cabecera/     Saludo, fecha y botón de tema
+│       ├── compartido/
+│       │   └── fechas.ts     Fechas y formatos en español, con sus pruebas
+│       └── secciones/        Una carpeta por sección: componente, modelo y lógica con sus pruebas
+│           ├── agenda/       agenda.ts/.html/.css, agenda.modelo.ts, agenda.logica.ts…
+│           ├── prioridades/
+│           ├── habitos/
+│           ├── objetivos/
+│           └── tus-datos/    Descargar y restaurar la copia
 ├── public/                   Archivos que se copian tal cual (favicon)
 ├── .github/
 │   ├── workflows/
@@ -184,13 +186,13 @@ paneldevida/
 └── README.md                 Este archivo
 ```
 
-La lógica que no depende de Angular está separada en `utilidades/` en funciones puras. Así se prueba fácil: las pruebas reciben la fecha como parámetro y no dependen del día en que se ejecutan.
+Cada sección importa solo de `nucleo/` y `compartido/`; `nucleo/` solo de `compartido/`, y `compartido/` de nada. La lógica que no depende de Angular está en los `*.logica.ts` (y en `compartido/fechas.ts`) como funciones puras. Así se prueba fácil: las pruebas reciben la fecha como parámetro y no dependen del día en que se ejecutan.
 
 ---
 
 ## Cómo funciona por dentro
 
-### Guardado (`servicios/almacen.ts`)
+### Guardado (`nucleo/almacen.ts`)
 
 El servicio `Almacen` guarda los valores en `localStorage` como JSON, con el prefijo `panelDeVida:`. Los componentes lo reciben con `inject(Almacen)`. Si el navegador bloquea el almacenamiento (por ejemplo, en modo privado), el panel sigue funcionando, solo que no recuerda lo marcado.
 
