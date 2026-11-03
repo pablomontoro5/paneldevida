@@ -1,7 +1,7 @@
 import { BorradorHabito } from './habitos.logica';
 
 // Iconos para elegir en el formulario.
-export const ICONOS_HABITO = ['✅', '📚', '🏃', '💧', '💻', '🧘', '😴', '🇬🇧', '📵', '🥗', '🎸', '✍️'];
+export const ICONOS_HABITO = ['✅', '📚', '🏃', '💧', '💻', '🧘', '😴', '🗣️', '📵', '🥗', '🎸', '✍️'];
 
 // Ideas para no empezar desde cero: al elegir una se rellena el formulario.
 export const PLANTILLAS_HABITO: BorradorHabito[] = [
@@ -11,7 +11,7 @@ export const PLANTILLAS_HABITO: BorradorHabito[] = [
   { icono: '💻', nombre: 'Programar algo propio' },
   { icono: '🧘', nombre: 'Meditar 10 minutos' },
   { icono: '😴', nombre: 'Dormir 8 horas' },
-  { icono: '🇬🇧', nombre: 'Practicar inglés' },
+  { icono: '🗣️', nombre: 'Practicar inglés' },
   { icono: '📵', nombre: 'Un rato sin móvil' },
 ];
 
