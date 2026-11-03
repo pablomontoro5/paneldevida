@@ -6,13 +6,14 @@ import { calcularRacha } from './utilidades/fechas';
 
 import { historialAFechas } from './utilidades/fechas';
 import { Cabecera } from './componentes/cabecera/cabecera';
+import { Agenda } from './componentes/agenda/agenda';
 function textoRacha(racha: number): string {
   if (racha === 0) return 'Sin racha';
   return racha === 1 ? '1 día seguido' : `${racha} días seguidos`;
 }
 @Component({
   selector: 'app-root',
-  imports: [RouterLink,Cabecera],
+  imports: [RouterLink,Cabecera,Agenda],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })

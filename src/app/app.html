@@ -10,12 +10,7 @@
 
 <main class="rejilla">
   <section class="tarjeta" id="agenda">
-    <h2>Agenda</h2>
-    <ul>
-      @for (e of datos().agenda; track e.inicio) {
-        <li>{{ e.inicio }}–{{ e.fin }} · {{ e.titulo }}</li>
-      }
-    </ul>
+    <app-agenda [eventos]="datos().agenda" />
   </section>
 
   <section class="tarjeta" id="prioridades">
