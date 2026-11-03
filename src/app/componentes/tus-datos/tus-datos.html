@@ -1,0 +1,17 @@
+<h2>Tus datos</h2>
+<p class="texto-datos">
+  Todo lo que marcas se guarda solo en este navegador. Descarga una copia de vez en cuando para no perderlo.
+</p>
+
+<div class="acciones-datos">
+  <button type="button" class="boton" (click)="descargar()">⬇️ Descargar copia</button>
+  <button type="button" class="boton" (click)="archivo.click()">⬆️ Restaurar copia</button>
+  <input #archivo type="file" accept=".json,application/json" hidden
+         (change)="alElegirArchivo($event)">
+</div>
+
+<p class="estado-copia" [class.aviso]="estado().aviso">{{ estado().texto }}</p>
+
+<p class="mensaje-copia" role="status"
+   [hidden]="!mensaje()"
+   [class.error]="mensaje()?.esError">{{ mensaje()?.texto }}</p>

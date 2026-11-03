@@ -51,7 +51,7 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 8. Prioridades | ✅ Hecha |
 | 9. Hábitos | ✅ Hecha |
 | 10. Objetivos | ✅ Hecha |
-| 11. Tus datos (copia de seguridad) | ⬜ Sin empezar |
+| 11. Tus datos (copia de seguridad) | ✅ Hecha |
 | 12. Quitar la versión vanilla, compilar y documentar | ⬜ Sin empezar |
 
 Convenciones: cada componente en `src/app/componentes/<nombre>/` con sus estilos propios; la lógica sin Angular va en `src/app/utilidades/` con su `.spec.ts` al lado. Las pruebas no deben depender del día en que se ejecutan (pasar la fecha como parámetro).
