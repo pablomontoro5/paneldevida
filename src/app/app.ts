@@ -9,9 +9,10 @@ import { Prioridades } from './componentes/prioridades/prioridades';
 
 import { Habitos } from './componentes/habitos/habitos';
 import { Objetivos } from './componentes/objetivos/objetivos';
+import { TusDatos } from './componentes/tus-datos/tus-datos';
 @Component({
   selector: 'app-root',
-  imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos,Objetivos],
+  imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos,Objetivos,TusDatos],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
