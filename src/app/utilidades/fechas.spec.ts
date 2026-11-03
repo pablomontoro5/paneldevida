@@ -1,4 +1,4 @@
-import { aMinutos, calcularRacha, claveFecha, haceDias, mismoDia, saludoSegunHora } from './fechas';
+import { aMinutos, calcularRacha, claveFecha, mismoDia, saludoSegunHora } from './fechas';
 describe('claveFecha', () => {
   it('devuelve AAAA-MM-DD con ceros', () => {
     const fecha = new Date(2026, 10, 2); // 2 de noviembre de 2026
@@ -15,9 +15,13 @@ describe('aMinutos', () => {
 describe('calcularRacha', () => {
   it('cuenta los días seguidos hasta hoy', () => {
     const hoy = new Date(2026, 10, 2);
-    const ayer = claveFecha(haceDias(1));
+    const ayer = '2026-11-01';
     const hoyTexto = claveFecha(hoy);
     expect(calcularRacha([hoyTexto, ayer], hoy)).toBe(2);
+  });
+  it('si hoy no está marcado cuenta desde ayer', () => {
+    const hoy = new Date(2026, 10, 2); // 2 de noviembre de 2026
+    expect(calcularRacha(['2026-11-01', '2026-10-31'], hoy)).toBe(2);
   });
 });
 

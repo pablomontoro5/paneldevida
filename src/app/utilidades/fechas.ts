@@ -14,13 +14,6 @@ export function claveFecha(fecha: Date): string {
     return `${fecha.getFullYear()}-${mes}-${dia}`;
 }
 
-// Devuelve la fecha de hace n días
-
-export function haceDias(n: number): Date {
-    const fecha = new Date();
-    fecha.setDate(fecha.getDate() - n);
-    return fecha;
-}
 
 // Convierte "HH:MM" a minutos desde las 00:00.
 export function aMinutos(hora: string): number {
@@ -39,7 +32,7 @@ export function calcularRacha(fechas: string[], hoy: Date = new Date()): number 
   const cumplidos = new Set(fechas);
   const desde = cumplidos.has(claveFecha(hoy)) ? 0 : 1;
   let racha = 0;
-  while (cumplidos.has(claveFecha(haceDias(desde + racha)))) racha++;
+  while (cumplidos.has(claveFecha(haceDiasDesde(desde + racha, hoy)))) racha++;
   return racha;
 }
 // Una cantidad, en euros o como número normal.
