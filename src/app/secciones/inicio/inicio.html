@@ -1,0 +1,64 @@
+<section class="bienvenida">
+  <p class="bienvenida-fecha">{{ fecha }}</p>
+  <h1 class="bienvenida-saludo">{{ saludo }}</h1>
+  <p class="bienvenida-frase">{{ frase }}</p>
+</section>
+
+<h2 class="resumen-titulo-seccion">Tu día de un vistazo</h2>
+
+<ul class="resumen">
+  <li>
+    <a class="resumen-tarjeta" routerLink="/agenda">
+      <span class="resumen-cabecera"><span aria-hidden="true">📅</span> Agenda</span>
+      @if (agenda.evento; as e) {
+        <span class="resumen-dato">{{ e.estado === 'actual' ? 'Ahora' : 'Siguiente' }} · {{ e.inicio }}</span>
+        <span class="resumen-detalle">{{ e.titulo }}</span>
+      } @else {
+        <span class="resumen-vacio">No te quedan eventos hoy</span>
+      }
+    </a>
+  </li>
+
+  <li>
+    <a class="resumen-tarjeta" routerLink="/prioridades">
+      <span class="resumen-cabecera"><span aria-hidden="true">⭐</span> Prioridades</span>
+      <span class="resumen-dato">{{ prioridades.hechas }} de {{ prioridades.total }} hechas</span>
+      <span class="resumen-barra" aria-hidden="true">
+        <span class="resumen-barra-relleno" [style.width.%]="prioridades.ancho"></span>
+      </span>
+    </a>
+  </li>
+
+  <li>
+    <a class="resumen-tarjeta" routerLink="/habitos">
+      <span class="resumen-cabecera"><span aria-hidden="true">🔥</span> Hábitos</span>
+      @if (habitos.mejor; as m) {
+        <span class="resumen-dato">{{ textoRacha(m.racha) }}</span>
+        <span class="resumen-detalle">{{ m.habito.icono }} {{ m.habito.nombre }}</span>
+      } @else {
+        <span class="resumen-vacio">Aún no tienes ninguna racha</span>
+      }
+      <span class="resumen-detalle">{{ habitos.hechosHoy }} de {{ habitos.total }} hechos hoy</span>
+    </a>
+  </li>
+
+  <li>
+    <a class="resumen-tarjeta" routerLink="/objetivos">
+      <span class="resumen-cabecera"><span aria-hidden="true">🎯</span> Objetivos</span>
+      <span class="resumen-dato">{{ objetivos.alDia }} de {{ objetivos.total }} al día</span>
+      <span class="resumen-detalle">Llevas el {{ objetivos.textoRitmo }} del año</span>
+    </a>
+  </li>
+
+  <li>
+    <a class="resumen-tarjeta" routerLink="/viajes">
+      <span class="resumen-cabecera"><span aria-hidden="true">✈️</span> Viajes</span>
+      @if (viaje; as v) {
+        <span class="resumen-dato">{{ v.enCurso ? 'En curso' : textoCuentaAtras(v.dias) }}</span>
+        <span class="resumen-detalle">{{ v.viaje.icono }} {{ v.viaje.destino }}</span>
+      } @else {
+        <span class="resumen-vacio">No tienes viajes a la vista</span>
+      }
+    </a>
+  </li>
+</ul>

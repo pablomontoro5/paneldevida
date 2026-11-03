@@ -1,35 +1,47 @@
-<app-cabecera />
-
-<nav class="navegacion" aria-label="Secciones del panel">
-  <ul>
-    @for (s of secciones; track s.id) {
-      <li><a routerLink="." [fragment]="s.id">{{ s.nombre }}</a></li>
+<div class="marco">
+  <nav class="menu-lateral" aria-label="Secciones del panel">
+    @for (g of grupos; track g.titulo) {
+      <div class="grupo">
+        <h2 class="grupo-titulo">{{ g.titulo }}</h2>
+        <ul>
+          @for (e of g.enlaces; track e.ruta) {
+            <li>
+              <a
+                class="menu-enlace"
+                [routerLink]="e.ruta"
+                routerLinkActive="activo"
+                ariaCurrentWhenActive="page"
+                [routerLinkActiveOptions]="{ exact: true }"
+              >
+                <span class="menu-icono" aria-hidden="true">{{ e.icono }}</span>
+                {{ e.nombre }}
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
     }
-  </ul>
+  </nav>
+
+  <div class="principal">
+    <app-cabecera />
+    <main class="contenido">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+
+<nav class="barra-movil" aria-label="Secciones del panel">
+  @for (e of barra; track e.ruta) {
+    <a
+      class="barra-enlace"
+      [routerLink]="e.ruta"
+      routerLinkActive="activo"
+      ariaCurrentWhenActive="page"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="barra-icono" aria-hidden="true">{{ e.icono }}</span>
+      <span class="barra-nombre">{{ e.nombre }}</span>
+    </a>
+  }
 </nav>
-
-<main class="rejilla">
-  <section class="tarjeta" id="agenda">
-    <app-agenda [eventos]="datos().agenda" />
-  </section>
-
-  <section class="tarjeta" id="prioridades">
-    <app-prioridades [prioridades]="datos().prioridades" />
-  </section>
-
-  <section class="tarjeta" id="habitos">
-    <app-habitos [habitos]="datos().habitos" />
-  </section>
-
-  <section class="tarjeta tarjeta-ancha" id="objetivos">
-    <app-objetivos [objetivos]="datos().objetivos" />
-  </section>
-
-  <section class="tarjeta tarjeta-ancha" id="viajes">
-    <app-viajes [viajes]="datos().viajes" />
-  </section>
-
-  <section class="tarjeta tarjeta-ancha" id="datos">
-    <app-tus-datos />
-  </section>
-</main>

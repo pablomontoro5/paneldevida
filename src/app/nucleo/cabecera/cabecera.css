@@ -1,19 +1,13 @@
 .cabecera {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
   gap: 12px;
   margin-bottom: 20px;
 }
 
-.saludo {
+.titulo {
   margin: 0;
   font-size: 1.8rem;
-}
-
-.fecha {
-  margin: 2px 0 0;
-  color: var(--texto-suave);
 }
 
 .boton-tema {
@@ -30,3 +24,20 @@
 }
 
 .boton-tema:hover { border-color: var(--acento); }
+
+.acciones {
+  display: flex;
+  margin-left: auto; /* a la derecha aunque no haya título */
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.boton-datos {
+  display: none;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .boton-datos { display: inline-flex; }
+}

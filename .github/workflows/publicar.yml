@@ -29,6 +29,10 @@ jobs:
 
       - run: npx ng build --base-href /paneldevida/   # compilar para la dirección de Pages
 
+      # Pages no conoce las rutas de Angular: al recargar /paneldevida/habitos devolvería su 404.
+      # Con una copia del index.html como 404.html, carga la app y el router abre la sección.
+      - run: cp dist/paneldevida/browser/index.html dist/paneldevida/browser/404.html
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/paneldevida/browser   # subir solo lo compilado

@@ -1,0 +1,115 @@
+/* ---------- Estructura: menú a la izquierda y contenido a la derecha ---------- */
+.marco {
+  display: flex;
+  gap: 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.principal {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- Menú lateral (portátil) ---------- */
+.menu-lateral {
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
+  width: 220px;
+  flex-shrink: 0;
+}
+
+.grupo + .grupo {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde);
+}
+
+.grupo-titulo {
+  margin: 0 0 4px;
+  padding: 6px 12px;
+  font-size: 1rem;
+}
+
+.menu-enlace {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.menu-enlace:hover { background: var(--borde); }
+
+.menu-enlace.activo {
+  background: var(--acento-suave);
+  color: var(--acento);
+  font-weight: 600;
+}
+
+.menu-icono {
+  width: 24px;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+/* ---------- Barra inferior flotante (móvil) ---------- */
+.barra-movil { display: none; }
+
+@media (max-width: 767px) {
+  .menu-lateral { display: none; }
+
+  .barra-movil {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 10;
+    display: flex;
+    gap: 2px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 6px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    background: var(--tarjeta);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  .barra-enlace {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 2px;
+    border-radius: 999px;
+    color: var(--texto);
+    text-decoration: none;
+  }
+
+  .barra-enlace.activo {
+    background: var(--acento-suave);
+    color: var(--acento);
+  }
+
+  .barra-icono { font-size: 1.3rem; line-height: 1.2; }
+
+  .barra-nombre {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+}
+
+.menu-enlace:focus-visible,
+.barra-enlace:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}

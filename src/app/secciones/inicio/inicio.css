@@ -1,0 +1,95 @@
+/* ---------- Bienvenida ---------- */
+.bienvenida {
+  padding: 32px 28px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--acento-suave), var(--tarjeta));
+  border: 1px solid var(--borde);
+}
+
+.bienvenida-fecha {
+  margin: 0;
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+.bienvenida-saludo {
+  margin: 4px 0 8px;
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  line-height: 1.1;
+}
+
+.bienvenida-frase {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* ---------- Resumen del día ---------- */
+.resumen-titulo-seccion {
+  margin: 28px 0 12px;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.resumen-tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--tarjeta);
+  box-shadow: var(--sombra);
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.resumen-tarjeta:hover { border-color: var(--acento); }
+
+.resumen-tarjeta:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.resumen-cabecera {
+  margin-bottom: 4px;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.resumen-dato {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.resumen-detalle,
+.resumen-vacio {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.resumen-barra {
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--borde);
+  overflow: hidden;
+}
+
+.resumen-barra-relleno {
+  display: block;
+  height: 100%;
+  background: var(--exito);
+}
+
+@media (max-width: 767px) {
+  .bienvenida { padding: 24px 20px; }
+}
