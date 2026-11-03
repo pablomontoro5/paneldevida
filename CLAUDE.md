@@ -47,12 +47,16 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 | 4. Utilidades de fechas y primeras pruebas | ✅ Hecha |
 | 5. AlmacenService | ✅ Hecha |
 | 6. Cabecera: saludo, fecha y tema | ✅ Hecha |
-| 7. Agenda | ⬜ Sin empezar |
+| 7. Agenda | ✅ Hecha |
 | 8. Prioridades | ⬜ Sin empezar |
 | 9. Hábitos | ⬜ Sin empezar |
 | 10. Objetivos | ⬜ Sin empezar |
 | 11. Tus datos (copia de seguridad) | ⬜ Sin empezar |
 | 12. Quitar la versión vanilla, compilar y documentar | ⬜ Sin empezar |
+
+Convenciones: cada componente en `src/app/componentes/<nombre>/` con sus estilos propios; la lógica sin Angular va en `src/app/utilidades/` con su `.spec.ts` al lado. Las pruebas no deben depender del día en que se ejecutan (pasar la fecha como parámetro).
+
+**Pendiente tras la lección 12** (rama `arreglo/racha-con-fecha-fija`): `calcularRacha` ignora su parámetro `hoy` en el bucle (usa `haceDias`, que mira el reloj real); cambiarlo por `haceDiasDesde(desde + racha, hoy)` y fijar `ayer` en `fechas.spec.ts`. Hasta entonces esa prueba falla.
 
 ## Ideas para más adelante
 
