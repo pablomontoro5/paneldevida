@@ -167,6 +167,19 @@ ul, ol {
   font-weight: 600;
 }
 
+/* Todo botón de borrar va recalcado en rojo, en todas las secciones */
+.boton-borrar {
+  border-color: var(--error);
+  color: var(--error);
+  font-weight: 600;
+}
+
+.boton-borrar:hover {
+  border-color: var(--error);
+  background: var(--error);
+  color: var(--tarjeta);
+}
+
 .boton-pequeno {
   min-height: 34px;
   padding: 4px 12px;

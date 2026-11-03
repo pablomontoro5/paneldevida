@@ -105,7 +105,7 @@
         <div class="viaje-acciones">
           <button type="button" class="boton boton-pequeno" (click)="editar(f)"
                   [attr.aria-label]="'Editar ' + f.destino">Editar</button>
-          <button type="button" class="boton boton-pequeno" (click)="borrando.set(f.id)"
+          <button type="button" class="boton boton-pequeno boton-borrar" (click)="borrando.set(f.id)"
                   [attr.aria-label]="'Borrar ' + f.destino">Borrar</button>
         </div>
       }
