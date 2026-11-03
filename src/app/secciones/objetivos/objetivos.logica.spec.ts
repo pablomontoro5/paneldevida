@@ -1,4 +1,4 @@
-import { cambiarValor, claveObjetivos, estadoObjetivo, fraccionDelAnio } from './objetivos';
+import { cambiarValor, claveObjetivos, estadoObjetivo, fraccionDelAnio } from './objetivos.logica';
 
 describe('fraccionDelAnio', () => {
   it('el 1 de noviembre de 2026 es el día 305 de 365', () => {

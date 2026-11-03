@@ -1,4 +1,4 @@
-import { marcarEventos } from './agenda';
+import { marcarEventos } from './agenda.logica';
 
 const ev = (inicio: string, fin: string) => ({ inicio, fin, titulo: inicio, lugar: '' });
 

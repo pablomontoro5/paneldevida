@@ -1,5 +1,5 @@
-import { Objetivo } from '../modelos/objetivo';
-import { formatoCantidad } from './fechas';
+import { Objetivo } from './objetivo.modelo';
+import { formatoCantidad } from '../../compartido/fechas';
 export type ProgresoObjetivos = Record<string, number>;
 export type EstadoObjetivo = 'conseguido' | 'al-dia' | 'detras';
 const UN_DIA = 86_400_000; // milisegundos que tiene un día

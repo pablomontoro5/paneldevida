@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { ArchivoCopia } from '../modelos/archivo-copia';
+import { ArchivoCopia } from './archivo-copia.modelo';
 
 const PREFIJO = 'panelDeVida:';
 // Claves que son de este navegador y no viajan en la copia (p. ej. cuándo se hizo la última).

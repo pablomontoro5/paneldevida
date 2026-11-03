@@ -3,13 +3,13 @@ import { RouterLink } from '@angular/router';
 
 import { crearDatosDeEjemplo } from './datos';
 
-import { Cabecera } from './componentes/cabecera/cabecera';
-import { Agenda } from './componentes/agenda/agenda';
-import { Prioridades } from './componentes/prioridades/prioridades';
+import { Cabecera } from './nucleo/cabecera/cabecera';
+import { Agenda } from './secciones/agenda/agenda';
+import { Prioridades } from './secciones/prioridades/prioridades';
 
-import { Habitos } from './componentes/habitos/habitos';
-import { Objetivos } from './componentes/objetivos/objetivos';
-import { TusDatos } from './componentes/tus-datos/tus-datos';
+import { Habitos } from './secciones/habitos/habitos';
+import { Objetivos } from './secciones/objetivos/objetivos';
+import { TusDatos } from './secciones/tus-datos/tus-datos';
 @Component({
   selector: 'app-root',
   imports: [RouterLink,Cabecera,Agenda,Prioridades,Habitos,Objetivos,TusDatos],

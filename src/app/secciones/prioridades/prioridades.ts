@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { Prioridad } from '../../modelos/prioridad';
-import { Almacen } from '../../servicios/almacen';
-import { alternarHecha, clavePrioridades } from '../../utilidades/prioridades';
+import { Prioridad } from './prioridad.modelo';
+import { Almacen } from '../../nucleo/almacen';
+import { alternarHecha, clavePrioridades } from './prioridades.logica';
 
 @Component({
   selector: 'app-prioridades',

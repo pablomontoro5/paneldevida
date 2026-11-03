@@ -21,11 +21,12 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 - La demo se publica sola en GitHub Pages con `.github/workflows/publicar.yml`, que compila con `--base-href /paneldevida/`.
 - Estructura (dentro de `src/app/`):
   - `app.ts` / `app.html` — el panel: navegación y una tarjeta por sección.
-  - `datos.ts` — los **datos de ejemplo** (agenda, prioridades, hábitos, objetivos).
-  - `componentes/` — un componente por sección; `src/styles.css` tiene los estilos globales con **modo claro y oscuro**.
-  - `modelos/` — los tipos de TypeScript.
-  - `servicios/almacen.ts` — guarda y lee en el navegador (**`localStorage`**, prefijo `panelDeVida:`) y exporta/importa la copia.
-  - `utilidades/` — la lógica sin Angular, con sus pruebas.
+  - `datos.ts` — los **datos de ejemplo** (agenda, prioridades, hábitos, objetivos); `datos.modelo.ts`, el tipo que los agrupa.
+  - `nucleo/` — lo que usa toda la app: `almacen.ts` (guarda y lee en **`localStorage`**, prefijo `panelDeVida:`, y exporta/importa la copia), `archivo-copia.modelo.ts` y la `cabecera/`.
+  - `compartido/` — utilidades genéricas sin dependencias (`fechas.ts`).
+  - `secciones/<nombre>/` — una carpeta por sección con su componente (`.ts`, `.html`, `.css`, `.spec.ts`), su `<nombre>.modelo.ts` y su `<nombre>.logica.ts` con su `.spec.ts`.
+  - `src/styles.css` tiene los estilos globales con **modo claro y oscuro**.
+  - Dependencias: `secciones/` importa de `nucleo/` y `compartido/`; `nucleo/` solo de `compartido/`; `compartido/` de nada.
 
 ## Reglas
 
@@ -44,7 +45,7 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
 
 ✅ **Hecha** en 12 lecciones: proyecto, idioma y estilos, modelos, utilidades, almacén, cabecera, agenda, prioridades, hábitos, objetivos, copia de seguridad y quitar la versión vanilla.
 
-Convenciones: cada componente en `src/app/componentes/<nombre>/` con sus estilos propios; la lógica sin Angular va en `src/app/utilidades/` con su `.spec.ts` al lado. Las pruebas no deben depender del día en que se ejecutan (pasar la fecha como parámetro).
+Convenciones: cada sección en `src/app/secciones/<nombre>/` con su componente y estilos propios; la lógica sin Angular va en `<nombre>.logica.ts` con su `.spec.ts` al lado (la genérica, en `compartido/`). Las pruebas no deben depender del día en que se ejecutan (pasar la fecha como parámetro).
 ## Ideas para más adelante
 
 - Conectar **Google Calendar** para la agenda del día.
@@ -57,7 +58,7 @@ Cada una se hace en su propia conversación, rama y pull request.
 | # | Tarea | Dificultad | Qué implica | Estado |
 | --- | --- | --- | --- | --- |
 | 1 | Cumplir los community standards de GitHub | ⭐ | Solo documentos: `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md` y plantillas de issues y PR en `.github/`. Licencia elegida: MIT. Seguridad por aviso privado de GitHub. | ✅ Hecha |
-| 2 | Reorganizar las carpetas | ⭐⭐ | Mover archivos a una estructura más clara (p. ej. `nucleo/`, `secciones/<nombre>/`, `compartido/`) y arreglar los `import`; las pruebas avisan si algo se rompe. Antes de añadir secciones nuevas. | Pendiente |
+| 2 | Reorganizar las carpetas | ⭐⭐ | Mover archivos a una estructura más clara (p. ej. `nucleo/`, `secciones/<nombre>/`, `compartido/`) y arreglar los `import`; las pruebas avisan si algo se rompe. Antes de añadir secciones nuevas. | ✅ Hecha |
 | 3 | Cuenta atrás de viajes | ⭐⭐ | Sección nueva con el mismo patrón que Objetivos: modelo, datos de ejemplo, utilidad de días que faltan con su `.spec.ts` y componente. | Pendiente |
 | 4 | Panel de navegación entre secciones | ⭐⭐⭐ | Pasar de anclas (`#agenda`) a **Angular Router**: una ruta por sección, menú lateral en el portátil y barra inferior en el móvil. Ojo: en GitHub Pages, recargar una ruta da 404 (se arregla con `404.html` o `withHashLocation()`). Antes de Planes. | Pendiente |
 | 5 | App sin conexión en el iPhone (PWA) | ⭐⭐⭐ | `ng add @angular/pwa` (paquete oficial de Angular). Lo difícil es probar la caché, el `base-href` y el icono en el móvil. Después del router. | Pendiente |

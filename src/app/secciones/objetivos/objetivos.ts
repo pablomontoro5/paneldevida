@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { Almacen } from '../../servicios/almacen';
-import { Objetivo } from '../../modelos/objetivo';
-import { formatoCantidad } from '../../utilidades/fechas';
+import { Almacen } from '../../nucleo/almacen';
+import { Objetivo } from './objetivo.modelo';
+import { formatoCantidad } from '../../compartido/fechas';
 import {
   EstadoObjetivo,
   ProgresoObjetivos,
@@ -11,7 +11,7 @@ import {
   formatoPorcentaje,
   fraccionDelAnio,
   textoProgreso,
-} from '../../utilidades/objetivos';
+} from './objetivos.logica';
 
 const TEXTO_ESTADO: Record<EstadoObjetivo, string> = {
   conseguido: '¡Conseguido!',

@@ -1,4 +1,4 @@
-import { claveFecha } from './fechas';
+import { claveFecha } from '../../compartido/fechas';
 
 // Se guardan por día, así cada mañana empiezan sin marcar.
 export function clavePrioridades(fecha: Date): string {
