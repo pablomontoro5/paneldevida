@@ -92,97 +92,7 @@
 
 .viaje-acciones.confirmar span { flex: 1; }
 
-/* ---------- Formulario ---------- */
-.boton-anadir {
-  width: 100%;
-  margin-bottom: 14px;
-}
-
-.formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 16px;
-  padding: 14px;
-  border: 1px solid var(--acento);
-  border-radius: 10px;
-  background: var(--fondo);
-}
-
-.formulario-titulo {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.campo {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.campo-etiqueta {
-  color: var(--texto-suave);
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.opcional { font-weight: 400; }
-
-.campo input {
-  width: 100%;
-  min-height: 42px;
-  padding: 8px 10px;
-  border: 1px solid var(--borde);
-  border-radius: 8px;
-  background: var(--tarjeta);
-  color: var(--texto);
-  font: inherit;
-  font-size: 1rem; /* 16 px: así el iPhone no hace zoom al escribir */
-}
-
-.campo input[aria-invalid="true"] { border-color: var(--error); }
-
-.campo-error {
-  color: var(--error);
-  font-size: 0.85rem;
-}
-
-.fechas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.fechas .campo { flex-basis: 180px; }
-
-.plantillas {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.plantillas-lista {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.plantilla {
-  min-height: 36px;
-  padding: 4px 12px;
-  border: 1px solid var(--borde);
-  border-radius: 999px;
-  background: var(--tarjeta);
-  color: var(--texto);
-  font: inherit;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.plantilla:hover { border-color: var(--acento); }
-
+/* ---------- Iconos del formulario ---------- */
 .iconos {
   display: flex;
   flex-wrap: wrap;
@@ -228,10 +138,4 @@
 .icono-opcion input:focus-visible + span {
   outline: 2px solid var(--acento);
   outline-offset: 2px;
-}
-
-.formulario-acciones {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
 }

@@ -7,6 +7,7 @@ import { crearDatosDeEjemplo } from '../../datos';
 import { clavePrioridades } from '../prioridades/prioridades.logica';
 import { RegistroHabitos, completarRegistro, textoRacha } from '../habitos/habitos.logica';
 import { ProgresoObjetivos, claveObjetivos, formatoPorcentaje, fraccionDelAnio } from '../objetivos/objetivos.logica';
+import { AgendaGuardada } from '../agenda/agenda.guardados';
 import { textoCuentaAtras } from '../viajes/viajes.logica';
 import { ViajesGuardados } from '../viajes/viajes.guardados';
 import {
@@ -47,9 +48,10 @@ export class Inicio {
   private readonly progreso = this.almacen.leer<ProgresoObjetivos>(claveObjetivos(this.hoy), {});
   private readonly ritmo = fraccionDelAnio(this.hoy);
 
+  private readonly eventos = inject(AgendaGuardada).elementos();
   protected readonly agenda = {
-    evento: eventoDestacado(this.datos.agenda, this.minutoActual),
-    restantes: eventosRestantes(this.datos.agenda, this.minutoActual),
+    evento: eventoDestacado(this.eventos, this.minutoActual),
+    restantes: eventosRestantes(this.eventos, this.minutoActual),
   };
 
   protected readonly prioridades = {

@@ -1,14 +1,20 @@
 /* ---------- Agenda ---------- */
 .evento {
-  display: grid;
-  grid-template-columns: 6.5em 1fr auto;
-  align-items: start;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 10px 0;
   border-top: 1px solid var(--borde);
 }
 
 .evento:first-child { border-top: none; padding-top: 0; }
+
+.evento-fila {
+  display: grid;
+  grid-template-columns: 6.5em 1fr auto;
+  align-items: start;
+  gap: 10px;
+}
 
 .evento-hora {
   color: var(--texto-suave);
@@ -19,7 +25,7 @@
 .evento-cuerpo {
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  min-width: 0; /* deja que el texto largo baje de línea en el móvil */
 }
 
 .evento-titulo { font-weight: 600; }
@@ -29,10 +35,31 @@
   font-size: 0.85rem;
 }
 
-.evento-pasado { opacity: 0.45; }
+/* Solo se apaga el texto: los botones de editar y borrar siguen igual de visibles */
+.evento-pasado .evento-fila { opacity: 0.45; }
 
 .evento-actual .evento-hora,
 .evento-siguiente .evento-hora {
   color: var(--acento);
   font-weight: 600;
 }
+
+.evento.editandose .evento-titulo { color: var(--acento); }
+
+/* ---------- Editar y borrar ---------- */
+.evento-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.evento-acciones.confirmar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--aviso-suave);
+  font-size: 0.9rem;
+}
+
+.evento-acciones.confirmar span { flex: 1; }

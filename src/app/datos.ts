@@ -8,11 +8,11 @@ import { CopiaSeguridad } from './datos.modelo';
 export function crearDatosDeEjemplo(): CopiaSeguridad {
   return {
     agenda: [
-      { inicio: '08:30', fin: '10:30', titulo: 'Clase de Estructuras de Datos', lugar: 'Aula 2.4' },
-      { inicio: '11:00', fin: '13:00', titulo: 'Prácticas de Redes', lugar: 'Laboratorio L3' },
-      { inicio: '14:00', fin: '15:00', titulo: 'Comida con el grupo', lugar: 'Cafetería' },
-      { inicio: '16:30', fin: '18:00', titulo: 'Estudiar para el parcial de Sistemas Operativos', lugar: 'Biblioteca' },
-      { inicio: '19:00', fin: '20:00', titulo: 'Gimnasio', lugar: '' },
+      { id: 'clase-estructuras', inicio: '08:30', fin: '10:30', titulo: 'Clase de Estructuras de Datos', lugar: 'Aula 2.4' },
+      { id: 'practicas-redes', inicio: '11:00', fin: '13:00', titulo: 'Prácticas de Redes', lugar: 'Laboratorio L3' },
+      { id: 'comida-grupo', inicio: '14:00', fin: '15:00', titulo: 'Comida con el grupo', lugar: 'Cafetería' },
+      { id: 'estudiar-so', inicio: '16:30', fin: '18:00', titulo: 'Estudiar para el parcial de Sistemas Operativos', lugar: 'Biblioteca' },
+      { id: 'gimnasio', inicio: '19:00', fin: '20:00', titulo: 'Gimnasio', lugar: '' },
     ],
     prioridades: [
       { id: 'p1', texto: 'Terminar la práctica 3 de Redes' },

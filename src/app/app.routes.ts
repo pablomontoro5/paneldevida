@@ -12,10 +12,12 @@ import { TusDatos } from './secciones/tus-datos/tus-datos';
 const datos = crearDatosDeEjemplo();
 
 // Una ruta por sección. Con withComponentInputBinding(), cada clave de `data`
-// llega al input del mismo nombre del componente (p. ej. `eventos` de Agenda).
+// llega al input del mismo nombre del componente (p. ej. `habitos` de Hábitos).
 export const routes: Routes = [
   { path: '', component: Inicio },
-  { path: 'agenda', component: Agenda, title: 'Agenda', data: { eventos: datos.agenda } },
+  // Agenda y Viajes ya no usan `data`: leen y guardan su lista en localStorage
+  // (AgendaGuardada y ViajesGuardados).
+  { path: 'agenda', component: Agenda, title: 'Agenda' },
   {
     path: 'prioridades',
     component: Prioridades,
@@ -29,7 +31,6 @@ export const routes: Routes = [
     title: 'Objetivos',
     data: { objetivos: datos.objetivos },
   },
-  // Viajes ya no usa `data`: lee y guarda su lista en localStorage (ViajesGuardados).
   { path: 'viajes', component: Viajes, title: 'Viajes' },
   { path: 'datos', component: TusDatos, title: 'Tus datos' },
   // Cualquier dirección que no exista vuelve al inicio.

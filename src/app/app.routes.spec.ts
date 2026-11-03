@@ -45,7 +45,7 @@ describe('Rutas del panel', () => {
     });
   }
 
-  it('los datos de ejemplo llegan a la sección', async () => {
+  it('la agenda muestra sus eventos al abrirla', async () => {
     await harness.navigateByUrl('/agenda', Agenda);
     const filas = harness.routeNativeElement?.querySelectorAll('.evento') ?? [];
     expect(filas.length).toBeGreaterThan(0);
