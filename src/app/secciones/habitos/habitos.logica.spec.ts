@@ -1,4 +1,14 @@
-import { alternarDia, ultimosSieteDias, completarRegistro, textoRacha } from './habitos.logica';
+import {
+  BORRADOR_HABITO_VACIO,
+  alternarDia,
+  borradorAHabito,
+  completarRegistro,
+  habitoABorrador,
+  quitarRegistro,
+  textoRacha,
+  ultimosSieteDias,
+  validarHabito,
+} from './habitos.logica';
 import { Habito } from './habito.modelo';
 
 describe('alternarDia', () => {
@@ -69,5 +79,56 @@ describe('textoRacha', () => {
 
   it('con varios días usa el plural', () => {
     expect(textoRacha(5)).toBe('5 días seguidos');
+  });
+});
+
+describe('validarHabito', () => {
+  it('pide el nombre si está vacío', () => {
+    expect(validarHabito({ icono: '📚', nombre: '' })).toEqual({ nombre: 'Escribe el nombre del hábito.' });
+  });
+
+  it('un nombre con solo espacios cuenta como vacío', () => {
+    expect(validarHabito({ icono: '📚', nombre: '   ' }).nombre).toBeDefined();
+  });
+
+  it('con nombre no hay errores', () => {
+    expect(validarHabito({ icono: '📚', nombre: 'Leer' })).toEqual({});
+  });
+});
+
+describe('borradorAHabito', () => {
+  it('quita los espacios del nombre y empieza sin historial', () => {
+    expect(borradorAHabito({ icono: '🧘', nombre: '  Meditar  ' }, 'habito-1')).toEqual({
+      id: 'habito-1',
+      icono: '🧘',
+      nombre: 'Meditar',
+      historialEjemplo: [],
+    });
+  });
+
+  it('sin icono pone el de por defecto', () => {
+    expect(borradorAHabito({ icono: '', nombre: 'Meditar' }, 'h').icono).toBe(BORRADOR_HABITO_VACIO.icono);
+  });
+
+  it('ida y vuelta con habitoABorrador', () => {
+    const habito = borradorAHabito({ icono: '💧', nombre: 'Agua' }, 'agua');
+    expect(habitoABorrador(habito)).toEqual({ icono: '💧', nombre: 'Agua' });
+  });
+});
+
+describe('quitarRegistro', () => {
+  it('quita solo los días de ese hábito', () => {
+    const registro = { leer: ['2026-11-03'], agua: ['2026-11-02'] };
+    expect(quitarRegistro(registro, 'leer')).toEqual({ agua: ['2026-11-02'] });
+  });
+
+  it('no modifica el registro original', () => {
+    const registro = { leer: ['2026-11-03'] };
+    quitarRegistro(registro, 'leer');
+    expect(registro).toEqual({ leer: ['2026-11-03'] });
+  });
+
+  it('si el hábito no estaba, deja el registro igual', () => {
+    expect(quitarRegistro({ agua: [] }, 'leer')).toEqual({ agua: [] });
   });
 });
