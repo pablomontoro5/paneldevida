@@ -17,7 +17,8 @@ export class Cabecera {
   protected readonly saludo = saludoSegunHora(this.ahora.getHours());
   protected readonly fecha = mayusculaInicial(formatoFecha.format(this.ahora));
 
-  private readonly sistemaOscuro = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;  protected readonly elegido = signal(this.almacen.leer<Tema | null>('tema', null));
+  private readonly sistemaOscuro = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+  protected readonly elegido = signal(this.almacen.leer<Tema | null>('tema', null));
   protected readonly tema = computed(() => this.elegido() ?? (this.sistemaOscuro ? 'oscuro' : 'claro'));
   protected readonly textoBoton = computed(() =>
     this.tema() === 'oscuro' ? '☀️ Modo claro' : '🌙 Modo oscuro');
