@@ -1,0 +1,35 @@
+.aviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--acento);
+  border-radius: 12px;
+  background: var(--acento-suave);
+  font-weight: 600;
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.boton {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.boton-principal {
+  border-color: var(--acento);
+  background: var(--acento);
+  color: var(--tarjeta); /* blanco en claro, casi negro en oscuro: buen contraste en los dos */
+}

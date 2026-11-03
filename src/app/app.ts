@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
+import { AvisoVersion } from './nucleo/aviso-version/aviso-version';
 import { Cabecera } from './nucleo/cabecera/cabecera';
 
 interface Enlace {
@@ -19,7 +20,7 @@ const tusDatos: Enlace = { ruta: '/datos', nombre: 'Tus datos', icono: '⚙️' 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, Cabecera],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, Cabecera, AvisoVersion],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })

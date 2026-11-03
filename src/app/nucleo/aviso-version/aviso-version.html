@@ -1,0 +1,9 @@
+@if (hayVersionNueva()) {
+  <div class="aviso" role="status">
+    <span>Hay una versión nueva del panel.</span>
+    <div class="acciones">
+      <button class="boton boton-principal" type="button" (click)="recargar()">Recargar</button>
+      <button class="boton" type="button" (click)="cerrar()">Ahora no</button>
+    </div>
+  </div>
+}
