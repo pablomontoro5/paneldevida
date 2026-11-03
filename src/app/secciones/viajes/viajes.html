@@ -1,0 +1,30 @@
+<div class="tarjeta-cabecera">
+  <h2>Próximos viajes</h2>
+  @if (filas().length > 0) {
+    <span class="etiqueta">{{ filas().length }} en el calendario</span>
+  }
+</div>
+
+<ul class="viajes">
+  @for (f of filas(); track f.id) {
+    <li class="viaje" [class.en-curso]="f.enCurso">
+      <span class="viaje-icono" aria-hidden="true">{{ f.icono }}</span>
+      <div class="viaje-info">
+        <span class="viaje-destino">{{ f.destino }}</span>
+        <span class="viaje-fechas">{{ f.fechas }}</span>
+      </div>
+      <div class="viaje-cuenta">
+        @if (f.enCurso) {
+          <span class="etiqueta etiqueta-en-curso">En curso</span>
+        } @else if (f.dias > 1) {
+          <span class="viaje-dias">{{ f.dias }}</span>
+          <span class="viaje-unidad">días</span>
+        } @else {
+          <span class="etiqueta etiqueta-pronto">{{ f.cuentaAtras }}</span>
+        }
+      </div>
+    </li>
+  } @empty {
+    <li class="vacio">No tienes viajes a la vista.</li>
+  }
+</ul>

@@ -1,4 +1,4 @@
-import { aMinutos, calcularRacha, claveFecha, mismoDia, saludoSegunHora } from './fechas';
+import { aMinutos, calcularRacha, claveFecha, diasDesde, mismoDia, saludoSegunHora } from './fechas';
 describe('claveFecha', () => {
   it('devuelve AAAA-MM-DD con ceros', () => {
     const fecha = new Date(2026, 10, 2); // 2 de noviembre de 2026
@@ -49,5 +49,18 @@ describe('saludoSegunHora', () => {
     expect(saludoSegunHora(21)).toBe('Buenas noches');
     expect(saludoSegunHora(0)).toBe('Buenas noches');
     expect(saludoSegunHora(5)).toBe('Buenas noches');
+  });
+});
+describe('diasDesde', () => {
+  it('el mismo día a distinta hora son 0 días', () => {
+    expect(diasDesde(new Date(2026, 10, 3, 8, 0), new Date(2026, 10, 3, 23, 0))).toBe(0);
+  });
+
+  it('cuenta bien aunque en medio haya cambio de hora (25 de octubre)', () => {
+    expect(diasDesde(new Date(2026, 9, 24), new Date(2026, 10, 3))).toBe(10);
+  });
+
+  it('da un número negativo si la fecha es futura', () => {
+    expect(diasDesde(new Date(2026, 11, 20), new Date(2026, 10, 3))).toBe(-47);
   });
 });
