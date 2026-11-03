@@ -3,9 +3,107 @@
   <span class="etiqueta">Llevas el {{ textoRitmo }} del año</span>
 </div>
 
+@if (editando() === null) {
+  <button type="button" class="boton boton-principal boton-anadir" (click)="abrirNuevo()">＋ Añadir objetivo</button>
+} @else {
+  <form class="formulario" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <h3 class="formulario-titulo">{{ editando() ? 'Editar objetivo' : 'Nuevo objetivo' }}</h3>
+
+    @if (!editando()) {
+      <div class="plantillas">
+        <span class="campo-etiqueta" id="titulo-plantillas">Ideas para empezar</span>
+        <div class="plantillas-lista" role="group" aria-labelledby="titulo-plantillas">
+          @for (p of plantillas; track p.nombre) {
+            <button type="button" class="plantilla" (click)="usarPlantilla(p)">
+              <span aria-hidden="true">{{ p.icono }}</span> {{ p.nombre }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <fieldset class="iconos">
+      <legend class="campo-etiqueta">Icono</legend>
+      @for (i of iconos; track i) {
+        <label class="icono-opcion">
+          <input type="radio" formControlName="icono" [value]="i" />
+          <span>{{ i }}</span>
+        </label>
+      }
+    </fieldset>
+
+    <div class="campo">
+      <label class="campo-etiqueta" for="objetivo-nombre">Nombre</label>
+      <input #campoNombre id="objetivo-nombre" type="text" formControlName="nombre" maxlength="80"
+             placeholder="Por ejemplo, Leer 24 libros"
+             [attr.aria-invalid]="!!errores().nombre"
+             [attr.aria-describedby]="errores().nombre ? 'error-nombre' : null" />
+      @if (errores().nombre; as e) {
+        <span class="campo-error" id="error-nombre">{{ e }}</span>
+      }
+    </div>
+
+    <fieldset class="tipo-opciones">
+      <legend class="campo-etiqueta">Se cuenta en</legend>
+      <label><input type="radio" formControlName="tipo" value="unidad" /> Unidades (libros, km…)</label>
+      <label><input type="radio" formControlName="tipo" value="euros" /> Euros</label>
+    </fieldset>
+
+    <div class="campos-fila">
+      @if (formulario.controls.tipo.value === 'unidad') {
+        <div class="campo">
+          <label class="campo-etiqueta" for="objetivo-unidad">Unidad</label>
+          <input id="objetivo-unidad" type="text" formControlName="unidad" maxlength="20"
+                 placeholder="libros, km, horas…"
+                 [attr.aria-invalid]="!!errores().unidad"
+                 [attr.aria-describedby]="errores().unidad ? 'error-unidad' : null" />
+          @if (errores().unidad; as e) {
+            <span class="campo-error" id="error-unidad">{{ e }}</span>
+          }
+        </div>
+      }
+      <div class="campo">
+        <label class="campo-etiqueta" for="objetivo-meta">Meta</label>
+        <input id="objetivo-meta" type="number" formControlName="meta" min="0" step="any" inputmode="decimal"
+               [attr.aria-invalid]="!!errores().meta"
+               [attr.aria-describedby]="errores().meta ? 'error-meta' : null" />
+        @if (errores().meta; as e) {
+          <span class="campo-error" id="error-meta">{{ e }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="campos-fila">
+      <div class="campo">
+        <label class="campo-etiqueta" for="objetivo-llevas">Llevas ahora</label>
+        <input id="objetivo-llevas" type="number" formControlName="llevas" min="0" step="any" inputmode="decimal"
+               [attr.aria-invalid]="!!errores().llevas"
+               [attr.aria-describedby]="errores().llevas ? 'error-llevas' : null" />
+        @if (errores().llevas; as e) {
+          <span class="campo-error" id="error-llevas">{{ e }}</span>
+        }
+      </div>
+      <div class="campo">
+        <label class="campo-etiqueta" for="objetivo-paso">Cuánto suma cada «+»</label>
+        <input id="objetivo-paso" type="number" formControlName="paso" min="0" step="any" inputmode="decimal"
+               [attr.aria-invalid]="!!errores().paso"
+               [attr.aria-describedby]="errores().paso ? 'error-paso' : null" />
+        @if (errores().paso; as e) {
+          <span class="campo-error" id="error-paso">{{ e }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="formulario-acciones">
+      <button type="button" class="boton" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="boton boton-principal">{{ editando() ? 'Guardar cambios' : 'Añadir objetivo' }}</button>
+    </div>
+  </form>
+}
+
 <ul class="objetivos">
   @for (f of filas(); track f.id) {
-    <li class="objetivo" [class.conseguido]="f.estado === 'conseguido'">
+    <li class="objetivo" [class.conseguido]="f.estado === 'conseguido'" [class.editandose]="editando() === f.id">
       <div class="objetivo-cabecera">
         <span class="objetivo-nombre">{{ f.icono }} {{ f.nombre }}</span>
         <div class="objetivo-estado">
@@ -36,8 +134,23 @@
                   (click)="cambiar(f, 1)">+</button>
         </div>
       </div>
+
+      @if (borrando() === f.id) {
+        <div class="objetivo-acciones confirmar" role="alert">
+          <span>¿Borrar este objetivo y lo que llevas este año?</span>
+          <button type="button" class="boton boton-peligro" (click)="confirmarBorrado(f.id)">Sí, borrar</button>
+          <button type="button" class="boton" (click)="borrando.set(null)">No</button>
+        </div>
+      } @else {
+        <div class="objetivo-acciones">
+          <button type="button" class="boton boton-pequeno" (click)="editar(f)"
+                  [attr.aria-label]="'Editar ' + f.nombre">Editar</button>
+          <button type="button" class="boton boton-pequeno boton-borrar" (click)="borrando.set(f.id)"
+                  [attr.aria-label]="'Borrar ' + f.nombre">Borrar</button>
+        </div>
+      }
     </li>
   } @empty {
-    <li class="vacio">No tienes objetivos todavía.</li>
+    <li class="vacio">No tienes objetivos todavía. Añade uno para empezar.</li>
   }
 </ul>
