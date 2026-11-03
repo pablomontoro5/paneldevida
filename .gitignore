@@ -42,3 +42,5 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+# Copias de seguridad del panel: contienen mis datos personales y nunca se suben a GitHub.
+panel-de-vida-copia-*.json
