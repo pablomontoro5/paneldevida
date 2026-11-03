@@ -1,5 +1,5 @@
-import { Evento, EstadoEvento, EventoConEstado } from '../modelos/agenda';
-import { aMinutos } from './fechas';
+import { Evento, EstadoEvento, EventoConEstado } from './agenda.modelo';
+import { aMinutos } from '../../compartido/fechas';
 
 // Ordena por hora de inicio y marca cada evento. Solo uno lleva "Ahora" o "Siguiente".
 export function marcarEventos(eventos: Evento[], minutoActual: number): EventoConEstado[] {

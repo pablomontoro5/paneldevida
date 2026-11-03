@@ -1,5 +1,5 @@
-import { ArchivoCopia } from '../modelos/archivo-copia';
-import { claveFecha } from './fechas';
+import { ArchivoCopia } from '../../nucleo/archivo-copia.modelo';
+import { claveFecha } from '../../compartido/fechas';
 
 // Si la última copia es más antigua que esto, se avisa.
 export const DIAS_AVISO_COPIA = 7;

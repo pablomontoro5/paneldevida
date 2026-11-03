@@ -1,5 +1,5 @@
-import { Habito } from '../modelos/habito';
-import { claveFecha, haceDiasDesde, historialAFechas, mayusculaInicial } from './fechas';
+import { Habito } from './habito.modelo';
+import { claveFecha, haceDiasDesde, historialAFechas, mayusculaInicial } from '../../compartido/fechas';
 
 export type RegistroHabitos = Record<string, string[]>;
 

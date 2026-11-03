@@ -1,4 +1,4 @@
-import { diasDesde, esCopiaValida, estadoCopia, nombreArchivoCopia } from './copia';
+import { diasDesde, esCopiaValida, estadoCopia, nombreArchivoCopia } from './copia.logica';
 
 const COPIA_BUENA = {
   app: 'panel-de-vida',

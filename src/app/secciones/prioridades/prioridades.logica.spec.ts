@@ -1,4 +1,4 @@
-import {alternarHecha, clavePrioridades} from './prioridades';
+import {alternarHecha, clavePrioridades} from './prioridades.logica';
 describe('clavePrioridades', () => {
     it('incluye la fecha en formato AAAA-MM-DD', () => {
         const fecha = new Date(2026, 10, 3); // los meses empiezan en 0, así que 10 = noviembre

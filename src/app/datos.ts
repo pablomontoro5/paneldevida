@@ -1,8 +1,8 @@
-import { Evento } from './modelos/agenda';
-import { Prioridad } from './modelos/prioridad';
-import { Habito } from './modelos/habito';
-import { Objetivo } from './modelos/objetivo';
-import { CopiaSeguridad } from './modelos/copia-seguridad';
+import { Evento } from './secciones/agenda/agenda.modelo';
+import { Prioridad } from './secciones/prioridades/prioridad.modelo';
+import { Habito } from './secciones/habitos/habito.modelo';
+import { Objetivo } from './secciones/objetivos/objetivo.modelo';
+import { CopiaSeguridad } from './datos.modelo';
 
 export function crearDatosDeEjemplo(): CopiaSeguridad {
   return {

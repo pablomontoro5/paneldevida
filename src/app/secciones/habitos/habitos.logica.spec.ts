@@ -1,5 +1,5 @@
-import { alternarDia, ultimosSieteDias, completarRegistro, textoRacha } from './habitos';
-import { Habito } from '../modelos/habito';
+import { alternarDia, ultimosSieteDias, completarRegistro, textoRacha } from './habitos.logica';
+import { Habito } from './habito.modelo';
 
 describe('alternarDia', () => {
   it('añade el día si no estaba', () => {

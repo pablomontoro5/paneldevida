@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { Almacen } from '../../servicios/almacen';
-import { mayusculaInicial, saludoSegunHora } from '../../utilidades/fechas';
+import { Almacen } from '../almacen';
+import { mayusculaInicial, saludoSegunHora } from '../../compartido/fechas';
 
 type Tema = 'claro' | 'oscuro';
 const formatoFecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'full' });

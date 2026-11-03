@@ -1,6 +1,6 @@
 import { Component, DestroyRef, computed, inject, input, signal } from '@angular/core';
-import { Evento } from '../../modelos/agenda';
-import { marcarEventos } from '../../utilidades/agenda';
+import { Evento } from './agenda.modelo';
+import { marcarEventos } from './agenda.logica';
 
 function minutoDelDia(fecha: Date): number {
   return fecha.getHours() * 60 + fecha.getMinutes();

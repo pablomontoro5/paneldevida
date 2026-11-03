@@ -1,11 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Almacen } from '../../servicios/almacen';
+import { Almacen } from '../../nucleo/almacen';
 import {
   esCopiaValida,
   estadoCopia,
   formatoFechaCopia,
   nombreArchivoCopia,
-} from '../../utilidades/copia';
+} from './copia.logica';
 
 interface Mensaje {
   texto: string;

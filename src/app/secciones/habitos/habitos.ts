@@ -1,14 +1,14 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { Almacen } from '../../servicios/almacen';
-import { Habito } from '../../modelos/habito';
-import { calcularRacha, claveFecha } from '../../utilidades/fechas';
+import { Almacen } from '../../nucleo/almacen';
+import { Habito } from './habito.modelo';
+import { calcularRacha, claveFecha } from '../../compartido/fechas';
 import {
   RegistroHabitos,
   alternarDia,
   completarRegistro,
   textoRacha,
   ultimosSieteDias,
-} from '../../utilidades/habitos';
+} from './habitos.logica';
 @Component({
   imports: [],
   selector: 'app-habitos',
