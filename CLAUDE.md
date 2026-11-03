@@ -69,7 +69,6 @@ Cada una se hace en su propia conversación, rama y pull request.
 | 8 | Mejorar el README | ⭐ (al final) | En cada PR se actualiza lo justo; aquí, repaso final con capturas, un GIF de la demo y la arquitectura. | Pendiente |
 | 9 | Resumen semanal cada domingo | ⭐⭐⭐⭐ | Necesita historial de hábitos, objetivos y planes. Sin servidor, se genera al abrir el panel el domingo (o el primer día después). | Pendiente |
 | 10 | Conectar Google Calendar | ⭐⭐⭐⭐⭐ | OAuth, API de Google y tokens. **Choca con la regla 6**: hay que decidir si se hace una excepción o se descarta. Alternativa sin internet: importar un `.ics`. | Pendiente |
-
 | 11 | Perfiles locales (un usuario por persona) | ⭐⭐⭐⭐ | Elegir perfil al abrir el panel (como en Netflix); cada uno con su agenda, hábitos, objetivos y viajes en `localStorage` con su prefijo (`panelDeVida:<perfil>:…`). Sin servidor para cumplir la regla 6: los perfiles viven en el dispositivo y se pasan a otro con la copia de seguridad. Un PIN sería solo cortesía, no seguridad. Los datos de ejemplo quedan como perfil «Demo». Después de la 6. | Pendiente |
 
 Orden recomendado (el README como repaso final): 1 → 2 → 3 → 4 → 5 → 6 → 11 → 7 → 9 → 8 → 10.
