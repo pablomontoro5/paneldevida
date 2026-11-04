@@ -336,10 +336,10 @@ Object.keys(localStorage).filter(k => k.startsWith("panelDeVida:")).forEach(k =>
 
 1. Antes de un cambio grande, primero el plan, y no se empieza hasta que se apruebe.
 2. Un cambio cada vez, cada uno en su rama y con su pull request (ver abajo).
-3. Nada de librerías nuevas aparte de Angular salvo que se pida expresamente.
+3. Nada de librerías nuevas aparte de Angular salvo que se pida expresamente (la única excepción es `@supabase/supabase-js`, para las cuentas).
 4. Todo en español de España: textos, fechas (`1 de noviembre de 2026`, `01/11/2026`) y euros (`1.234,50 €`), usando `Intl` con `es-ES`.
 5. Tiene que verse bien en el portátil y en el móvil.
-6. Los datos no salen del ordenador.
+6. Los datos solo van al proyecto de Supabase del panel, y cada usuario solo puede ver los suyos. Sin cuenta, no salen del navegador.
 
 Las reglas completas están en [`CLAUDE.md`](CLAUDE.md).
 
