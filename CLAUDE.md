@@ -40,10 +40,10 @@ Para mí, estudiante de Ingeniería Informática. Cada vez que hagas un cambio, 
    - Cuando funcione, se guarda con **commits de Git con mensaje en español**.
    - Se sube la rama a GitHub y se abre un **pull request** hacia `main` con una descripción en español (qué cambia y cómo se ha probado).
    - **El PR lo fusiono yo.** Después se actualiza `main` en local con `git pull`.
-3. **Nada de librerías nuevas aparte de Angular** salvo que lo pida expresamente.
+3. **Nada de librerías nuevas aparte de Angular** salvo que lo pida expresamente. Excepción aprobada: `@supabase/supabase-js` (cliente oficial de Supabase) para las cuentas de usuario.
 4. **Todo en español de España**: textos, nombres en la interfaz y mensajes. Fechas en formato español (p. ej. `1 de noviembre de 2026`, `01/11/2026`) y euros en formato español (p. ej. `1.234,50 €`). Usar `Intl` con `es-ES`.
 5. **Tiene que verse bien en el portátil y en el móvil** (diseño adaptable).
-6. **Mis datos no salen del ordenador**: nada de enviar datos a servicios externos, analíticas ni peticiones a internet.
+6. **Mis datos solo van a mi proyecto de Supabase**: sin cuenta, todo se queda en el navegador (modo Demo); con cuenta, se guardan también en Supabase, protegidos con RLS para que cada usuario solo vea los suyos. Nada de analíticas ni otros servicios externos. La clave que va en el código es la pública (`publishable`); la secreta (`service_role`) nunca se sube al repositorio.
 
 ## Migración a Angular
 
@@ -70,7 +70,7 @@ Cada una se hace en su propia conversación, rama y pull request.
 | 7 | Sección de planes con recordatorios | ⭐⭐⭐⭐ | Formularios y guardado como en la 6, más fechas y horas, la API de `Notification` y temporizadores. Sin servidor, el aviso solo salta con la página abierta. | Pendiente |
 | 8 | Mejorar el README | ⭐ (al final) | En cada PR se actualiza lo justo; aquí, repaso final con capturas, un GIF de la demo y la arquitectura. | Pendiente |
 | 9 | Resumen semanal cada domingo | ⭐⭐⭐⭐ | Necesita historial de hábitos, objetivos y planes. Sin servidor, se genera al abrir el panel el domingo (o el primer día después). | Pendiente |
-| 10 | Conectar Google Calendar | ⭐⭐⭐⭐⭐ | OAuth, API de Google y tokens. **Choca con la regla 6**: hay que decidir si se hace una excepción o se descarta. Alternativa sin internet: importar un `.ics`. | Pendiente |
-| 11 | Perfiles locales (un usuario por persona) | ⭐⭐⭐⭐ | Elegir perfil al abrir el panel (como en Netflix); cada uno con su agenda, hábitos, objetivos y viajes en `localStorage` con su prefijo (`panelDeVida:<perfil>:…`). Sin servidor para cumplir la regla 6: los perfiles viven en el dispositivo y se pasan a otro con la copia de seguridad. Un PIN sería solo cortesía, no seguridad. Los datos de ejemplo quedan como perfil «Demo». Después de la 6. | Pendiente |
+| 10 | Conectar Google Calendar | ⭐⭐⭐⭐⭐ | OAuth, API de Google y tokens. **Choca con la regla 6** (solo permite Supabase): hay que decidir si se hace una excepción o se descarta. Alternativa sin internet: importar un `.ics`. | Pendiente |
+| 11 | Cuentas de usuario con Supabase | ⭐⭐⭐⭐ | Registro e inicio de sesión con correo y contraseña (Supabase Auth). Una tabla `datos` (`usuario_id`, `clave`, `valor` jsonb, `actualizado`) con RLS, guardada como migración en `supabase/migrations/`. Primero en local: `Almacen` guarda en `localStorage` con el prefijo `panelDeVida:<usuario>:` y sincroniza con Supabase cuando hay conexión (gana el cambio más reciente de cada clave). Sin cuenta, modo Demo como ahora; al iniciar sesión por primera vez, ofrece subir lo que había en la Demo. La URL de Pages va en las *Redirect URLs* de Auth. En tres PR: reglas (`documentacion/reglas-supabase`) → cuentas (`funcionalidad/cuentas-usuario`) → sincronizar (`funcionalidad/sincronizar-datos`). | En curso |
 
 Orden recomendado (el README como repaso final): 1 → 2 → 3 → 4 → 5 → 6 → 11 → 7 → 9 → 8 → 10.
